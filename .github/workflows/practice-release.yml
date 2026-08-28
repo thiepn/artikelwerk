@@ -48,6 +48,30 @@ jobs:
 
           path=Path('scripts/apply_practice_screen.py')
           text=path.read_text(encoding='utf-8')
+          old_function='''def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise ValueError(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+          '''
+          new_function='''def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count == 1:
+                  return text.replace(old, new, 1)
+              if count == 0 and label == "practice keyboard scope":
+                  listener = '      document.addEventListener("keydown",e=>{'
+                  listener_position = text.find(listener)
+                  input_marker = '        if(e.target.matches('
+                  input_position = text.find(input_marker, listener_position)
+                  active_marker = '        if(!DOM.$("#practiceView")?.classList.contains("active")) return;'
+                  if listener_position >= 0 and input_position >= 0 and active_marker in text:
+                      text = text[:input_position] + '        if(PracticeScreen.handleKeydown(e)) return;\\n' + text[input_position:]
+                      return text.replace(active_marker, '        if(!PracticeScreen.isOpen()) return;', 1)
+              raise ValueError(f"{label}: expected exactly one match, found {count}")
+          '''
+          if old_function not in text:
+              raise SystemExit('Could not harden the source patch helper')
+          text=text.replace(old_function,new_function,1)
           text=text.replace(
               '.translation-hint.is-fallback #translationLabel::after{content:" cue"}',
               '.translation-hint.is-fallback #translationLabel::after{content:""}',
