@@ -71,3 +71,12 @@ Physical-device acceptance remains a manual final-release gate; see `docs/real-d
 ## Visual identity
 
 UI1 establishes Artikelwerk's original visual foundation: warm editorial neutrals, a single deep-teal accent, restrained borders/radii/elevation, a geometric `A` brand mark, full favicon/platform icon coverage, and light/dark theme tokens. See `docs/ui1-visual-identity.md`.
+
+
+## UI2 application shell
+
+- Desktop primary navigation is integrated into the application header.
+- Mobile primary navigation uses a fixed bottom bar while practice remains a full-screen modal.
+- Practice is ordered as primary action → review queue → session setup.
+- `tests/app-shell.mjs` certifies shell hierarchy and navigation at desktop and mobile widths.
+- See `docs/ui2-app-shell.md` for the shell contract and UI3 handoff.

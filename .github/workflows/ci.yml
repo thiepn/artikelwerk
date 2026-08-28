@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   certify:
-    name: Source, certified content, deterministic build, and responsive practice
+    name: Source, certified content, deterministic build, and responsive shell
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -40,13 +40,13 @@ jobs:
       - name: Verify Python generator syntax
         run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py
 
-      - name: Verify source, content certification, and deterministic artifact
+      - name: Verify source, content certification, shell, and deterministic artifact
         run: npm run ci:static
 
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run responsive practice and certified-content flows
+      - name: Run practice, content, and shell browser flows
         shell: bash
         run: |
           set -euo pipefail
@@ -62,6 +62,7 @@ jobs:
           curl --fail --silent http://127.0.0.1:4173/ >/dev/null
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:content-browser
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:shell-browser
 
       - name: Upload certified static artifact
         uses: actions/upload-artifact@v4
