@@ -1,0 +1,20 @@
+{
+  "name": "artikelwerk",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "C1/C2 German noun-gender trainer",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node scripts/verify-source.mjs",
+    "build": "node scripts/build.mjs",
+    "test:build": "node scripts/verify-dist.mjs",
+    "test:browser": "node tests/practice-screen.mjs",
+    "ci:static": "npm run check && npm run build && npm run test:build"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
+  }
+}

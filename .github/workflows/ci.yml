@@ -1,0 +1,79 @@
+name: Verify source, build, and browser flow
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: artikelwerk-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  certify:
+    name: Source, deterministic build, and responsive practice
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned browser-test runtime
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: Verify Python generator syntax
+        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py
+
+      - name: Verify source and deterministic artifact
+        run: npm run ci:static
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run responsive practice flow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 4173 --bind 127.0.0.1 --directory dist >/tmp/artikelwerk-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:4173/ >/dev/null
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:browser
+
+      - name: Upload certified static artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-static-site
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload browser evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-browser-evidence
+          path: test-artifacts/
+          if-no-files-found: error
+          retention-days: 14
