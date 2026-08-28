@@ -59,7 +59,7 @@ jobs:
                   if not compressed.startswith(b'\x1f\x8b'):
                       return None
                   text = gzip.decompress(compressed).decode('utf-8')
-              except (ValueError, OSError, UnicodeDecodeError, zlib.error):
+              except (ValueError, OSError, UnicodeDecodeError, zlib.error, EOFError):
                   return None
               if '<!doctype html' not in text.lower() or '</html>' not in text.lower():
                   return None
