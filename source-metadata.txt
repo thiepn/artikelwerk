@@ -1,0 +1,9 @@
+encoded_data_chars=135853
+compressed_probe_bytes=101890
+partial_source_bytes=582358
+partial_source_lines=5659
+first_error_compressed_byte=101890
+estimated_missing_base64_index=135852
+chunk_08_start=112000
+estimated_offset_inside_chunk_08=23852
+zlib_error=none
