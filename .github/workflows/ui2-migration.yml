@@ -40,13 +40,14 @@ jobs:
       - name: Apply UI2 migration
         run: python scripts/ui2-migrate.py
 
-      - name: Normalize practice-screen opener boundary
+      - name: Normalize practice dialog and shell stacking
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          path = Path('index.html')
-          text = path.read_text(encoding='utf-8')
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
           container = '        <div class="practice-screen-shell">'
           container_pos = text.find(container)
           if container_pos < 0:
@@ -56,7 +57,24 @@ jobs:
               raise SystemExit('Practice-screen section boundary not found')
           fixed = '      <section class="practice-screen" id="practiceScreen" role="dialog" aria-modal="true" aria-labelledby="practiceScreenTitle" aria-hidden="true" hidden>\n'
           text = text[:section_pos] + fixed + text[container_pos:]
-          path.write_text(text, encoding='utf-8')
+
+          stacking = '  .modal-backdrop{z-index:80}\n'
+          marker = '  /* V1.1 dedicated practice screen: fixed viewport, stable feedback, zero page movement. */'
+          if stacking not in text:
+              if marker not in text:
+                  raise SystemExit('Dedicated-practice CSS marker not found for modal stacking rule')
+              text = text.replace(marker, stacking + '\n' + marker, 1)
+          index.write_text(text, encoding='utf-8')
+
+          verify_path = Path('scripts/verify-source.mjs')
+          verify = verify_path.read_text(encoding='utf-8')
+          requirement = "requireFragment(html, '.modal-backdrop{z-index:80}', 'dialogs above application chrome');\n"
+          anchor = "requireFragment(html, 'grid-template-columns:minmax(210px,1fr) auto minmax(210px,1fr)', 'desktop shell layout');\n"
+          if requirement not in verify:
+              if anchor not in verify:
+                  raise SystemExit('UI2 verification anchor not found')
+              verify = verify.replace(anchor, anchor + requirement, 1)
+          verify_path.write_text(verify, encoding='utf-8')
           PY
 
       - name: Remove staged migration script
