@@ -6,45 +6,67 @@
 <meta name="color-scheme" content="light dark" />
 <meta name="application-name" content="Artikelwerk" />
 <meta name="description" content="A focused C1/C2 German noun-gender trainer with adaptive review, contextual practice, and productive recall." />
+<meta name="theme-color" content="#1d6f5f" />
+<meta name="apple-mobile-web-app-title" content="Artikelwerk" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<link rel="mask-icon" href="safari-pinned-tab.svg" color="#1d6f5f" />
+<link rel="manifest" href="site.webmanifest" />
 <title>Artikelwerk — C1/C2 German Article Trainer</title>
 <style>
   :root{
-    --bg:#f4f5f7; --surface:#ffffff; --surface-2:#eef0f3; --text:#15181d;
-    --muted:#68707c; --border:#d9dde3; --accent:#2f5bd3; --accent-2:#2549aa;
-    --good:#16803b; --good-bg:#eaf8ee; --bad:#b42318; --bad-bg:#fff0ee;
-    --warn:#946200; --shadow:0 14px 42px rgba(20,27,40,.08); --radius:18px;
+    color-scheme:light;
+    --bg:#f6f3ec; --surface:#fffdf8; --surface-2:#efede6; --surface-3:#e6e3db;
+    --text:#1c2421; --text-soft:#39443f; --muted:#68716c;
+    --border:#d8ddd8; --border-strong:#bcc6c0;
+    --accent:#1d6f5f; --accent-2:#16594c; --accent-dark:#12473d; --accent-soft:#e5f2ee;
+    --good:#2d7a4d; --good-bg:#eaf5ee; --bad:#b34b43; --bad-bg:#fbefed; --warn:#95681f;
+    --shadow-sm:0 1px 2px rgba(28,36,33,.055);
+    --shadow:0 1px 2px rgba(28,36,33,.055),0 10px 28px rgba(28,36,33,.045);
+    --radius-sm:9px; --radius:12px; --radius-lg:16px;
+    --font-ui:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   [data-theme="dark"]{
-    --bg:#0f1115; --surface:#171a20; --surface-2:#20242c; --text:#f4f6f8;
-    --muted:#9aa3af; --border:#2b3039; --accent:#7c9cff; --accent-2:#a8bbff;
-    --good:#5ed883; --good-bg:#142a1a; --bad:#ff7a70; --bad-bg:#321917;
-    --warn:#e8bd55; --shadow:0 14px 42px rgba(0,0,0,.28);
+    color-scheme:dark;
+    --bg:#131817; --surface:#1a211f; --surface-2:#232b28; --surface-3:#2a3430;
+    --text:#f2f4ef; --text-soft:#d6ddd8; --muted:#9fa9a3;
+    --border:#333d38; --border-strong:#4b5952;
+    --accent:#78c8b4; --accent-2:#91d7c5; --accent-dark:#b1e5d7; --accent-soft:#203a34;
+    --good:#72c98e; --good-bg:#1d3527; --bad:#ef9186; --bad-bg:#3a2422; --warn:#deb86e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.18);
+    --shadow:0 1px 2px rgba(0,0,0,.22),0 12px 30px rgba(0,0,0,.16);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  ::selection{background:var(--accent-soft);color:var(--text)}
+  body{accent-color:var(--accent)}
+  a{color:var(--accent-2)}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-ui);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
   button,input,select{font:inherit}
-  button{cursor:pointer}
-  .app{max-width:1180px;margin:0 auto;padding:20px}
-  header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:20px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand-mark{width:40px;height:40px;border-radius:12px;background:var(--text);color:var(--bg);display:grid;place-items:center;font-weight:850;letter-spacing:-.04em}
-  .brand h1{font-size:1.05rem;margin:0;letter-spacing:-.02em}
-  .brand p{font-size:.8rem;color:var(--muted);margin:2px 0 0}
+  button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .app{max-width:1160px;margin:0 auto;padding:24px}
+  header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand-mark{width:40px;height:40px;border-radius:10px;overflow:hidden;flex:0 0 auto;box-shadow:var(--shadow-sm)} .brand-mark img{display:block;width:100%;height:100%}
+  .brand h1{font-size:1.06rem;margin:0;font-weight:780;letter-spacing:-.025em}
+  .brand p{font-size:.78rem;color:var(--muted);margin:2px 0 0}
   .header-actions{display:flex;align-items:center;gap:8px}
-  .icon-btn,.ghost-btn,.primary-btn,.danger-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:700}
-  .icon-btn:hover,.ghost-btn:hover{background:var(--surface-2)}
-  .primary-btn{background:var(--accent);color:white;border-color:var(--accent);padding:11px 16px}
-  .primary-btn:hover{background:var(--accent-2)}
+  .icon-btn,.ghost-btn,.primary-btn,.danger-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:var(--radius-sm);padding:10px 13px;font-weight:700;transition:background .14s ease,border-color .14s ease,transform .14s ease,color .14s ease}
+  .icon-btn:hover,.ghost-btn:hover{background:var(--surface-2);border-color:var(--border-strong)}
+  .primary-btn{background:var(--accent);color:#fff;border-color:var(--accent);padding:11px 16px}
+  .primary-btn:hover{background:var(--accent-2);border-color:var(--accent-2)}
   .danger-btn{color:var(--bad)}
-  .tabs{display:flex;gap:8px;background:var(--surface);padding:6px;border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:auto}
-  .tab{border:0;background:transparent;color:var(--muted);padding:9px 14px;border-radius:10px;font-weight:750;white-space:nowrap}
-  .tab.active{background:var(--surface-2);color:var(--text)}
+  .tabs{display:flex;gap:3px;background:transparent;padding:0;border:0;border-bottom:1px solid var(--border);border-radius:0;margin-bottom:20px;overflow:auto}
+  .tab{border:0;background:transparent;color:var(--muted);padding:10px 13px 11px;border-radius:0;font-weight:720;white-space:nowrap;box-shadow:inset 0 -2px 0 transparent}
+  .tab.active{background:transparent;color:var(--text);box-shadow:inset 0 -2px 0 var(--accent)}
   .view{display:none}.view.active{display:block}
-  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
   .controls{padding:14px;display:grid;grid-template-columns:1.15fr .95fr 1fr 1fr auto;gap:10px;margin-bottom:14px}
-  .control label{display:block;font-size:.72rem;color:var(--muted);font-weight:750;margin:0 0 5px 3px;text-transform:uppercase;letter-spacing:.06em}
-  select,input[type="search"]{width:100%;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:11px 12px;border-radius:11px;outline:none}
-  select:focus,input:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 30%,transparent);outline-offset:2px}
+  .control label{display:block;font-size:.71rem;color:var(--muted);font-weight:740;margin:0 0 6px 2px;text-transform:uppercase;letter-spacing:.055em}
+  select,input[type="search"]{width:100%;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:11px 12px;border-radius:var(--radius-sm);outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+  select:focus,input:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 28%,transparent);outline-offset:2px;border-color:var(--accent)}
   .review-queue-panel{padding:16px 18px;margin-bottom:14px}
   .review-queue-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
   .review-queue-title{min-width:0}
@@ -64,15 +86,15 @@
   .session-metrics strong{color:var(--text)}
   .quiz-card{min-height:520px;padding:34px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
   .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-  .badge{display:inline-flex;align-items:center;border:1px solid var(--border);background:var(--surface-2);padding:6px 9px;border-radius:999px;color:var(--muted);font-size:.78rem;font-weight:800}
+  .badge{display:inline-flex;align-items:center;border:1px solid var(--border);background:var(--surface);padding:6px 9px;border-radius:999px;color:var(--muted);font-size:.78rem;font-weight:760}
   .difficulty{display:flex;gap:5px}.dot{width:7px;height:7px;border-radius:50%;background:var(--border)}.dot.on{background:var(--text)}
   .question-wrap{text-align:center;padding:34px 0 26px}
   .prompt-kicker{text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-size:.72rem;font-weight:850;margin-bottom:14px}
   .noun{font-size:clamp(2.2rem,7vw,5.5rem);line-height:1;font-weight:850;letter-spacing:-.055em;margin:0;overflow-wrap:anywhere;hyphens:auto}
   .noun .blank{color:var(--muted);font-weight:650}
   .answers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:760px;margin:0 auto;width:100%}
-  .answer-btn{border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:18px 12px;border-radius:15px;font-weight:850;font-size:1.1rem;transition:transform .12s ease,background .12s ease,border .12s ease}
-  .answer-btn:hover{transform:translateY(-1px);border-color:var(--muted)}
+  .answer-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:18px 12px;border-radius:var(--radius);font-weight:800;font-size:1.1rem;box-shadow:0 1px 0 color-mix(in srgb,var(--border) 75%,transparent);transition:transform .12s ease,background .12s ease,border-color .12s ease}
+  .answer-btn:hover{transform:translateY(-1px);background:var(--surface-2);border-color:var(--border-strong)}
   .answer-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good)}
   .answer-btn.incorrect{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
   .answer-btn.dim{opacity:.45}
@@ -492,7 +514,7 @@
 <div class="app" id="app">
   <header>
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true">A</div>
+      <div class="brand-mark" aria-hidden="true"><img src="favicon.svg" alt="" width="40" height="40"></div>
       <div><h1>Artikelwerk</h1><p>C1/C2 German noun-gender trainer</p></div>
     </div>
     <div class="header-actions">

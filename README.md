@@ -67,3 +67,7 @@ See `THIRD_PARTY_NOTICES.md` and `LICENSES/GPL-3.0.txt` for the FreeDict-derived
 - `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
 
 Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.
+
+## Visual identity
+
+UI1 establishes Artikelwerk's original visual foundation: warm editorial neutrals, a single deep-teal accent, restrained borders/radii/elevation, a geometric `A` brand mark, full favicon/platform icon coverage, and light/dark theme tokens. See `docs/ui1-visual-identity.md`.
