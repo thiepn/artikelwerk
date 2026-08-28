@@ -80,3 +80,11 @@ UI1 establishes Artikelwerk's original visual foundation: warm editorial neutral
 - Practice is ordered as primary action → review queue → session setup.
 - `tests/app-shell.mjs` certifies shell hierarchy and navigation at desktop and mobile widths.
 - See `docs/ui2-app-shell.md` for the shell contract and UI3 handoff.
+
+## UI3 surface polish
+
+- Dedicated practice uses a focused exercise hierarchy with structured article controls and contained feedback.
+- Progress uses one learner-oriented overview instead of ten equal KPI cards.
+- Vocabulary uses a denser reference-library surface with restrained filters and word details.
+- `tests/surface-polish.mjs` certifies these surfaces across desktop and mobile profiles.
+- See `docs/ui3-surface-polish.md` for the UI3 contract and UI4 handoff.

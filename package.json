@@ -15,7 +15,8 @@
     "ci:static": "npm run check && npm run certify:content && npm run build && npm run test:build",
     "certify:content": "node scripts/certify-content.mjs",
     "test:content-browser": "node tests/content-runtime.mjs",
-    "test:shell-browser": "node tests/app-shell.mjs"
+    "test:shell-browser": "node tests/app-shell.mjs",
+    "test:surfaces-browser": "node tests/surface-polish.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
