@@ -40,18 +40,23 @@ jobs:
       - name: Apply UI2 migration
         run: python scripts/ui2-migrate.py
 
-      - name: Repair practice-screen opener boundary
+      - name: Normalize practice-screen opener boundary
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
-          broken = '      <section class="practice-screen" id="practiceScreen\n'
+          container = '        <div class="practice-screen-shell">'
+          container_pos = text.find(container)
+          if container_pos < 0:
+              raise SystemExit('Practice-screen shell container not found')
+          section_pos = text.rfind('      <section class="practice-screen"', 0, container_pos)
+          if section_pos < 0:
+              raise SystemExit('Practice-screen section boundary not found')
           fixed = '      <section class="practice-screen" id="practiceScreen" role="dialog" aria-modal="true" aria-labelledby="practiceScreenTitle" aria-hidden="true" hidden>\n'
-          if broken not in text:
-              raise SystemExit('Expected clipped practice-screen opener was not found')
-          path.write_text(text.replace(broken, fixed, 1), encoding='utf-8')
+          text = text[:section_pos] + fixed + text[container_pos:]
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Remove staged migration script
