@@ -6,6 +6,7 @@ on:
       - codex/ui4-motion-accessibility
     paths:
       - scripts/ui4-migrate.py
+      - scripts/ui4-post.py
       - .github/workflows/ui4-migration.yml
   workflow_dispatch:
 
@@ -40,11 +41,12 @@ jobs:
       - name: Validate and apply UI4 migration
         shell: bash
         run: |
-          python -m py_compile scripts/ui4-migrate.py
+          python -m py_compile scripts/ui4-migrate.py scripts/ui4-post.py
           python scripts/ui4-migrate.py
+          python scripts/ui4-post.py
 
-      - name: Remove staged migration script
-        run: rm -f scripts/ui4-migrate.py
+      - name: Remove staged migration scripts
+        run: rm -f scripts/ui4-migrate.py scripts/ui4-post.py
 
       - name: Install pinned browser-test runtime
         run: npm install --no-package-lock --no-audit --no-fund
