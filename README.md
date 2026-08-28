@@ -88,3 +88,13 @@ UI1 establishes Artikelwerk's original visual foundation: warm editorial neutral
 - Vocabulary uses a denser reference-library surface with restrained filters and word details.
 - `tests/surface-polish.mjs` certifies these surfaces across desktop and mobile profiles.
 - See `docs/ui3-surface-polish.md` for the UI3 contract and UI4 handoff.
+
+## UI4 interaction, accessibility, and responsive finish
+
+- Focus indicators use a stable two-pixel perimeter and fixed-chrome-safe scroll margins.
+- Modals inert the background application and restore focus on close.
+- Reduced-motion preferences disable non-essential animation and smooth scrolling.
+- Forced-colors/high-contrast modes retain visible state and focus cues.
+- Narrow-phone and short-landscape breakpoints are explicitly certified.
+- `tests/accessibility-finish.mjs` exercises keyboard focus, target sizes, modal isolation, theme semantics, reduced motion, forced colors, and responsive reflow.
+- See `docs/ui4-interaction-accessibility.md` for the UI4 contract and pre-RC handoff.

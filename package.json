@@ -16,7 +16,8 @@
     "certify:content": "node scripts/certify-content.mjs",
     "test:content-browser": "node tests/content-runtime.mjs",
     "test:shell-browser": "node tests/app-shell.mjs",
-    "test:surfaces-browser": "node tests/surface-polish.mjs"
+    "test:surfaces-browser": "node tests/surface-polish.mjs",
+    "test:a11y-browser": "node tests/accessibility-finish.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
