@@ -9,11 +9,26 @@ const distDir = join(rootDir, 'dist');
 
 const releaseFiles = [
   ['.nojekyll', '.nojekyll'],
+  ['favicon.svg', 'favicon.svg'],
+  ['favicon.ico', 'favicon.ico'],
+  ['favicon-16x16.png', 'favicon-16x16.png'],
+  ['favicon-32x32.png', 'favicon-32x32.png'],
+  ['apple-touch-icon.png', 'apple-touch-icon.png'],
+  ['safari-pinned-tab.svg', 'safari-pinned-tab.svg'],
+  ['site.webmanifest', 'site.webmanifest'],
+  ['icon-192.png', 'icon-192.png'],
+  ['icon-512.png', 'icon-512.png'],
   ['index.html', 'index.html'],
   ['translations.js', 'translations.js'],
   ['THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.md'],
   ['LICENSES/GPL-3.0.txt', 'LICENSES/GPL-3.0.txt'],
   ['docs/translation-coverage.txt', 'docs/translation-coverage.txt'],
+  ['docs/content-certification.md', 'docs/content-certification.md'],
+  ['docs/real-device-verification.md', 'docs/real-device-verification.md'],
+  ['content/provenance.json', 'content/provenance.json'],
+  ['content/ambiguous-gender-review.json', 'content/ambiguous-gender-review.json'],
+  ['content/example-review.json', 'content/example-review.json'],
+  ['content/inflection-review.json', 'content/inflection-review.json'],
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "certificationId": "CC2-2026-08-28",
+  "reviewedAt": "2026-08-28",
+  "vocabularyEntries": 1000,
+  "coreExamples": 1000,
+  "generatedContextExamples": 2000,
+  "totalRuntimeExamples": 3000,
+  "hardcodedArticleTemplatesNormalized": 66,
+  "validation": {
+    "nounPresence": "required",
+    "wrongNominativeArticleBeforeNoun": "forbidden",
+    "unresolvedTemplateTokens": "forbidden",
+    "runtimeTemplateArticleSource": "entry article via {term_cap}"
+  },
+  "status": "certified-by-exhaustive-static-validation"
+}

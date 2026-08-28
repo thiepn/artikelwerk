@@ -26,7 +26,64 @@ if (Buffer.byteLength(html, 'utf8') < 580_000) fail('index.html is unexpectedly 
 
 requireFragment(html, '<meta name="viewport"', 'viewport metadata');
 requireFragment(html, '<title>Artikelwerk', 'application title');
+requireFragment(html, 'class="app-header"', 'UI2 integrated application header');
+requireFragment(html, 'class="tabs app-nav"', 'UI2 primary navigation');
+requireFragment(html, '<span class="nav-label">Progress</span>', 'learner-facing Progress navigation label');
+requireFragment(html, 'class="panel practice-hero"', 'UI2 practice hero');
+requireFragment(html, 'class="practice-support-grid"', 'UI2 supporting practice hierarchy');
+requireFragment(html, 'id="practiceSetupHeading"', 'UI2 session setup heading');
+requireFragment(html, 'Your learning picture', 'progress view heading');
+requireFragment(html, 'Your reviewed noun library', 'vocabulary view heading');
+requireFragment(html, 'position:fixed;left:0;right:0;bottom:0;top:auto;z-index:70', 'mobile bottom navigation');
+requireFragment(html, 'grid-template-columns:minmax(210px,1fr) auto minmax(210px,1fr)', 'desktop shell layout');
+requireFragment(html, '.modal-backdrop{z-index:80}', 'dialogs above application chrome');
+requireFragment(html, 'class="practice-screen ui3-practice"', 'UI3 polished practice surface');
+requireFragment(html, 'class="answer-key"', 'UI3 structured article answer controls');
+requireFragment(html, 'class="panel stats-grid progress-overview"', 'UI3 learner-oriented progress overview');
+requireFragment(html, 'class="progress-meta"', 'UI3 secondary progress metrics');
+requireFragment(html, 'library-primary-toolbar library-filter-bar', 'UI3 vocabulary filter bar');
+requireFragment(html, 'class="panel library-table-panel"', 'UI3 vocabulary reference surface');
+requireFragment(html, '/* UI3 — practice, vocabulary, and progress surface polish */', 'UI3 surface style contract');
+requireFragment(html, '/* UI4 — motion, interaction states, accessibility, and responsive finish */', 'UI4 finish style contract');
+requireFragment(html, 'aria-pressed="false" title="Switch to dark mode"', 'theme toggle pressed-state semantics');
+requireFragment(html, '--focus-ring:var(--accent)', 'visible focus token');
+requireFragment(html, '@media(prefers-reduced-motion:reduce)', 'reduced-motion support');
+requireFragment(html, '@keyframes ui4SurfaceIn{from{opacity:.985}to{opacity:1}}', 'scroll-neutral practice entrance motion');
+requireFragment(html, '@media(forced-colors:active)', 'forced-colors support');
+requireFragment(html, 'scroll-padding-bottom:calc(86px + env(safe-area-inset-bottom))', 'mobile focus-not-obscured spacing');
+requireFragment(html, 'const wasOpen=!screen.hidden;', 'practice focus-return preservation');
+requireFragment(html, 'this.setAppInert(true);', 'modal background inertness');
+requireFragment(html, 'this.setBackgroundInert(true);', 'practice background inertness');
+requireFragment(html, 'this.prefersReducedMotion()?"auto":"smooth"', 'motion-aware programmatic scrolling');
+requireFragment(html, 'themeMeta.setAttribute("content",dark?"#131817":"#1d6f5f")', 'theme-color synchronization');
+requireFragment(html, '<link rel="icon" href="favicon.svg" type="image/svg+xml" />', 'SVG favicon');
+requireFragment(html, '<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />', 'Apple touch icon');
+requireFragment(html, '<link rel="manifest" href="site.webmanifest" />', 'web app manifest');
+requireFragment(html, '--accent:#1d6f5f', 'UI1 primary accent');
+requireFragment(html, '--bg:#f6f3ec', 'UI1 warm light background');
+requireFragment(html, '--bg:#131817', 'UI1 dark background');
+requireFragment(html, '--radius:12px', 'UI1 restrained radius');
+requireFragment(html, 'box-shadow:var(--shadow-sm)', 'UI1 restrained surface elevation');
+requireFragment(html, '<img src="favicon.svg" alt="" width="40" height="40">', 'UI1 brand mark');
+
+const uiAssetPaths = [
+  'favicon.svg','favicon.ico','favicon-16x16.png','favicon-32x32.png','apple-touch-icon.png',
+  'safari-pinned-tab.svg','site.webmanifest','icon-192.png','icon-512.png','docs/ui1-visual-identity.md'
+];
+for (const relativePath of uiAssetPaths) {
+  try { await access(join(rootDir, relativePath)); }
+  catch { fail(`Missing UI1 identity asset: ${relativePath}`); }
+}
+try { await access(join(rootDir, 'docs', 'ui4-interaction-accessibility.md')); }
+catch { fail('Missing UI4 interaction/accessibility specification.'); }
+const manifest = JSON.parse(await readFile(join(rootDir, 'site.webmanifest'), 'utf8'));
+if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#1d6f5f') fail('Invalid Artikelwerk manifest identity.');
+if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');
+const faviconSvg = await readFile(join(rootDir, 'favicon.svg'), 'utf8');
+if (faviconSvg.includes('gradient') || !faviconSvg.includes('#1d6f5f') || !faviconSvg.includes('#fffaf0')) fail('Favicon must use the flat UI1 brand palette without gradients.');
 requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
+requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
+requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
 requireFragment(html, 'const APP_VERSION = "1.1.0";', 'application version 1.1.0');
 requireFragment(html, 'const VOCAB = [', 'vocabulary bank');
 requireFragment(html, 'const PracticeScreen = {', 'native practice controller');

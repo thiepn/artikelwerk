@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "certificationId": "CC2-2026-08-28",
+  "reviewedAt": "2026-08-28",
+  "reviewerType": "model-assisted-editorial",
+  "entries": {
+    "primat": {
+      "type": "current-gender-variant",
+      "acceptedArticles": [
+        "der",
+        "das"
+      ],
+      "meaning": "priority; supremacy",
+      "reviewStatus": "externally-verified",
+      "source": "Duden",
+      "sourceUrl": "https://www.duden.de/rechtschreibung/Primat_Dominanz",
+      "sourceFinding": "der oder das Primat"
+    },
+    "dossier": {
+      "type": "historical-gender-variant",
+      "acceptedArticles": [
+        "das"
+      ],
+      "historicalArticles": [
+        {
+          "article": "der",
+          "status": "obsolete",
+          "accepted": false
+        }
+      ],
+      "reviewStatus": "externally-verified",
+      "source": "Duden",
+      "sourceUrl": "https://www.duden.de/rechtschreibung/Dossier",
+      "sourceFinding": "das Dossier; der is obsolete"
+    },
+    "erbe": {
+      "type": "meaning-dependent-gender",
+      "reviewStatus": "externally-verified",
+      "senses": [
+        {
+          "id": "inheritance",
+          "article": "das",
+          "gloss": "inheritance; legacy",
+          "sourceUrl": "https://www.duden.de/rechtschreibung/Erbe_Nachlass"
+        },
+        {
+          "id": "heir",
+          "article": "der",
+          "gloss": "male heir",
+          "sourceUrl": "https://www.duden.de/rechtschreibung/Erbe_Nachkomme"
+        }
+      ]
+    },
+    "mangel": {
+      "type": "meaning-dependent-gender",
+      "reviewStatus": "externally-verified",
+      "senses": [
+        {
+          "id": "deficiency",
+          "article": "der",
+          "gloss": "deficiency; flaw",
+          "sourceUrl": "https://www.duden.de/rechtschreibung/Mangel_Defizit"
+        },
+        {
+          "id": "mangle-machine",
+          "article": "die",
+          "gloss": "laundry mangle",
+          "sourceUrl": "https://www.duden.de/rechtschreibung/Mangel_Maschine"
+        }
+      ]
+    }
+  }
+}

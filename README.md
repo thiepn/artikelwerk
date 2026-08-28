@@ -57,3 +57,44 @@ dist/                              generated artifact; never committed
 ## Licensing
 
 See `THIRD_PARTY_NOTICES.md` and `LICENSES/GPL-3.0.txt` for the FreeDict-derived English-gloss subset.
+
+## Content certification
+
+- `translations.js` is the runtime-certified local gloss asset.
+- `content/provenance.json` records source kind and review state for all 1,000 nouns.
+- `content/ambiguous-gender-review.json` records externally verified variant and meaning-dependent gender decisions.
+- `scripts/certify-content.mjs` exhaustively validates translation, provenance, example, ambiguity, and targeted inflection invariants.
+- `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
+
+Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.
+
+## Visual identity
+
+UI1 establishes Artikelwerk's original visual foundation: warm editorial neutrals, a single deep-teal accent, restrained borders/radii/elevation, a geometric `A` brand mark, full favicon/platform icon coverage, and light/dark theme tokens. See `docs/ui1-visual-identity.md`.
+
+
+## UI2 application shell
+
+- Desktop primary navigation is integrated into the application header.
+- Mobile primary navigation uses a fixed bottom bar while practice remains a full-screen modal.
+- Practice is ordered as primary action → review queue → session setup.
+- `tests/app-shell.mjs` certifies shell hierarchy and navigation at desktop and mobile widths.
+- See `docs/ui2-app-shell.md` for the shell contract and UI3 handoff.
+
+## UI3 surface polish
+
+- Dedicated practice uses a focused exercise hierarchy with structured article controls and contained feedback.
+- Progress uses one learner-oriented overview instead of ten equal KPI cards.
+- Vocabulary uses a denser reference-library surface with restrained filters and word details.
+- `tests/surface-polish.mjs` certifies these surfaces across desktop and mobile profiles.
+- See `docs/ui3-surface-polish.md` for the UI3 contract and UI4 handoff.
+
+## UI4 interaction, accessibility, and responsive finish
+
+- Focus indicators use a stable two-pixel perimeter and fixed-chrome-safe scroll margins.
+- Modals inert the background application and restore focus on close.
+- Reduced-motion preferences disable non-essential animation and smooth scrolling.
+- Forced-colors/high-contrast modes retain visible state and focus cues.
+- Narrow-phone and short-landscape breakpoints are explicitly certified.
+- `tests/accessibility-finish.mjs` exercises keyboard focus, target sizes, modal isolation, theme semantics, reduced motion, forced colors, and responsive reflow.
+- See `docs/ui4-interaction-accessibility.md` for the UI4 contract and pre-RC handoff.
