@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Artikelwerk">
-  <rect width="512" height="512" rx="112" fill="#1d6f5f"/>
-  <path d="M151 370 239 151c6-15 28-15 34 0l88 219" fill="none" stroke="#fffaf0" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M198 286h116" fill="none" stroke="#fffaf0" stroke-width="38" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Artikelwerk">
+  <rect width="64" height="64" fill="#f7f4ee"/>
+  <rect width="9" height="64" fill="#d45532"/>
+  <path d="M21 49 33 17h5l13 32h-6l-3-8H29l-3 8h-5Zm10-13h9l-4.6-12.5L31 36Z" fill="#191715"/>
 </svg>

@@ -55,7 +55,7 @@ async function desktopCase(browser) {
   await page.locator("#tabLibrary").click();
   await page.locator(".library-filter-bar").waitFor({ state: "visible" });
   assert.equal(await page.locator("#advancedLibraryFilters summary").textContent(), "Advanced filters", "advanced-filter disclosure copy");
-  await page.locator(".library-details-btn").first().click();
+  await page.locator(".word-open-btn").first().click();
   await page.locator("#wordDetailModal.show").waitFor({ state: "visible" });
   const layers = await page.evaluate(() => ({
     modal: Number.parseInt(getComputedStyle(document.querySelector("#wordDetailModal")).zIndex || "0", 10),
@@ -96,7 +96,7 @@ async function mobileCase(browser, width, height) {
   await page.locator("#librarySearch").waitFor({ state: "visible" });
   await assertInsideViewport(page, "#librarySearch", "mobile vocabulary search");
   await assertNoDocumentOverflow(page, `mobile vocabulary ${width}x${height}`);
-  await page.locator(".library-details-btn").first().click();
+  await page.locator(".word-open-btn").first().click();
   await page.locator("#wordDetailModal.show").waitFor({ state: "visible" });
   await assertInsideViewport(page, "#wordDetailCloseBtn", "mobile word-detail close");
   await page.locator("#wordDetailCloseBtn").click();

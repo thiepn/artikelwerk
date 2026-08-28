@@ -73,7 +73,7 @@ for (const profile of profiles) {
   assert(beforeTheme === 'false', `${profile.name}: theme toggle should begin aria-pressed=false in the fresh context`);
   await page.locator('#themeBtn').click();
   assert(await page.locator('#themeBtn').getAttribute('aria-pressed') === 'true', `${profile.name}: dark theme did not expose aria-pressed=true`);
-  assert(await page.locator('meta[name="theme-color"]').getAttribute('content') === '#131817', `${profile.name}: dark theme-color metadata was not synchronized`);
+  assert(await page.locator('meta[name="theme-color"]').getAttribute('content') === '#181614', `${profile.name}: dark theme-color metadata was not synchronized`);
   await page.locator('#themeBtn').click();
 
   // Keyboard tab navigation preserves the ARIA tab model.
