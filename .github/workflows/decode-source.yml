@@ -1,0 +1,59 @@
+name: Decode editable app source
+
+on:
+  push:
+    branches:
+      - codex/dedicated-practice-screen
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  decode:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decode application payload
+        shell: bash
+        run: |
+          cat payload/*.txt | tr -d '\r\n' | base64 --decode | gzip --decompress > app-source.html
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path('app-source.html')
+          text = source.read_text(encoding='utf-8')
+          lines = text.splitlines()
+          terms = (
+              'practice', 'üben', 'training', 'quiz', 'definition',
+              'translation', 'meaning', 'article', 'session', 'answer'
+          )
+
+          matches = []
+          for number, line in enumerate(lines, 1):
+              lowered = line.lower()
+              if any(term.lower() in lowered for term in terms):
+                  matches.append(f'{number}: {line[:800]}')
+
+          Path('source-index.txt').write_text('\n'.join(matches) + '\n', encoding='utf-8')
+          Path('source-metadata.txt').write_text(
+              f'bytes={len(text.encode("utf-8"))}\nlines={len(lines)}\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Commit decoded source
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app-source.html source-index.txt source-metadata.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: expose editable application source"
+          git push
