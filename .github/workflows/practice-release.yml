@@ -76,11 +76,21 @@ jobs:
               '.translation-hint.is-fallback #translationLabel::after{content:" cue"}',
               '.translation-hint.is-fallback #translationLabel::after{content:""}',
           )
-          old_hint='.translation-hint{min-height:38px;margin:7px auto 0;padding:7px 12px;max-width:min(100%,700px);border:1px solid transparent;'
-          new_hint='.translation-hint{width:100%;max-width:min(100%,700px);min-width:0;box-sizing:border-box;overflow:hidden;min-height:38px;margin:7px auto 0;padding:7px 12px;border:1px solid transparent;'
-          if old_hint not in text:
-              raise SystemExit('Could not constrain the mobile translation strip')
-          text=text.replace(old_hint,new_hint,1)
+
+          replacements={
+              '.practice-screen .quiz-card{height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}':
+              '.practice-screen .quiz-card{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}',
+              '.practice-screen #quizContent{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}':
+              '.practice-screen #quizContent{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;overflow:hidden;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}',
+              '.practice-screen .question-wrap{min-height:0;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}':
+              '.practice-screen .question-wrap{box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:0;overflow:hidden;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}',
+              '.translation-hint{min-height:38px;margin:7px auto 0;padding:7px 12px;max-width:min(100%,700px);border:1px solid transparent;':
+              '.translation-hint{align-self:center;width:min(100%,calc(100vw - 36px),700px);max-width:calc(100vw - 36px);min-width:0;box-sizing:border-box;overflow:hidden;min-height:38px;margin:7px auto 0;padding:7px 12px;border:1px solid transparent;',
+          }
+          for old,new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Could not apply viewport containment: {old[:72]}')
+              text=text.replace(old,new,1)
           path.write_text(text,encoding='utf-8')
           PY
           python scripts/apply_practice_screen.py --source app-source.html --output index.html
@@ -125,7 +135,8 @@ jobs:
               'body.practice-open','height:100dvh','overflow:hidden',
               'PracticeScreen.isTouchLike()','TranslationModel.text(',
               'translations.js','APP_VERSION = "1.1.0"',
-              'box-sizing:border-box;overflow:hidden;min-height:38px'
+              'width:min(100%,calc(100vw - 36px),700px)',
+              '.practice-screen #quizContent{box-sizing:border-box;width:100%;max-width:100%;min-width:0'
           ]
           for fragment in required_fragments:
               if fragment not in html:
