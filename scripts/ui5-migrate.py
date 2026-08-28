@@ -24,4 +24,4 @@ if "\n</style>" not in html:
     raise SystemExit("Closing style tag missing")
 html = html.replace("\n</style>", css + "\n</style>", 1)
 INDEX.write_text(html, encoding="utf-8")
-print("Applied UI5 mobile vocabulary list finish with noun-button detail flow")
+print("Applied UI5 mobile vocabulary list finish with noun-button coverage across content and surface suites")
