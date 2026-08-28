@@ -1,4 +1,4 @@
-name: Decode editable app source
+name: Recover editable app source
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  decode:
+  recover:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -18,52 +18,117 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract valid source prefix and locate archive damage
+      - name: Recover the missing base64 character
         shell: bash
         run: |
           python - <<'PY'
           import base64
+          import gzip
           import zlib
           from pathlib import Path
 
-          alphabet = set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+          BASE64_DATA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+          allowed = set(BASE64_DATA + '=')
+          payload_paths = sorted(Path('payload').glob('[0-9][0-9].txt'))
           encoded_with_padding = ''.join(
-              ''.join(character for character in path.read_text(encoding='utf-8-sig') if character in alphabet)
-              for path in sorted(Path('payload').glob('[0-9][0-9].txt'))
+              ''.join(character for character in path.read_text(encoding='utf-8-sig') if character in allowed)
+              for path in payload_paths
           )
           encoded = encoded_with_padding.rstrip('=')
 
-          # The archive has exactly one missing base64 data character. Appending a
-          # harmless probe character makes the bytes decodable while preserving
-          # the valid prefix up to the missing position.
-          probe = encoded + 'A'
-          probe += '=' * (-len(probe) % 4)
-          compressed = base64.b64decode(probe, validate=True)
+          def decoded_bytes(candidate):
+              padded = candidate + ('=' * (-len(candidate) % 4))
+              return base64.b64decode(padded, validate=True)
 
-          decompressor = zlib.decompressobj(31)
-          output = bytearray()
-          error_byte = None
-          error_message = 'none'
+          # Build a decodable probe. Its output is valid until the archive's one
+          # missing character begins affecting the compressed stream.
+          probe_compressed = decoded_bytes(encoded + 'A')
+          probe_decoder = zlib.decompressobj(31)
+          probe_output = probe_decoder.decompress(probe_compressed)
 
-          for index, value in enumerate(compressed):
-              try:
-                  output.extend(decompressor.decompress(bytes((value,))))
-              except zlib.error as error:
-                  error_byte = index
-                  error_message = str(error)
+          marker = b'const meaningText=(word.meanings'
+          marker_offset = probe_output.find(marker)
+          if marker_offset < 0:
+              raise RuntimeError('Could not locate the last known-valid source marker')
+          corruption_output_offset = marker_offset + len(marker)
+
+          # Replay byte-by-byte to map that source offset back to a compressed
+          # byte, then to the corresponding base64 group.
+          decoder = zlib.decompressobj(31)
+          produced = 0
+          corruption_input_byte = None
+          for index, value in enumerate(probe_compressed):
+              chunk = decoder.decompress(bytes((value,)))
+              produced += len(chunk)
+              if produced >= corruption_output_offset:
+                  corruption_input_byte = index
+                  break
+          if corruption_input_byte is None:
+              raise RuntimeError('Could not map the damaged source region')
+
+          estimated_position = (corruption_input_byte // 3) * 4
+          start = max(0, estimated_position - 320)
+          end = min(len(encoded), estimated_position + 321)
+          positions = sorted(range(start, end + 1), key=lambda position: abs(position - estimated_position))
+
+          print(f'corruption_output_offset={corruption_output_offset}')
+          print(f'corruption_input_byte={corruption_input_byte}')
+          print(f'estimated_base64_position={estimated_position}')
+          print(f'search_window={start}:{end}')
+
+          recovered_text = None
+          recovered_character = None
+          recovered_position = None
+          attempts = 0
+
+          for position in positions:
+              prefix = encoded[:position]
+              suffix = encoded[position:]
+              for character in BASE64_DATA:
+                  attempts += 1
+                  candidate = prefix + character + suffix
+                  try:
+                      text_bytes = gzip.decompress(decoded_bytes(candidate))
+                      text = text_bytes.decode('utf-8')
+                  except (ValueError, OSError, EOFError, UnicodeDecodeError, zlib.error):
+                      continue
+                  lowered = text.lower()
+                  if '<!doctype html' not in lowered or '</html>' not in lowered:
+                      continue
+                  if 'const meaningtext=(word.meanings' not in lowered:
+                      continue
+                  recovered_text = text
+                  recovered_character = character
+                  recovered_position = position
+                  break
+              if recovered_text is not None:
                   break
 
-          if error_byte is None:
-              try:
-                  output.extend(decompressor.flush())
-              except zlib.error as error:
-                  error_message = str(error)
-              error_byte = len(compressed)
+          metadata = [
+              f'encoded_data_chars_before_repair={len(encoded)}',
+              f'corruption_output_offset={corruption_output_offset}',
+              f'corruption_input_byte={corruption_input_byte}',
+              f'estimated_base64_position={estimated_position}',
+              f'search_window={start}:{end}',
+              f'attempts={attempts}',
+          ]
 
-          partial_text = output.decode('utf-8', errors='replace')
-          Path('partial-source.html').write_text(partial_text, encoding='utf-8')
+          if recovered_text is None:
+              metadata.append('recovery=not-found-in-window')
+              Path('source-metadata.txt').write_text('\n'.join(metadata) + '\n', encoding='utf-8')
+              raise RuntimeError('Missing character not found in the mapped search window')
 
-          lines = partial_text.splitlines()
+          metadata.extend([
+              'recovery=success',
+              f'recovered_character={recovered_character}',
+              f'recovered_position={recovered_position}',
+              f'recovered_source_bytes={len(recovered_text.encode("utf-8"))}',
+              f'recovered_source_lines={len(recovered_text.splitlines())}',
+          ])
+          Path('app-source.html').write_text(recovered_text, encoding='utf-8')
+          Path('source-metadata.txt').write_text('\n'.join(metadata) + '\n', encoding='utf-8')
+
+          lines = recovered_text.splitlines()
           terms = (
               'practice', 'üben', 'training', 'quiz', 'definition',
               'translation', 'meaning', 'article', 'session', 'answer',
@@ -75,36 +140,17 @@ jobs:
               if any(term.lower() in lowered for term in terms):
                   matches.append(f'{number}: {line[:1400]}')
           Path('source-index.txt').write_text('\n'.join(matches) + '\n', encoding='utf-8')
-
-          estimated_base64_index = (error_byte // 3) * 4
-          chunk_08_start = sum(
-              len(path.read_text(encoding='utf-8-sig'))
-              for path in sorted(Path('payload').glob('[0-7][0-9].txt'))
-              if path.name <= '07.txt'
-          )
-          Path('source-metadata.txt').write_text(
-              f'encoded_data_chars={len(encoded)}\n'
-              f'compressed_probe_bytes={len(compressed)}\n'
-              f'partial_source_bytes={len(output)}\n'
-              f'partial_source_lines={len(lines)}\n'
-              f'first_error_compressed_byte={error_byte}\n'
-              f'estimated_missing_base64_index={estimated_base64_index}\n'
-              f'chunk_08_start={chunk_08_start}\n'
-              f'estimated_offset_inside_chunk_08={estimated_base64_index - chunk_08_start}\n'
-              f'zlib_error={error_message}\n',
-              encoding='utf-8',
-          )
           print(Path('source-metadata.txt').read_text(encoding='utf-8'))
           PY
 
-      - name: Commit recovery diagnostics
+      - name: Commit recovered source
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add partial-source.html source-index.txt source-metadata.txt
+          git add app-source.html source-index.txt source-metadata.txt
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "chore: locate archived source corruption"
+          git commit -m "chore: recover editable application source"
           git push
