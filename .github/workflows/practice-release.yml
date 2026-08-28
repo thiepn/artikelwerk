@@ -31,7 +31,7 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq dict-freedict-deu-eng dictzip
           dictzip -d -c /usr/share/dictd/freedict-deu-eng.dict.dz > /tmp/freedict-deu-eng.dict
           mkdir -p docs LICENSES
-          python scripts/generate_translations.py \
+          python scripts/generate_translations_v2.py \
             --source app-source.html \
             --index /usr/share/dictd/freedict-deu-eng.index \
             --dictionary /tmp/freedict-deu-eng.dict \
@@ -43,6 +43,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path=Path('scripts/apply_practice_screen.py')
+          text=path.read_text(encoding='utf-8')
+          text=text.replace(
+              '.translation-hint.is-fallback #translationLabel::after{content:" cue"}',
+              '.translation-hint.is-fallback #translationLabel::after{content:""}',
+          )
+          path.write_text(text,encoding='utf-8')
+          PY
           python scripts/apply_practice_screen.py --source app-source.html --output index.html
           cp index.html app-source.html
           touch .nojekyll
@@ -99,9 +110,13 @@ jobs:
           translations=Path('translations.js').read_text(encoding='utf-8')
           if translations.count('"')<1000:
               raise SystemExit('Generated translation data appears incomplete')
+          coverage=Path('docs/translation-coverage.txt').read_text(encoding='utf-8')
+          if 'vocabulary_entries=1000' not in coverage:
+              raise SystemExit('Translation coverage report is incomplete')
           print(f'HTML ids: {len(inspector.ids)}')
           print(f'HTML bytes: {len(html.encode("utf-8"))}')
           print(f'Translation bytes: {len(translations.encode("utf-8"))}')
+          print(coverage.split('\n\n',1)[0])
           PY
           node --check /tmp/artikelwerk-app.js
           node --check translations.js
@@ -141,7 +156,8 @@ jobs:
           - `index.html` is the GitHub Pages release file.
           - `translations.js` contains the compact English-gloss data used during practice.
           - `scripts/apply_practice_screen.py` applies the release UI patch.
-          - `scripts/generate_translations.py` rebuilds the gloss subset from FreeDict.
+          - `scripts/generate_translations.py` selects dictionary-backed glosses.
+          - `scripts/generate_translations_v2.py` adds explicitly marked compound cues where no exact dictionary entry exists.
           - `tests/practice-screen.mjs` checks mobile viewport stability and the complete practice flow in Chromium.
 
           The production page is served directly from the repository root.
@@ -156,14 +172,14 @@ jobs:
 
           Copyright © 1995–2022 Frank Richter and © 2020–2022 Einhard Leichtfuß.
 
-          The generated translation data asset is distributed under the GNU General Public License, version 3 or any later version. A copy is included at `LICENSES/GPL-3.0.txt`. The generator, coverage report, and selected output are included in this repository so the data can be inspected and rebuilt.
+          The generated translation data asset is distributed under the GNU General Public License, version 3 or any later version. A copy is included at `LICENSES/GPL-3.0.txt`. The generators, coverage report, and selected output are included in this repository so the data can be inspected and rebuilt.
 
-          Curated learner-oriented corrections in `scripts/generate_translations.py` are original Artikelwerk metadata.
+          Curated learner-oriented corrections and transparent compound cues in `scripts/generate_translations.py` and `scripts/generate_translations_v2.py` are original Artikelwerk metadata.
           EOF
 
           rm -rf payload
           rm -f partial-source.html source-index.txt source-metadata.txt translation-audit.txt
-          rm -f .github/workflows/decode-source.yml .github/workflows/translation-audit.yml
+          rm -f .github/workflows/decode-source.yml .github/workflows/translation-audit.yml .github/workflows/translation-coverage-debug.yml
 
       - name: Upload visual test evidence
         uses: actions/upload-artifact@v4
