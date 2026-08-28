@@ -108,9 +108,22 @@ async function runMobileCase(browser, width, height) {
   assert.equal(await page.evaluate(() => document.body.classList.contains("practice-open")), false, "closing must unlock the page");
 
   await page.locator("#formatSelect").selectOption("production");
+  const beforeProductionOpen = await page.evaluate(() => ({ y: window.scrollY, offset: window.visualViewport?.offsetTop || 0 }));
   await page.locator("#openPracticeBtn").click();
   await page.locator("#productionInput").waitFor({ state: "visible" });
-  assert.equal(await page.evaluate(() => document.activeElement?.id), "nounPrompt", "mobile production mode must not summon the keyboard automatically");
+  const productionFocus = await page.evaluate(() => ({
+    id: document.activeElement?.id || "",
+    tagName: document.activeElement?.tagName || "",
+    y: window.scrollY,
+    offset: window.visualViewport?.offsetTop || 0,
+  }));
+  assert.notEqual(productionFocus.id, "productionInput", "mobile production mode must not focus the text field or summon the keyboard automatically");
+  assert.notEqual(productionFocus.tagName, "INPUT", "mobile production mode must not auto-focus any input");
+  assert.deepEqual(
+    { y: productionFocus.y, offset: productionFocus.offset },
+    beforeProductionOpen,
+    "opening production practice must not move the viewport",
+  );
   await assertVisibleInsideViewport(page, "#productionInput", "production input");
 
   await page.screenshot({ path: `${screenshotDir}/practice-${width}x${height}.png`, fullPage: false });
