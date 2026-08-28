@@ -6,6 +6,7 @@ on:
       - codex/ui5-editorial-rebuild
     paths:
       - scripts/ui5-migrate.py
+      - scripts/ui5-post.py
       - scripts/ui5-style.css
       - scripts/ui5-icons.json
       - .github/workflows/ui5-migration.yml
@@ -42,8 +43,9 @@ jobs:
       - name: Apply UI5 editorial rebuild
         shell: bash
         run: |
-          python -m py_compile scripts/ui5-migrate.py
+          python -m py_compile scripts/ui5-migrate.py scripts/ui5-post.py
           python scripts/ui5-migrate.py
+          python scripts/ui5-post.py
 
       - name: Install pinned browser-test runtime
         run: npm install --no-package-lock --no-audit --no-fund
@@ -82,7 +84,7 @@ jobs:
           retention-days: 14
 
       - name: Remove staging files
-        run: rm -f scripts/ui5-migrate.py scripts/ui5-style.css scripts/ui5-icons.json
+        run: rm -f scripts/ui5-migrate.py scripts/ui5-post.py scripts/ui5-style.css scripts/ui5-icons.json
 
       - name: Exclude workflow mutation from bot commit
         run: git checkout HEAD -- .github/workflows/ui5-migration.yml
