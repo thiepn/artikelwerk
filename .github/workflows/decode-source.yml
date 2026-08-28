@@ -24,6 +24,7 @@ jobs:
           python - <<'PY'
           import base64
           import gzip
+          import zlib
           from pathlib import Path
 
           BASE64_DATA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -58,7 +59,7 @@ jobs:
                   if not compressed.startswith(b'\x1f\x8b'):
                       return None
                   text = gzip.decompress(compressed).decode('utf-8')
-              except (ValueError, OSError, UnicodeDecodeError):
+              except (ValueError, OSError, UnicodeDecodeError, zlib.error):
                   return None
               if '<!doctype html' not in text.lower() or '</html>' not in text.lower():
                   return None
