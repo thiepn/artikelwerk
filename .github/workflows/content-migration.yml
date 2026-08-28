@@ -1,0 +1,83 @@
+name: Apply certified content migration
+
+on:
+  push:
+    branches:
+      - codex/content-runtime-certification
+    paths:
+      - scripts/.content-migrate-*
+      - .github/workflows/content-migration.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: artikelwerk-content-migration
+  cancel-in-progress: true
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Reconstruct and validate migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat scripts/.content-migrate-aa scripts/.content-migrate-ab scripts/.content-migrate-ac scripts/.content-migrate-ad scripts/.content-migrate-ae scripts/.content-migrate-af > scripts/content-migrate.mjs
+          node --check scripts/content-migrate.mjs
+
+      - name: Apply certified content migration
+        run: node scripts/content-migrate.mjs
+
+      - name: Remove one-time migration machinery
+        shell: bash
+        run: |
+          rm -f scripts/content-migrate.mjs scripts/.content-migrate-*
+          rm -f .github/workflows/content-migration.yml
+
+      - name: Install pinned test runtime
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: Verify certified source and deterministic build
+        run: npm run ci:static
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run responsive and certified-content browser suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 4173 --bind 127.0.0.1 --directory dist >/tmp/artikelwerk-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:4173/ >/dev/null
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:browser
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:content-browser
+
+      - name: Commit certified runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: integrate certified content runtime"
+          git push origin HEAD:codex/content-runtime-certification
