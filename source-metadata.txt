@@ -1,0 +1,11 @@
+encoded_data_chars_before_repair=135853
+corruption_output_offset=537162
+corruption_input_byte=91498
+estimated_base64_position=121996
+search_window=121676:122317
+attempts=519
+recovery=success
+recovered_character=G
+recovered_position=122000
+recovered_source_bytes=587497
+recovered_source_lines=5984

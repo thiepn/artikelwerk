@@ -1,0 +1,245 @@
+name: Build and test dedicated practice screen
+
+on:
+  push:
+    branches:
+      - codex/dedicated-practice-screen
+    paths:
+      - app-source.html
+      - scripts/**
+      - tests/**
+      - .github/workflows/practice-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-test-commit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate compact English gloss data
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq dict-freedict-deu-eng dictzip
+          dictzip -d -c /usr/share/dictd/freedict-deu-eng.dict.dz > /tmp/freedict-deu-eng.dict
+          mkdir -p docs LICENSES
+          python scripts/generate_translations_v2.py \
+            --source app-source.html \
+            --index /usr/share/dictd/freedict-deu-eng.index \
+            --dictionary /tmp/freedict-deu-eng.dict \
+            --output translations.js \
+            --report docs/translation-coverage.txt
+          cp /usr/share/common-licenses/GPL-3 LICENSES/GPL-3.0.txt
+
+      - name: Build the release HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path=Path('scripts/apply_practice_screen.py')
+          text=path.read_text(encoding='utf-8')
+          old_function='''def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise ValueError(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+          '''
+          new_function='''def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count == 1:
+                  return text.replace(old, new, 1)
+              if count == 0 and label == "practice keyboard scope":
+                  listener = '      document.addEventListener("keydown",e=>{'
+                  listener_position = text.find(listener)
+                  input_marker = '        if(e.target.matches('
+                  input_position = text.find(input_marker, listener_position)
+                  active_marker = '        if(!DOM.$("#practiceView")?.classList.contains("active")) return;'
+                  if listener_position >= 0 and input_position >= 0 and active_marker in text:
+                      text = text[:input_position] + '        if(PracticeScreen.handleKeydown(e)) return;\\n' + text[input_position:]
+                      return text.replace(active_marker, '        if(!PracticeScreen.isOpen()) return;', 1)
+              raise ValueError(f"{label}: expected exactly one match, found {count}")
+          '''
+          if old_function not in text:
+              raise SystemExit('Could not harden the source patch helper')
+          text=text.replace(old_function,new_function,1)
+          text=text.replace(
+              '.translation-hint.is-fallback #translationLabel::after{content:" cue"}',
+              '.translation-hint.is-fallback #translationLabel::after{content:""}',
+          )
+
+          replacements={
+              '.practice-screen .quiz-card{height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}':
+              '.practice-screen .quiz-card{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}',
+              '.practice-screen #quizContent{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}':
+              '.practice-screen #quizContent{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;overflow:hidden;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}',
+              '.practice-screen .question-wrap{min-height:0;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}':
+              '.practice-screen .question-wrap{box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:0;overflow:hidden;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}',
+              '.translation-hint{min-height:38px;margin:7px auto 0;padding:7px 12px;max-width:min(100%,700px);border:1px solid transparent;':
+              '.translation-hint{align-self:center;width:min(100%,calc(100vw - 36px),700px);max-width:calc(100vw - 36px);min-width:0;box-sizing:border-box;overflow:hidden;min-height:38px;margin:7px auto 0;padding:7px 12px;border:1px solid transparent;',
+          }
+          for old,new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Could not apply viewport containment: {old[:72]}')
+              text=text.replace(old,new,1)
+          path.write_text(text,encoding='utf-8')
+          PY
+          python scripts/apply_practice_screen.py --source app-source.html --output index.html
+          cp index.html app-source.html
+          touch .nojekyll
+
+      - name: Validate generated source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import re
+          from collections import Counter
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Inspector(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  values=dict(attrs)
+                  if values.get('id'):
+                      self.ids.append(values['id'])
+
+          html=Path('index.html').read_text(encoding='utf-8')
+          inspector=Inspector()
+          inspector.feed(html)
+          duplicates=sorted(identifier for identifier,count in Counter(inspector.ids).items() if count>1)
+          if duplicates:
+              raise SystemExit(f'Duplicate HTML ids: {duplicates}')
+
+          required={
+              'practiceScreen','openPracticeBtn','closePracticeBtn','showTranslationBtn',
+              'translationHint','translationText','feedbackMore','quizCard','nextBtn'
+          }
+          missing=sorted(required-set(inspector.ids))
+          if missing:
+              raise SystemExit(f'Missing required practice-screen ids: {missing}')
+
+          required_fragments=[
+              'body.practice-open','height:100dvh','overflow:hidden',
+              'PracticeScreen.isTouchLike()','TranslationModel.text(',
+              'translations.js','APP_VERSION = "1.1.0"',
+              'width:min(100%,calc(100vw - 36px),700px)',
+              '.practice-screen #quizContent{box-sizing:border-box;width:100%;max-width:100%;min-width:0'
+          ]
+          for fragment in required_fragments:
+              if fragment not in html:
+                  raise SystemExit(f'Missing generated fragment: {fragment}')
+
+          inline_scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S)
+          application=next((script for script in reversed(inline_scripts) if 'const App =' in script),None)
+          if not application:
+              raise SystemExit('Could not extract application JavaScript')
+          Path('/tmp/artikelwerk-app.js').write_text(application,encoding='utf-8')
+
+          translations=Path('translations.js').read_text(encoding='utf-8')
+          if translations.count('"')<1000:
+              raise SystemExit('Generated translation data appears incomplete')
+          coverage=Path('docs/translation-coverage.txt').read_text(encoding='utf-8')
+          if 'vocabulary_entries=1000' not in coverage:
+              raise SystemExit('Translation coverage report is incomplete')
+          print(f'HTML ids: {len(inspector.ids)}')
+          print(f'HTML bytes: {len(html.encode("utf-8"))}')
+          print(f'Translation bytes: {len(translations.encode("utf-8"))}')
+          print(coverage.split('\n\n',1)[0])
+          PY
+          node --check /tmp/artikelwerk-app.js
+          node --check translations.js
+
+      - name: Install browser test runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+
+      - name: Run mobile and desktop browser checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 4173 --bind 127.0.0.1 >/tmp/artikelwerk-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/practice-screen.mjs
+
+      - name: Prepare maintainable release tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > README.md <<'EOF'
+          # Artikelwerk
+
+          C1/C2 German noun-gender trainer with adaptive review, vocabulary management, and a dedicated no-scroll practice screen.
+
+          ## Development
+
+          - `app-source.html` is the editable application source.
+          - `index.html` is the GitHub Pages release file.
+          - `translations.js` contains the compact English-gloss data used during practice.
+          - `scripts/apply_practice_screen.py` applies the release UI patch.
+          - `scripts/generate_translations.py` selects dictionary-backed glosses.
+          - `scripts/generate_translations_v2.py` adds explicitly marked compound cues where no exact dictionary entry exists.
+          - `tests/practice-screen.mjs` checks mobile viewport stability and the complete practice flow in Chromium.
+
+          The production page is served directly from the repository root.
+          EOF
+
+          cat > THIRD_PARTY_NOTICES.md <<'EOF'
+          # Third-party notices
+
+          ## FreeDict German–English dictionary subset
+
+          `translations.js` contains a compact subset derived in part from the FreeDict `deu-eng` dictionary, version `2022.04.21-1`.
+
+          Copyright © 1995–2022 Frank Richter and © 2020–2022 Einhard Leichtfuß.
+
+          The generated translation data asset is distributed under the GNU General Public License, version 3 or any later version. A copy is included at `LICENSES/GPL-3.0.txt`. The generators, coverage report, and selected output are included in this repository so the data can be inspected and rebuilt.
+
+          Curated learner-oriented corrections and transparent compound cues in `scripts/generate_translations.py` and `scripts/generate_translations_v2.py` are original Artikelwerk metadata.
+          EOF
+
+          rm -rf payload
+          rm -f partial-source.html source-index.txt source-metadata.txt translation-audit.txt
+          rm -f .github/workflows/decode-source.yml .github/workflows/translation-audit.yml .github/workflows/translation-coverage-debug.yml
+
+      - name: Upload visual test evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: dedicated-practice-screen-screenshots
+          path: test-artifacts/*.png
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit tested release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin codex/dedicated-practice-screen
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "feat: add dedicated no-scroll practice screen"
+          git push origin HEAD:codex/dedicated-practice-screen

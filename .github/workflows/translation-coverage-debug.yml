@@ -1,0 +1,47 @@
+name: Diagnose translation coverage
+
+on:
+  push:
+    branches:
+      - codex/dedicated-practice-screen
+    paths:
+      - .github/workflows/translation-coverage-debug.yml
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate and print uncovered vocabulary
+        shell: bash
+        run: |
+          set -u
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq dict-freedict-deu-eng dictzip
+          dictzip -d -c /usr/share/dictd/freedict-deu-eng.dict.dz > /tmp/freedict-deu-eng.dict
+          mkdir -p /tmp/artikelwerk-coverage
+          python scripts/generate_translations.py \
+            --source app-source.html \
+            --index /usr/share/dictd/freedict-deu-eng.index \
+            --dictionary /tmp/freedict-deu-eng.dict \
+            --output /tmp/artikelwerk-coverage/translations.js \
+            --report /tmp/artikelwerk-coverage/report.txt || true
+          cat /tmp/artikelwerk-coverage/report.txt
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          spec=importlib.util.spec_from_file_location('translation_generator','scripts/generate_translations.py')
+          module=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          vocabulary=module.parse_vocabulary(Path('app-source.html').read_text(encoding='utf-8'))
+          report=Path('/tmp/artikelwerk-coverage/report.txt').read_text(encoding='utf-8')
+          fallback_line=next(line for line in report.splitlines() if line.startswith('fallback_ids='))
+          fallback=set(filter(None,fallback_line.split('=',1)[1].split(',')))
+          print('\nUNCOVERED ENTRIES')
+          for entry in vocabulary:
+              if entry['id'] in fallback:
+                  print(f"{entry['id']}\t{entry['article']} {entry['noun']}\tgroup={entry['group']}")
+          print(f'\nuncaptured_count={len(fallback)}')
+          PY

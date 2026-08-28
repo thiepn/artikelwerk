@@ -1,0 +1,76 @@
+name: Audit German-English dictionary source
+
+on:
+  push:
+    branches:
+      - codex/dedicated-practice-screen
+    paths:
+      - .github/workflows/translation-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect exact dictionary records
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq dict-freedict-deu-eng dictzip
+          dictzip -d -c /usr/share/dictd/freedict-deu-eng.dict.dz > /tmp/freedict-deu-eng.dict
+          python - <<'PY'
+          from collections import defaultdict
+          from pathlib import Path
+
+          alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+          values = {char: index for index, char in enumerate(alphabet)}
+
+          def decode_number(value: str) -> int:
+              total = 0
+              for character in value.strip():
+                  total = total * 64 + values[character]
+              return total
+
+          entries = defaultdict(list)
+          for line in Path('/usr/share/dictd/freedict-deu-eng.index').read_text(encoding='utf-8').splitlines():
+              parts = line.split('\t')
+              if len(parts) < 3:
+                  continue
+              headword, offset_text, length_text = parts[0], parts[-2], parts[-1]
+              entries[headword.casefold()].append((headword, decode_number(offset_text), decode_number(length_text)))
+
+          data = Path('/tmp/freedict-deu-eng.dict').read_bytes()
+          targets = ['Aufwand','Erkenntnis','Bilanz','Mangel','Erbe','Paradigmenwechsel','Versäumnis','Bezug','Rahmen','Abhilfe']
+          output = [
+              'FreeDict deu-eng 2022.04.21-1',
+              'Dictionary content license: GPL-3+',
+              f'Index headwords: {len(entries)}',
+              f'Decompressed bytes: {len(data)}',
+              '',
+          ]
+          for target in targets:
+              output.append(f'=== {target} ===')
+              records = entries.get(target.casefold(), [])
+              output.append(f'records={len(records)}')
+              for number, (headword, offset, length) in enumerate(records[:8], 1):
+                  record = data[offset:offset + length].decode('utf-8', errors='replace')
+                  output.append(f'--- record {number}: headword={headword!r} offset={offset} length={length} ---')
+                  output.extend(record.splitlines()[:80])
+              output.append('')
+
+          Path('translation-audit.txt').write_text('\n'.join(output) + '\n', encoding='utf-8')
+          PY
+      - name: Commit audit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add translation-audit.txt
+          git commit -m "chore: inspect exact offline dictionary records" || exit 0
+          git push
