@@ -712,23 +712,206 @@
 5121:       if(restart) SessionEngine.start();
 5131:       const status=MeaningGenderModel.status(word);
 5132:       if(status==="meaning-dependent") return "Meaning-dependent";
-5145:       const meaningText=(word.meanings    cked} worsistenceNotic
-5156:  shApp({t `Previ.r.  }else if(w.article=atsV.r.  }elciveWordId:null,
-5181:       DOM.$("#contrastFeedback").tenceMessmpt").textCo1eMessmpabe;
-5182:  reue}du,ki$}dund(courrent.rule; sBrowserPro"|ss()eelse,kin "Cu... gdund|eelseerevious browytrastFeedback").tprev).tprev).tki$amilia;
-5183:    miantTip==  gender`"urr+stFeesow("Session summtatus==="o("correc<aturn {plmtatusp 1?"":"s"}lws);
-5193:    !,ionPrompt").textContent=""d. A ence`r=Leont- n {plmtatect:0},unsure:{count:0,correct:00Articles(w).jsVl.eBcatient.rule;
-5196: nt.rh;ur  if `Previous learniws=Leontr nt.rh;urrn."#prh.available?"Lo    i2.evie,h,ppstatDOM.rHmp.j }A"You are getting many Guess answers right; yariitem">${DOMSt }</span></s,ia;
-5200:  r">$    AccessibilityManager.announce(DOM.$("#correctionProm=="meaning2     r =>x.s() save c("#fe{,= *true}:2    o   e(ng";$("#lection: ${n;
-5229: kspan>.shorvedPro-"=this b=s"Curs:(uuont#nreturn `eturnAll(){aE| typ"...x"...  const pcttyp"...x"...x nPromptse,ki$6i-M...x"...x nPromp=0; ttijsVl.aub6?-uf(R/ect=n2peeaeeakn2peeakn2peeakn2o).textCotse,keesow("Session summtatus==="o("correcakn2peeR/ec*xwed words yetmvocabprs")),ies:{}nxBodNu("cor .xe{,= *true});
-5233:  reue}tioCont#nee"#activd><span class= i$("onsmpege")0{},H${rs brates.bes).ten=r.remove;ngText=i     DLed===1?"":"s"} to noro.u:"s"} to nen=r.r(("Session sceriuntrmaplmtatec)}bes).ill" sty if(yoro.u:"s"} tty if(yotyp"...x"...x"..ant2peeakn2peeakn2peeakn2peeakn2peeakn2o).textCoFi?      DOM.$("70tatisticsView = {
-5292:     co).textCoFlwerk.a-leoo.ctionAttePro:pplication/jso. kn2o).textDOM.$("#ne  gore.iwserFi?n</strong></stain a0"cn"o()onst status=MeaningGenderned}bN  const ss=Meanmy:}tain an Atg >let con        ws.unfamiliarSens status=Mea"?aetisxear ilrned}bN l.analysis(x.no"c},H6Xh=(rn true;dos:{}n     : -ni[rucss"courrent.rh;peeakn2ogws=L:n     );
-5349:   )rowserBingModel.mue}.stata=ckup()?"availabls."({restart:fals   one un))4 the previouaagged answers)</span>`:""}</div>`;
-5370:  reue}dundne *ar"hleoti,tBcatime.sta  kn[th} ompt#w"",1raningxtCo   const state=payload?.form:as  alysitextDMrlea&d} wet*ar"hleoti=dReset nt=erel.v.e]ensi*ar"hleoti,"  }else s,N0&d} wet*ar"hleoti=dReset nt=erel.o,N0&d}nPrompt"al.to0=erel.o,N0&d}nPr d} wor"c},H6Xh=(rn =?LSArur)blsen.staaa=Leontr("#ntaiws.filteerved=(ws  >"...x"riesss"r.iltestailteerved=(ws  >daagged answerls$agged answerls$agged answiiord; }
-5371:   apL:gGendastFd answerls$agge>daagged anuanswiiord; }
-5394:     ns  }ortedatore.scapeHs:{},H6Xaritore.scnte)0Arur)baf!A.naUen2peewerls$agged answerls$agged anclassrticles.iew.render();
-5419: "Modso   e(ng";$r"o nen=r.r(("Session sceriunt},s.r)&4&oOpF   th?
-5492:    }ere-txear"Session stimes"tr=l"e.i]te
-5517:  oven] g r}e[bls*p r}dg,Fockrrb4S"=r.pagarfLFiiFoottenAt-)rows)se`h;urrn}1 s ca| 0tisesen.s nen=r.r(("Session sceriunPromunr)y?,smb=m;mpt"{
-5519:  `+`y,<sord; }dg arf weti{td .L"Session site""-agarfdeSc"w,p`"n>m$agg-=(rn =?LSAr.[]$,al }w""-agarfdeSctCotsen2peeakn2peeBw{cve;ng[cw""-.=Uti.rdgarfdeSctCotl }w""agarre-txeag>a}s{arni
-5520: ]M= hO")C,|aSession si )h tckQueue? C)se`hrtuy" A "#.naUere  if(s|))ou are.[]ur .L;
+5145:       const meaningText=(word.meanings||[]).map(s=>s.gloss||"").join(" ");
+5146:       const haystack=this.normalizeSearch(`${MeaningGenderModel.allArticles(word).join(" ")} ${word.noun} ${meaningText}`);
+5152:         q:this.normalizeSearch(DOM.$("#librarySearch")?.value||""),article:value("articleFilter"),level:value("levelFilter"),
+5165:         if(f.article!=="all" && !MeaningGenderModel.allArticles(w).includes(f.article)) return false;
+5176:         if(f.variantGender!=="all" && !MeaningGenderModel.matchesFilter(w,f.variantGender)) return false;
+5193:         const articleLabel=MeaningGenderModel.isMeaningDependent(w)?w.meanings.map(s=>s.articles[0]).join("/"):GenderVariantModel.label(w);
+5197:           <td><span class="article-chip">${DOM.escapeHtml(articleLabel)}</span></td>
+5211:       if(!items.length) return "No confidence-tagged answers yet.";
+5225:       if(!MeaningGenderModel.isMeaningDependent(word)) return "";
+5226:       return `<div class="word-detail-section"><h3>Meanings & gender</h3><div class="detail-list">${word.meanings.map(sense=>{
+5227:         const stats=MeaningGenderModel.senseStats(ws,sense.id);
+5230:         return `<div class="sense-card"><strong>${DOM.escapeHtml(`${sense.articles.join("/")} ${word.noun}`)}</strong><div>${DOM.escapeHtml(sense.gloss||"Meaning-specific sense")}</div>${senseExample?`<div style="margin-top:6px">${DOM.escapeHtml(senseExample)}</div>`:""}<div class="muted" style="margin-top:5px;font-size:.78rem">${stats.attempts} attempts · ${accuracy} accuracy</div></div>`;
+5241:       const articleLabel=MeaningGenderModel.isMeaningDependent(word)?word.meanings.map(s=>s.articles[0]).join("/"):GenderVariantModel.label(word);
+5244:       const contrastPeers=ContrastModel.words(word,{limit:8,differentArticle:false});
+5246:       const meaningGlosses=(word.meanings||[]).filter(s=>s.gloss).map(s=>`${s.articles.join("/")} — ${s.gloss}`);
+5259:       if(contrastPeers.length) connectionParts.push(`<div><strong>Contrasts</strong><div class="detail-field" style="margin-top:7px"><span>${contrastPeers.map(peer=>DOM.escapeHtml(`${peer.article} ${peer.noun}`)).join(" · ")}</span><p class="muted" style="margin-top:5px">${DOM.escapeHtml(ContrastModel.summary(word))}</p></div></div>`);
+5260:       if(familyPeers.length) connectionParts.push(`<div><strong>Word family</strong><div class="detail-field" style="margin-top:7px"><span>${familyPeers.map(peer=>DOM.escapeHtml(`${peer.article} ${peer.noun}`)).join(" · ")}</span><p class="muted" style="margin-top:5px">${DOM.escapeHtml(WordFamilyModel.summary(word))}</p></div></div>`);
+5263:         <div class="word-detail-section"><h3>Article & usage</h3>
+5265:             <div class="detail-field"><strong>Article</strong><span>${DOM.escapeHtml(articleLabel)} ${DOM.escapeHtml(word.noun)}</span></div>
+5270:             <div class="detail-field"><strong>Meaning</strong><span>${meaningGlosses.length?meaningGlosses.map(DOM.escapeHtml).join(" · "):"No separate gloss stored; use the examples below for context."}</span></div>
+5274:         <div class="word-detail-section"><h3>Article guidance</h3><div class="detail-field"><strong>${DOM.escapeHtml(MorphologyModel.reliabilityLabel(word))}</strong><span>${DOM.escapeHtml(word.explanation||"Learn this noun together with its article.")}</span></div></div>
+5277:           ${deep?`<div class="detail-grid"><div class="detail-field"><strong>Morphology</strong><span>${DOM.escapeHtml(MorphologyModel.summary(word)||"—")}</span></div>${lexicalSections.join("")}</div>`:`<div class="coverage-note">This is a core-expanded entry. Article, level, frequency, register, examples, and learning data are available; detailed morphology, compound analysis, inflection, collocations, contrasts, and word-family metadata are shown only where they were explicitly curated.</div>${lexicalSections.length?`<div class="detail-grid" style="margin-top:10px">${lexicalSections.join("")}</div>`:""}`}
+5298:       const articleLabel=MeaningGenderModel.isMeaningDependent(word)?word.meanings.map(s=>s.articles[0]).join("/"):GenderVariantModel.label(word);
+5299:       DOM.$("#wordDetailTitle").textContent=`${articleLabel} ${word.noun}`;
+5317:         if(MeaningGenderModel.isMeaningDependent(word)) ws.unfamiliarSenseIds=word.meanings.map(s=>s.id);
+5320:         if(MeaningGenderModel.isMeaningDependent(word) && !ws.unfamiliarSenseIds.length) ws.unfamiliarSenseIds=word.meanings.map(s=>s.id);
+5324:         if(MeaningGenderModel.isMeaningDependent(word) && !ws.unfamiliarSenseIds.length) ws.unfamiliarSenseIds=word.meanings.map(s=>s.id);
+5338:       ["articleFilter","levelFilter","vocabularyStatusFilter","masteryFilter","variantGenderFilter","frequencyFilter","registerFilter","morphologyFilter","reliabilityFilter","contrastFilter","wordFamilyFilter","collocationFilter","inflectionFilter","personalDifficultyFilter"].forEach(id=>{ const el=DOM.$("#"+id); if(el) el.value="all"; });
+5343:   const CoreTrainingModel = {
+5350:         if(MeaningGenderModel.isMeaningDependent(word) && ws.unfamiliarSenseIds.length){
+5352:             if(word.meanings.some(s=>s.id===senseId)) items.push({wordId:word.id,senseId});
+5362:       // Stable per-session order: alphabetical with sense id tie-breaker. No item repeats inside a session.
+5372:       if(Runtime.questionKind!=="normal" || Runtime.answered || Runtime.correctionPending || ["unknownWords","timed"].includes(Runtime.session?.mode)) return;
+5382:       if(Runtime.questionKind!=="normal" || !Runtime.current || !Runtime.session || Runtime.answered || Runtime.correctionPending || ["unknownWords","timed"].includes(Runtime.session.mode)) return;
+5392:       Runtime.session.completed++;
+5393:       Runtime.session.unknownCount++;
+5394:       Runtime.answered=true;
+5395:       DOM.$("#feedback").classList.add("show");
+5396:       DOM.$("#feedbackTitle").textContent="Marked as unfamiliar";
+5397:       DOM.$("#feedbackTitle").className="feedback-title";
+5398:       DOM.$("#feedbackWord").textContent=MeaningGenderModel.displayNoun(Runtime.current,Runtime.currentSense);
+5399:       DOM.$("#feedbackRule").textContent="This was recorded as vocabulary unfamiliarity, not an article error.";
+5400:       DOM.$("#feedbackExample").classList.add("example-context-list");
+5401:       DOM.$("#feedbackExample").innerHTML=ExampleContextModel.feedbackHtml(Runtime.current);
+5403:       DOM.$$(".answer-btn").forEach(b=>b.classList.add("dim"));
+5407:       QuizView.updateSessionBar();
+5409:       AccessibilityManager.announce(`${MeaningGenderModel.displayNoun(Runtime.current,Runtime.currentSense)} marked unfamiliar. This does not count as an article error.`);
+5423:       Runtime.session.completed++;
+5424:       Runtime.answered=true;
+5425:       SessionEngine.nextQuestion();
+5428:       if(!Runtime.session) return;
+5429:       Runtime.session.completed++;
+5430:       Runtime.answered=true;
+5431:       SessionEngine.nextQuestion();
+5435:   const SessionEngine = {
+5449:       DOM.$("#sessionSelect").disabled=timed;
+5450:       DOM.$("#sessionSelect").title=timed?"Timed Challenge always runs for 60 seconds.":"";
+5451:       DOM.$("#sessionControl").hidden=timed;
+5452:       DOM.$("#newSessionBtn").textContent=timed?"Restart 60s challenge":"New session";
+5464:       const lengthValue = DOM.$("#sessionSelect").value;
+5467:         ? CoreTrainingModel.buildUnknownQueue({limit:requestedTarget,difficulty:DOM.$("#difficultySelect").value})
+5471:       Runtime.session = {
+5472:         mode:selectedMode,format:selectedFormat,target,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+5483:       Runtime.answered = false;
+5505:         Runtime.session={
+5506:           mode:"review",format:DOM.$("#formatSelect").value,target:0,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+5515:         Runtime.answered=false;
+5518:         QuizView.showEmpty();
+5539:       if(!Runtime.session) return this.start();
+5541:       if(!initial && Runtime.current && !Runtime.answered) return;
+5544:       // then runs one unscored final check for every unique word missed in the session.
+5545:       if(!initial && Runtime.answered && Number.isFinite(Runtime.session.target) && Runtime.session.completed >= Runtime.session.target){
+5546:         if(Runtime.session.mode!=="timed" && Runtime.session.shortRetries.size){
+5547:           Runtime.session.forceShortRetry=true;
+5548:         }else if(Runtime.session.mode!=="timed"){
+5557:         if(Runtime.session.completed>0) return this.nextFinalCheckOrEnd();
+5558:         QuizView.showEmpty();
+5561:       QuizView.hideEmpty();
+5562:       Runtime.current = Scheduler.weightedPick(pool, Runtime.session.mode);
+5564:         if(Runtime.session.completed>0) return this.nextFinalCheckOrEnd();
+5565:         return QuizView.showEmpty();
+5568:       Runtime.questionKind=Runtime.session.nextQuestionKind||"normal";
+5569:       Runtime.currentSense=MeaningGenderModel.chooseSense(Runtime.current,LearningModel.getWordState(Runtime.current.id),Runtime.session,{forcedSenseId:Runtime.session.forcedSenseId});
+5570:       Runtime.session.forcedSenseId=null;
+5571:       MeaningGenderModel.markSeen(Runtime.current,Runtime.currentSense,Runtime.session);
+5572:       Runtime.session.index = Runtime.session.completed + 1;
+5573:       Runtime.session.seen.add(Runtime.current.id);
+5574:       Runtime.session.recentIds.push(Runtime.current.id);
+5575:       if(Runtime.session.recentIds.length > 5) Runtime.session.recentIds.shift();
+5576:       Runtime.session.lastId = Runtime.current.id;
+5577:       Runtime.session.lastGroup = Runtime.current.group || null;
+5578:       Runtime.answered = false;
+5580:       QuizView.renderQuestion(Runtime.current);
+5581:       if(Runtime.session.mode!=="unknownWords") TimingAnalytics.startQuestion();
+5584:       const session=Runtime.session;
+5585:       if(!session || session.mode==="timed") return this.end();
+5586:       if(!session.finalCheckQueue){
+5587:         const senseKeys=[...(session.senseMistakes||new Map()).keys()];
+5589:         const ordinary=[...session.mistakes.keys()].filter(id=>!senseWordIds.has(id)).map(id=>({wordId:id,senseId:null}));
+5591:         session.finalCheckQueue=[...ordinary,...sensed];
+5592:         session.finalCheckCursor=0;
+5594:       if(session.finalCheckCursor>=session.finalCheckQueue.length) return this.end();
+5595:       const item=session.finalCheckQueue[session.finalCheckCursor++];
+5599:       Runtime.currentSense=MeaningGenderModel.chooseSense(word,LearningModel.getWordState(word.id),session,{forcedSenseId:item.senseId});
+5601:       Runtime.answered=false;
+5603:       session.lastId=word.id;
+5604:       QuizView.hideEmpty();
+5605:       QuizView.renderQuestion(word);
+5609:       if(!Runtime.current || !Runtime.session || QuestionFormatModel.sessionFormat(Runtime.session)!=="production" || Runtime.session.mode==="unknownWords") return;
+5610:       if(Runtime.answered && !Runtime.correctionPending){
+5625:       this.answer(parsed.article);
+5636:     answer(article){
+5637:       if(!Runtime.current || !Runtime.session) return;
+5640:       // already-revealed correct article before Next/Enter can advance.
+5642:         const corrected=MeaningGenderModel.isCorrect(Runtime.current,article,Runtime.currentSense);
+5643:         QuizView.correctionAttempt(article,corrected);
+5646:           Runtime.answered=true;
+5650:       if(Runtime.answered) return;
+5657:       const expectedCorrect=MeaningGenderModel.isCorrect(Runtime.current,article,Runtime.currentSense);
+5660:         Runtime.answered=true;
+5662:         Runtime.session.reinforcement[`${bucket}${expectedCorrect?"Correct":"Wrong"}`]++;
+5663:         QuizView.renderFeedback(article,expectedCorrect,responseTimeMs,{reinforcement:true,kind});
+5666:           Runtime.answered=false;
+5667:           QuizView.requireCorrection();
+5672:       Runtime.answered = true;
+5674:       const timingSummary=TimingAnalytics.recordAnswer(Runtime.current.id,expectedCorrect,responseTimeMs,{
+5675:         correctArticle:MeaningGenderModel.acceptedArticles(Runtime.current,Runtime.currentSense)[0]||Runtime.current.article,
+5676:         selectedArticle:article,confidence,senseId:Runtime.currentSense?.id||null
+5678:       const {correct} = LearningModel.applyAnswer(Runtime.current,article,timingSummary,responseTimeMs,{sense:Runtime.currentSense,confidence});
+5680:       Runtime.state.aggregates.answers++;
+5681:       Runtime.session.answers++;
+5682:       Runtime.session.completed++;
+5686:         Runtime.session.correct++;
+5691:         Runtime.session.mistakes.set(Runtime.current.id,(Runtime.session.mistakes.get(Runtime.current.id)||0)+1);
+5692:         if(MeaningGenderModel.isMeaningDependent(Runtime.current) && Runtime.currentSense){
+5694:           Runtime.session.senseMistakes.set(senseKey,(Runtime.session.senseMistakes.get(senseKey)||0)+1);
+5696:         Scheduler.queueShortRetry(Runtime.current.id,MeaningGenderModel.isMeaningDependent(Runtime.current)?Runtime.currentSense?.id:null);
+5699:       QuizView.renderFeedback(article,correct,responseTimeMs);
+5700:       if(!correct && Runtime.session.mode!=="timed"){
+5702:         Runtime.answered=false;
+5703:         QuizView.requireCorrection();
+5707:       if(Runtime.session.mode === "timed" && Runtime.timedDeadline){
+5710:           const answeredId=Runtime.current.id;
+5711:           const answeredSession=Runtime.session;
+5713:             if(Runtime.session===answeredSession && Runtime.session?.mode==="timed" && Runtime.answered && Runtime.current?.id===answeredId && Runtime.timedDeadline) this.nextQuestion();
+5719:       if(!Runtime.session || (Runtime.session.answers===0 && Runtime.session.completed===0)) return;
+5722:       const hasScoredAnswers=Runtime.session.answers>0;
+5723:       const acc = hasScoredAnswers ? Math.round(Runtime.session.correct/Runtime.session.answers*100) : null;
+5724:       const key = `${Runtime.session.mode}:${Runtime.session.format||"standard"}:${Number.isFinite(Runtime.session.target)?Runtime.session.target:"endless"}`;
+5725:       const prev = hasScoredAnswers ? Runtime.state.sessions.summaries[key]?.lastAccuracy : null;
+5726:       if(hasScoredAnswers) Runtime.state.sessions.summaries[key] = {lastAccuracy:acc,lastAt:Date.now()};
+5729:       DOM.$("#sumScore").textContent = hasScoredAnswers ? `${Runtime.session.correct}/${Runtime.session.answers}` : `${Runtime.session.completed} reviewed`;
+5730:       DOM.$("#sumAccuracy").textContent = hasScoredAnswers ? `${acc}%` : "Not scored";
+5731:       DOM.$("#sumDelta").textContent = !hasScoredAnswers || prev == null ? "—" : `${acc-prev>=0?"+":""}${acc-prev} pp`;
+5732:       const reinforcementTotal=Object.values(Runtime.session.reinforcement||{}).reduce((a,b)=>a+b,0);
+5734:       DOM.$("#summarySubtitle").textContent = Runtime.session.mode === "timed"
+5735:         ? `${Runtime.session.answers} answers in 60 seconds.`
+5736:         : Runtime.session.mode === "review"
+5737:         ? `${Runtime.session.answers} scored review answers completed.${reinforcementNote} The queue has been recalculated from the new due dates.`
+5738:         : Runtime.session.mode === "unknownWords"
+5739:         ? `${Runtime.session.completed} unfamiliar vocabulary item${Runtime.session.completed===1?"":"s"} reviewed. This mode does not alter article accuracy or SRS evidence.`
+5740:         : `${Runtime.session.answers} scored questions completed${Runtime.session.unknownCount?` · ${Runtime.session.unknownCount} unfamiliar word${Runtime.session.unknownCount===1?"":"s"} separated from scoring`:""}.${reinforcementNote}`;
+5742:       const senseMistakes=[...(Runtime.session.senseMistakes||new Map()).entries()]
+5743:         .map(([key,count])=>{ const [id,senseId]=key.split("::"); const w=VOCAB.find(x=>x.id===id); const sense=w?MeaningGenderModel.senseById(w,senseId):null; return {w,sense,count}; })
+5746:       const mistakeWords = [...Runtime.session.mistakes.entries()]
+5753:         ? mistakeItems.map(({w,sense,count})=>`<div class="summary-mistake"><span><strong>${DOM.escapeHtml(sense?`${sense.articles[0]} ${w.noun}`:`${w.article} ${w.noun}`)}</strong>${sense?` <span class="muted">(${DOM.escapeHtml(sense.gloss)})</span>`:""}</span><span class="muted">${count} miss${count===1?"":"es"}</span></div>`).join("")
+5754:         : `<div class="muted">No mistakes in this session.</div>`;
+5758:       AccessibilityManager.announce("Session complete.");
+5846:         if(panel){ panel.scrollIntoView({behavior:"smooth",block:"start"}); panel.focus({preventScroll:true}); }
+5867:       DOM.$$(".answer-btn").forEach(btn=>btn.addEventListener("click",()=>SessionEngine.answer(btn.dataset.article)));
+5868:       DOM.$$(".confidence-btn").forEach(btn=>btn.addEventListener("click",()=>CoreTrainingModel.setConfidence(btn.dataset.confidence)));
+5869:       DOM.$("#unknownWordBtn").addEventListener("click",()=>CoreTrainingModel.markUnknown());
+5870:       DOM.$("#markKnownBtn").addEventListener("click",()=>CoreTrainingModel.markKnown());
+5871:       DOM.$("#keepLearningBtn").addEventListener("click",()=>CoreTrainingModel.keepLearning());
+5872:       DOM.$("#productionSubmitBtn").addEventListener("click",()=>SessionEngine.submitProduction());
+5874:         if(e.key==="Enter"){ e.preventDefault(); SessionEngine.submitProduction(); }
+5876:       DOM.$("#nextBtn").addEventListener("click",()=>SessionEngine.nextQuestion());
+5877:       DOM.$("#newSessionBtn").addEventListener("click",()=>SessionEngine.start());
+5878:       DOM.$("#startReviewBtn").addEventListener("click",()=>SessionEngine.startTodayReview());
+5880:         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
+5881:         else SessionEngine.start();
+5884:         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
+5885:         else if(!["unknownWords","timed"].includes(DOM.$("#modeSelect").value)) SessionEngine.start();
+5889:         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
+5890:         else SessionEngine.start();
+5892:       DOM.$("#sessionSelect").addEventListener("change",()=>{
+5894:         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
+5895:         else if(DOM.$("#modeSelect").value!=="timed") SessionEngine.start();
+5907:       DOM.$("#resetSessionsBtn").addEventListener("click",()=>DataControls.resetSessionHistory());
+5910:       DOM.$("#emptyPracticeBtn").addEventListener("click",()=>SessionEngine.start({mode:"practice"}));
+5924:       ["librarySearch","articleFilter","levelFilter","vocabularyStatusFilter","frequencyFilter","registerFilter","morphologyFilter","reliabilityFilter","contrastFilter","wordFamilyFilter","collocationFilter","inflectionFilter","variantGenderFilter","masteryFilter","personalDifficultyFilter"].forEach(id=>DOM.$("#"+id).addEventListener("input",()=>VocabularyView.render()));
+5940:         if(ids.length) SessionEngine.start({mode:"adaptive",reviewIds:ids});
+5954:         if(!DOM.$("#practiceView")?.classList.contains("active")) return;
+5955:         if(e.key==="g" || e.key==="G") CoreTrainingModel.setConfidence("guess");
+5956:         if(e.key==="u" || e.key==="U") CoreTrainingModel.setConfidence("unsure");
+5957:         if(e.key==="s" || e.key==="S") CoreTrainingModel.setConfidence("sure");
+5958:         if(e.key==="0") CoreTrainingModel.markUnknown();
+5959:         const production=QuestionFormatModel.isProduction() && Runtime.session?.mode!=="unknownWords";
+5960:         if(!production && e.key==="1") SessionEngine.answer("der");
+5961:         if(!production && e.key==="2") SessionEngine.answer("die");
+5962:         if(!production && e.key==="3") SessionEngine.answer("das");
+5963:         if(e.key==="Enter" && Runtime.answered) SessionEngine.nextQuestion();
+5976:       SessionEngine.start();
