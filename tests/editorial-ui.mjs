@@ -22,7 +22,16 @@ for(const p of [{name:'desktop',width:1440,height:900,mobile:false,touch:false},
  const cr=await page.locator('.confidence-btn').first().evaluate(el=>parseFloat(getComputedStyle(el).borderRadius)); assert(cr===0,`${p.name}: confidence pill`);
  await page.screenshot({path:`${evidenceDir}/${p.name}-practice.png`,fullPage:false}); await page.keyboard.press('Escape');
  await page.locator('#tabStats').click(); const sec=await page.locator('#statsView .panel.section').first().evaluate(el=>{const s=getComputedStyle(el);return{radius:s.borderRadius,shadow:s.boxShadow};}); assert(parseFloat(sec.radius)===0&&sec.shadow==='none',`${p.name}: progress cards remain`); await page.screenshot({path:`${evidenceDir}/${p.name}-progress.png`,fullPage:true});
- await page.locator('#tabLibrary').click(); const chip=await page.locator('.article-chip').first().evaluate(el=>{const s=getComputedStyle(el);return{radius:s.borderRadius,border:s.borderTopWidth};}); assert(parseFloat(chip.radius)===0&&parseFloat(chip.border)===0,`${p.name}: article chip remains`); await page.screenshot({path:`${evidenceDir}/${p.name}-vocabulary.png`,fullPage:true});
+ await page.locator('#tabLibrary').click(); const chip=await page.locator('.article-chip').first().evaluate(el=>{const s=getComputedStyle(el);return{radius:s.borderRadius,border:s.borderTopWidth};}); assert(parseFloat(chip.radius)===0&&parseFloat(chip.border)===0,`${p.name}: article chip remains`);
+ if(p.mobile){
+   const firstRow=page.locator('.library-table tbody tr').first();
+   assert(await firstRow.locator('td').nth(5).isHidden(),`${p.name}: legacy mastery column still occupies mobile row width`);
+   assert(await firstRow.locator('td').nth(8).isHidden(),`${p.name}: redundant Details column still occupies mobile row width`);
+   const subline=firstRow.locator('.word-subline');
+   const clipped=await subline.evaluate(el=>el.scrollWidth>el.clientWidth+1);
+   assert(!clipped,`${p.name}: vocabulary description remains horizontally clipped`);
+ }
+ await page.screenshot({path:`${evidenceDir}/${p.name}-vocabulary.png`,fullPage:true});
  assert(errors.length===0,`${p.name}: browser errors ${errors.join(' | ')}`); await context.close();
 }
 await browser.close(); console.log('UI5 editorial interface certification passed.');
