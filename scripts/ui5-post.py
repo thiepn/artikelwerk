@@ -1,8 +1,18 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+INDEX = ROOT / "index.html"
 VERIFY = ROOT / "scripts" / "verify-source.mjs"
 SHELL = ROOT / "tests" / "app-shell.mjs"
+
+# Keep the visually quiet theme control while preserving the existing 44px touch-target floor.
+html = INDEX.read_text(encoding="utf-8")
+old_theme_size = '#themeBtn{width:40px;min-width:40px;height:40px;border:0;background:transparent;border-radius:50%;color:var(--muted)}'
+new_theme_size = '#themeBtn{width:44px;min-width:44px;height:44px;border:0;background:transparent;border-radius:50%;color:var(--muted)}'
+if old_theme_size not in html:
+    raise SystemExit("Missing UI5 theme-target size anchor")
+html = html.replace(old_theme_size, new_theme_size, 1)
+INDEX.write_text(html, encoding="utf-8")
 
 verify = VERIFY.read_text(encoding="utf-8")
 changes = [
@@ -27,4 +37,4 @@ for old, new in changes:
     shell = shell.replace(old, new, 1)
 SHELL.write_text(shell, encoding="utf-8")
 
-print("Updated legacy UI2/UI4 assertions for UI5")
+print("Updated UI5 target sizing and legacy UI2/UI4 assertions")
