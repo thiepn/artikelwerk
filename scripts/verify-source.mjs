@@ -26,6 +26,17 @@ if (Buffer.byteLength(html, 'utf8') < 580_000) fail('index.html is unexpectedly 
 
 requireFragment(html, '<meta name="viewport"', 'viewport metadata');
 requireFragment(html, '<title>Artikelwerk', 'application title');
+requireFragment(html, 'class="app-header"', 'UI2 integrated application header');
+requireFragment(html, 'class="tabs app-nav"', 'UI2 primary navigation');
+requireFragment(html, '<span class="nav-label">Progress</span>', 'learner-facing Progress navigation label');
+requireFragment(html, 'class="panel practice-hero"', 'UI2 practice hero');
+requireFragment(html, 'class="practice-support-grid"', 'UI2 supporting practice hierarchy');
+requireFragment(html, 'id="practiceSetupHeading"', 'UI2 session setup heading');
+requireFragment(html, 'Your learning picture', 'progress view heading');
+requireFragment(html, 'Your reviewed noun library', 'vocabulary view heading');
+requireFragment(html, 'position:fixed;left:0;right:0;bottom:0;top:auto;z-index:70', 'mobile bottom navigation');
+requireFragment(html, 'grid-template-columns:minmax(210px,1fr) auto minmax(210px,1fr)', 'desktop shell layout');
+requireFragment(html, '.modal-backdrop{z-index:80}', 'dialogs above application chrome');
 requireFragment(html, '<link rel="icon" href="favicon.svg" type="image/svg+xml" />', 'SVG favicon');
 requireFragment(html, '<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />', 'Apple touch icon');
 requireFragment(html, '<link rel="manifest" href="site.webmanifest" />', 'web app manifest');
