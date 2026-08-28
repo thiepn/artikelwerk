@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "certificationId": "CC2-2026-08-28",
+  "reviewedAt": "2026-08-28",
+  "scope": "structural inflection metadata with targeted external correction",
+  "externallyVerified": {
+    "hinweis": {
+      "article": "der",
+      "genitive": "Hinweises",
+      "plural": "Hinweise",
+      "reviewStatus": "externally-verified",
+      "source": "Duden",
+      "sourceUrl": "https://www.duden.de/rechtschreibung/Hinweis"
+    }
+  },
+  "status": "runtime-corrected; full external dictionary audit remains separate from structural certification"
+}

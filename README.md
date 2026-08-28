@@ -57,3 +57,13 @@ dist/                              generated artifact; never committed
 ## Licensing
 
 See `THIRD_PARTY_NOTICES.md` and `LICENSES/GPL-3.0.txt` for the FreeDict-derived English-gloss subset.
+
+## Content certification
+
+- `translations.js` is the runtime-certified local gloss asset.
+- `content/provenance.json` records source kind and review state for all 1,000 nouns.
+- `content/ambiguous-gender-review.json` records externally verified variant and meaning-dependent gender decisions.
+- `scripts/certify-content.mjs` exhaustively validates translation, provenance, example, ambiguity, and targeted inflection invariants.
+- `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
+
+Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.

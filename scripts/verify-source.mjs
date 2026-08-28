@@ -27,6 +27,8 @@ if (Buffer.byteLength(html, 'utf8') < 580_000) fail('index.html is unexpectedly 
 requireFragment(html, '<meta name="viewport"', 'viewport metadata');
 requireFragment(html, '<title>Artikelwerk', 'application title');
 requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
+requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
+requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
 requireFragment(html, 'const APP_VERSION = "1.1.0";', 'application version 1.1.0');
 requireFragment(html, 'const VOCAB = [', 'vocabulary bank');
 requireFragment(html, 'const PracticeScreen = {', 'native practice controller');

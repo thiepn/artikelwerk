@@ -14,6 +14,12 @@ const releaseFiles = [
   ['THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.md'],
   ['LICENSES/GPL-3.0.txt', 'LICENSES/GPL-3.0.txt'],
   ['docs/translation-coverage.txt', 'docs/translation-coverage.txt'],
+  ['docs/content-certification.md', 'docs/content-certification.md'],
+  ['docs/real-device-verification.md', 'docs/real-device-verification.md'],
+  ['content/provenance.json', 'content/provenance.json'],
+  ['content/ambiguous-gender-review.json', 'content/ambiguous-gender-review.json'],
+  ['content/example-review.json', 'content/example-review.json'],
+  ['content/inflection-review.json', 'content/inflection-review.json'],
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
