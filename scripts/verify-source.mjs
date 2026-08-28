@@ -26,6 +26,29 @@ if (Buffer.byteLength(html, 'utf8') < 580_000) fail('index.html is unexpectedly 
 
 requireFragment(html, '<meta name="viewport"', 'viewport metadata');
 requireFragment(html, '<title>Artikelwerk', 'application title');
+requireFragment(html, '<link rel="icon" href="favicon.svg" type="image/svg+xml" />', 'SVG favicon');
+requireFragment(html, '<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />', 'Apple touch icon');
+requireFragment(html, '<link rel="manifest" href="site.webmanifest" />', 'web app manifest');
+requireFragment(html, '--accent:#1d6f5f', 'UI1 primary accent');
+requireFragment(html, '--bg:#f6f3ec', 'UI1 warm light background');
+requireFragment(html, '--bg:#131817', 'UI1 dark background');
+requireFragment(html, '--radius:12px', 'UI1 restrained radius');
+requireFragment(html, 'box-shadow:var(--shadow-sm)', 'UI1 restrained surface elevation');
+requireFragment(html, '<img src="favicon.svg" alt="" width="40" height="40">', 'UI1 brand mark');
+
+const uiAssetPaths = [
+  'favicon.svg','favicon.ico','favicon-16x16.png','favicon-32x32.png','apple-touch-icon.png',
+  'safari-pinned-tab.svg','site.webmanifest','icon-192.png','icon-512.png','docs/ui1-visual-identity.md'
+];
+for (const relativePath of uiAssetPaths) {
+  try { await access(join(rootDir, relativePath)); }
+  catch { fail(`Missing UI1 identity asset: ${relativePath}`); }
+}
+const manifest = JSON.parse(await readFile(join(rootDir, 'site.webmanifest'), 'utf8'));
+if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#1d6f5f') fail('Invalid Artikelwerk manifest identity.');
+if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');
+const faviconSvg = await readFile(join(rootDir, 'favicon.svg'), 'utf8');
+if (faviconSvg.includes('gradient') || !faviconSvg.includes('#1d6f5f') || !faviconSvg.includes('#fffaf0')) fail('Favicon must use the flat UI1 brand palette without gradients.');
 requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');

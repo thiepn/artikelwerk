@@ -9,6 +9,15 @@ const distDir = join(rootDir, 'dist');
 
 const releaseFiles = [
   ['.nojekyll', '.nojekyll'],
+  ['favicon.svg', 'favicon.svg'],
+  ['favicon.ico', 'favicon.ico'],
+  ['favicon-16x16.png', 'favicon-16x16.png'],
+  ['favicon-32x32.png', 'favicon-32x32.png'],
+  ['apple-touch-icon.png', 'apple-touch-icon.png'],
+  ['safari-pinned-tab.svg', 'safari-pinned-tab.svg'],
+  ['site.webmanifest', 'site.webmanifest'],
+  ['icon-192.png', 'icon-192.png'],
+  ['icon-512.png', 'icon-512.png'],
   ['index.html', 'index.html'],
   ['translations.js', 'translations.js'],
   ['THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.md'],
