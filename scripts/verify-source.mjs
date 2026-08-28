@@ -44,6 +44,18 @@ requireFragment(html, 'class="progress-meta"', 'UI3 secondary progress metrics')
 requireFragment(html, 'library-primary-toolbar library-filter-bar', 'UI3 vocabulary filter bar');
 requireFragment(html, 'class="panel library-table-panel"', 'UI3 vocabulary reference surface');
 requireFragment(html, '/* UI3 — practice, vocabulary, and progress surface polish */', 'UI3 surface style contract');
+requireFragment(html, '/* UI4 — motion, interaction states, accessibility, and responsive finish */', 'UI4 finish style contract');
+requireFragment(html, 'aria-pressed="false" title="Switch to dark mode"', 'theme toggle pressed-state semantics');
+requireFragment(html, '--focus-ring:var(--accent)', 'visible focus token');
+requireFragment(html, '@media(prefers-reduced-motion:reduce)', 'reduced-motion support');
+requireFragment(html, '@keyframes ui4SurfaceIn{from{opacity:.985}to{opacity:1}}', 'scroll-neutral practice entrance motion');
+requireFragment(html, '@media(forced-colors:active)', 'forced-colors support');
+requireFragment(html, 'scroll-padding-bottom:calc(86px + env(safe-area-inset-bottom))', 'mobile focus-not-obscured spacing');
+requireFragment(html, 'const wasOpen=!screen.hidden;', 'practice focus-return preservation');
+requireFragment(html, 'this.setAppInert(true);', 'modal background inertness');
+requireFragment(html, 'this.setBackgroundInert(true);', 'practice background inertness');
+requireFragment(html, 'this.prefersReducedMotion()?"auto":"smooth"', 'motion-aware programmatic scrolling');
+requireFragment(html, 'themeMeta.setAttribute("content",dark?"#131817":"#1d6f5f")', 'theme-color synchronization');
 requireFragment(html, '<link rel="icon" href="favicon.svg" type="image/svg+xml" />', 'SVG favicon');
 requireFragment(html, '<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />', 'Apple touch icon');
 requireFragment(html, '<link rel="manifest" href="site.webmanifest" />', 'web app manifest');
@@ -62,6 +74,8 @@ for (const relativePath of uiAssetPaths) {
   try { await access(join(rootDir, relativePath)); }
   catch { fail(`Missing UI1 identity asset: ${relativePath}`); }
 }
+try { await access(join(rootDir, 'docs', 'ui4-interaction-accessibility.md')); }
+catch { fail('Missing UI4 interaction/accessibility specification.'); }
 const manifest = JSON.parse(await readFile(join(rootDir, 'site.webmanifest'), 'utf8'));
 if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#1d6f5f') fail('Invalid Artikelwerk manifest identity.');
 if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');

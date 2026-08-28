@@ -735,6 +735,89 @@
     .word-detail-body{padding:15px}
   }
 
+
+  /* UI4 — motion, interaction states, accessibility, and responsive finish */
+  :root{--focus-ring:var(--accent);--motion-fast:120ms;--motion-standard:160ms}
+  html{scroll-padding-block:84px 96px}
+  :where(button,a[href],input,select,summary,[tabindex]:not([tabindex="-1"])){scroll-margin-block:84px 96px}
+  :where(button,a[href],input,select,summary,[tabindex]:not([tabindex="-1"])):focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+  .tab:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+  button,summary,.tab{touch-action:manipulation}
+  .library-advanced summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .primary-btn,.ghost-btn,.icon-btn,.danger-btn,.answer-btn,.confidence-btn,.practice-close-btn,.practice-translation-btn,.tab{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,box-shadow var(--motion-fast) ease,transform var(--motion-fast) ease}
+  :where(.primary-btn,.ghost-btn,.icon-btn,.danger-btn,.answer-btn,.confidence-btn,.practice-close-btn,.practice-translation-btn):active:not(:disabled){transform:translateY(1px)}
+  .answer-btn:active:not(:disabled){transform:translateY(1px) scale(.995)}
+  button:disabled,select:disabled,input:disabled{opacity:.52;filter:saturate(.68)}
+  button:disabled{cursor:not-allowed}
+  .answer-btn.correct{box-shadow:inset 0 0 0 1px var(--good)}
+  .answer-btn.incorrect{box-shadow:inset 0 0 0 1px var(--bad)}
+  .answer-btn.correct .answer-article::after{content:"  ✓";font-size:.78em}
+  .answer-btn.incorrect .answer-article::after{content:"  ×";font-size:.78em}
+  .confidence-btn[aria-pressed="true"]{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 24%,transparent)}
+  .modal-backdrop.show{overscroll-behavior:contain}
+
+  @media(hover:hover) and (pointer:fine){
+    .primary-btn:hover:not(:disabled){transform:translateY(-1px)}
+    .word-open-btn:hover{text-decoration-thickness:1px}
+  }
+  @media(hover:none){
+    .answer-btn:hover,.primary-btn:hover:not(:disabled){transform:none}
+  }
+
+  @media(prefers-reduced-motion:no-preference){
+    .view.active{animation:ui4ViewIn var(--motion-fast) ease-out}
+    .modal-backdrop.show{animation:ui4FadeIn var(--motion-fast) ease-out}
+    .modal-backdrop.show>.modal{animation:ui4ModalIn var(--motion-standard) cubic-bezier(.2,.75,.25,1)}
+    .practice-screen:not([hidden]) .practice-screen-shell{animation:ui4SurfaceIn var(--motion-standard) ease-out}
+  }
+  @keyframes ui4ViewIn{from{opacity:.985;transform:translateY(2px)}to{opacity:1;transform:none}}
+  @keyframes ui4FadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes ui4ModalIn{from{opacity:.98;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @keyframes ui4SurfaceIn{from{opacity:.985}to{opacity:1}}
+
+  @media(max-width:720px){
+    html{scroll-padding-top:76px;scroll-padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+    :where(button,a[href],input,select,summary,[tabindex]:not([tabindex="-1"])){scroll-margin-top:76px;scroll-margin-bottom:calc(86px + env(safe-area-inset-bottom))}
+  }
+  @media(max-width:360px){
+    .app{padding-left:10px;padding-right:10px}
+    .app-header{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+    .brand h1{font-size:.95rem}
+    .app-nav{padding-left:4px;padding-right:4px}
+    .app-nav .tab{font-size:.64rem;padding-inline:2px}
+    .practice-hero{padding:18px 16px}
+    .practice-support-grid .review-queue-panel,.practice-setup-panel{padding:14px}
+    .progress-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .library-filter-bar{padding:8px}
+  }
+  @media(max-height:500px) and (min-width:721px) and (max-width:940px){
+    .app{padding-bottom:24px}
+    .app-header{position:static;grid-template-columns:auto minmax(0,1fr) auto;min-height:54px;margin-bottom:14px;padding-top:0}
+    .app-header .app-nav{grid-column:auto;grid-row:auto;justify-self:center;width:auto;min-height:54px}
+    .app-nav .tab{min-height:54px}
+    .brand p{display:none}
+    .view-heading{margin-bottom:12px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    :root{--motion-fast:0ms;--motion-standard:0ms}
+    *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+    :where(.primary-btn,.ghost-btn,.icon-btn,.danger-btn,.answer-btn,.confidence-btn,.practice-close-btn,.practice-translation-btn):active:not(:disabled){transform:none}
+  }
+  @media(prefers-contrast:more){
+    :root{--border-strong:var(--text-soft)}
+    :where(button,input,select,summary):focus-visible{outline-width:3px}
+    .answer-btn,.confidence-btn,.library-table-panel,.progress-overview{border-width:2px}
+  }
+  @media(forced-colors:active){
+    :root{--focus-ring:Highlight}
+    :where(button,a[href],input,select,summary,[tabindex]:not([tabindex="-1"])):focus-visible{outline:2px solid Highlight!important;outline-offset:3px}
+    .primary-btn,.ghost-btn,.icon-btn,.danger-btn,.answer-btn,.confidence-btn,.practice-close-btn,.practice-translation-btn,.panel,.modal{border-color:CanvasText}
+    .answer-btn.correct{border:3px double Highlight;box-shadow:none}
+    .answer-btn.incorrect{border:3px dashed CanvasText;box-shadow:none}
+    .translation-hint.show,.feedback.show{border-color:CanvasText}
+  }
+
 </style>
 </head>
 <body>
@@ -763,7 +846,7 @@
 
     <div class="header-actions">
       <button class="ghost-btn header-data-btn" id="resetBtn" aria-label="Open progress and backup controls">Data</button>
-      <button class="icon-btn" id="themeBtn" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
+      <button class="icon-btn" id="themeBtn" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">◐</button>
     </div>
   </header>
 
@@ -6278,13 +6361,29 @@
     element(){ return DOM.$("#practiceScreen"); },
     isOpen(){ return Boolean(this.element() && !this.element().hidden); },
     isTouchLike(){ return Boolean(navigator.maxTouchPoints>0 || window.matchMedia?.("(pointer: coarse)").matches); },
+    backgroundNodes(){
+      return [
+        DOM.$(".app-header"),
+        DOM.$("#practiceView > .practice-hero"),
+        DOM.$("#practiceView > .practice-support-grid"),
+        DOM.$("#statsView"),
+        DOM.$("#libraryView")
+      ].filter(Boolean);
+    },
+    setBackgroundInert(enabled){
+      this.backgroundNodes().forEach(node=>{ node.inert=Boolean(enabled); });
+    },
     open(){
       const screen=this.element();
       if(!screen) return;
-      this.returnFocus=(typeof HTMLElement!=="undefined" && document.activeElement instanceof HTMLElement)?document.activeElement:DOM.$("#openPracticeBtn");
-      screen.hidden=false;
+      const wasOpen=!screen.hidden;
+      if(!wasOpen){
+        this.returnFocus=(typeof HTMLElement!=="undefined" && document.activeElement instanceof HTMLElement)?document.activeElement:DOM.$("#openPracticeBtn");
+        screen.hidden=false;
+      }
       screen.setAttribute("aria-hidden","false");
       document.body.classList.add("practice-open");
+      this.setBackgroundInert(true);
       this.updateSubtitle();
       requestAnimationFrame(()=>DOM.$("#nounPrompt")?.focus({preventScroll:true}));
     },
@@ -6294,6 +6393,7 @@
       screen.hidden=true;
       screen.setAttribute("aria-hidden","true");
       document.body.classList.remove("practice-open");
+      this.setBackgroundInert(false);
       if(restoreFocus){
         const target=this.returnFocus?.isConnected?this.returnFocus:DOM.$("#openPracticeBtn");
         requestAnimationFrame(()=>target?.focus?.({preventScroll:true}));
@@ -6331,6 +6431,15 @@
 
 
   const AccessibilityManager = {
+    prefersReducedMotion(){ return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches); },
+    scrollIntoView(target,{block="nearest",inline="nearest"}={}){
+      if(!target?.scrollIntoView) return;
+      target.scrollIntoView({behavior:this.prefersReducedMotion()?"auto":"smooth",block,inline});
+    },
+    setAppInert(enabled){
+      const app=DOM.$("#app");
+      if(app) app.inert=Boolean(enabled);
+    },
     announce(message){
       const node=DOM.$("#appStatus");
       if(!node) return;
@@ -6351,6 +6460,7 @@
       modal.setAttribute("aria-hidden","false");
       modal.classList.add("show");
       document.body.classList.add("modal-open");
+      this.setAppInert(true);
       requestAnimationFrame(()=>{
         const target=focusTarget || this.focusables(modal)[0] || modal;
         if(target && typeof target.focus==="function") target.focus({preventScroll:true});
@@ -6362,7 +6472,10 @@
       modal.classList.remove("show");
       modal.setAttribute("aria-hidden","true");
       modal._returnFocus=null;
-      if(!this.activeModal()) document.body.classList.remove("modal-open");
+      if(!this.activeModal()){
+        document.body.classList.remove("modal-open");
+        this.setAppInert(false);
+      }
       requestAnimationFrame(()=>{
         if(returnFocus && returnFocus.isConnected && typeof returnFocus.focus==="function") returnFocus.focus({preventScroll:true});
       });
@@ -6391,7 +6504,10 @@
       const dark=document.documentElement.dataset.theme==="dark";
       const label=dark?"Switch to light mode":"Switch to dark mode";
       button.setAttribute("aria-label",label);
+      button.setAttribute("aria-pressed",dark?"true":"false");
       button.title=label;
+      const themeMeta=document.querySelector('meta[name="theme-color"]');
+      if(themeMeta) themeMeta.setAttribute("content",dark?"#131817":"#1d6f5f");
     },
     init(){
       const stored = localStorage.getItem(THEME_KEY);
@@ -6413,7 +6529,7 @@
       this.setView("stats");
       setTimeout(()=>{
         const panel=DOM.$("#dataControlsPanel");
-        if(panel){ panel.scrollIntoView({behavior:"smooth",block:"start"}); panel.focus({preventScroll:true}); }
+        if(panel){ AccessibilityManager.scrollIntoView(panel,{block:"start"}); panel.focus({preventScroll:true}); }
       },0);
     },
     setView(view){
@@ -6433,6 +6549,8 @@
       });
       if(view==="stats") StatisticsView.render();
       if(view==="library") VocabularyView.render();
+      const viewLabel=DOM.$(`.tab[data-view="${view}"] .nav-label`)?.textContent?.trim()||view;
+      AccessibilityManager.announce(`${viewLabel} view.`);
     },
     bindEvents(){
       DOM.$$(".answer-btn").forEach(btn=>btn.addEventListener("click",()=>SessionEngine.answer(btn.dataset.article)));
