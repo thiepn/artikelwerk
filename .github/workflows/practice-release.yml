@@ -76,6 +76,11 @@ jobs:
               '.translation-hint.is-fallback #translationLabel::after{content:" cue"}',
               '.translation-hint.is-fallback #translationLabel::after{content:""}',
           )
+          old_hint='.translation-hint{min-height:38px;margin:7px auto 0;padding:7px 12px;max-width:min(100%,700px);border:1px solid transparent;'
+          new_hint='.translation-hint{width:100%;max-width:min(100%,700px);min-width:0;box-sizing:border-box;overflow:hidden;min-height:38px;margin:7px auto 0;padding:7px 12px;border:1px solid transparent;'
+          if old_hint not in text:
+              raise SystemExit('Could not constrain the mobile translation strip')
+          text=text.replace(old_hint,new_hint,1)
           path.write_text(text,encoding='utf-8')
           PY
           python scripts/apply_practice_screen.py --source app-source.html --output index.html
@@ -119,7 +124,8 @@ jobs:
           required_fragments=[
               'body.practice-open','height:100dvh','overflow:hidden',
               'PracticeScreen.isTouchLike()','TranslationModel.text(',
-              'translations.js','APP_VERSION = "1.1.0"'
+              'translations.js','APP_VERSION = "1.1.0"',
+              'box-sizing:border-box;overflow:hidden;min-height:38px'
           ]
           for fragment in required_fragments:
               if fragment not in html:
