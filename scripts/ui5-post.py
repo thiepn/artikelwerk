@@ -8,10 +8,11 @@ verify = VERIFY.read_text(encoding="utf-8")
 changes = [
     ("requireFragment(html, 'Your learning picture', 'progress view heading');", "requireFragment(html, '<h2>Progress</h2>', 'progress view heading');"),
     ("requireFragment(html, 'Your reviewed noun library', 'vocabulary view heading');", "requireFragment(html, '<h2>Vocabulary</h2>', 'vocabulary view heading');"),
+    ('requireFragment(html, \'themeMeta.setAttribute("content",dark?"#131817":"#1d6f5f")\', \'theme-color synchronization\');', 'requireFragment(html, \'themeMeta.setAttribute("content",dark?"#181614":"#d45532")\', \'theme-color synchronization\');'),
 ]
 for old, new in changes:
     if old not in verify:
-        raise SystemExit(f"Missing verifier copy anchor: {old}")
+        raise SystemExit(f"Missing verifier UI5 anchor: {old}")
     verify = verify.replace(old, new, 1)
 VERIFY.write_text(verify, encoding="utf-8")
 
@@ -26,4 +27,4 @@ for old, new in changes:
     shell = shell.replace(old, new, 1)
 SHELL.write_text(shell, encoding="utf-8")
 
-print("Updated legacy UI2 copy assertions for UI5")
+print("Updated legacy UI2/UI4 assertions for UI5")
