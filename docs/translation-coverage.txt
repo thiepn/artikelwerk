@@ -1,0 +1,254 @@
+vocabulary_entries=1000
+curated=94
+dictionary=664
+derived=235
+fallback=7
+coverage_dictionary_curated_or_derived=993
+coverage_ratio=0.9930
+cue_entries=242
+
+fallback_entries:
+handlungsansatz	der Handlungsansatz	politics
+kompetenzprofil	das Kompetenzprofil	professional
+bewertungsansatz	der Bewertungsansatz	criteria
+interpretationsansatz	der Interpretationsansatz	academic
+deutungsansatz	der Deutungsansatz	analysis
+analyseansatz	der Analyseansatz	analysis
+forschungsansatz	der Forschungsansatz	academic
+
+derived_entries:
+momentum	das Momentum	momentum; forward drive
+evidenz	die Evidenz	evidence
+credo	das Credo	credo; guiding principle
+zielbild	das Zielbild	target vision; desired future state
+investment	das Investment	investment
+aufkommen	das Aufkommen	volume; occurrence; revenue
+regelfall	der Regelfall	normal case; standard situation
+ausbleiben	das Ausbleiben	absence; failure to occur
+gelingen	das Gelingen	success; successful outcome
+zustandekommen	das Zustandekommen	formation; coming about
+deutungsmuster	das Deutungsmuster	interpretation pattern
+erklaerungsmodell	das Erklärungsmodell	explanation model
+regelungsmodell	das Regelungsmodell	regulatory model
+anwendungsszenario	das Anwendungsszenario	application scenario
+interpretationsmuster	das Interpretationsmuster	interpretation pattern
+kausalmodell	das Kausalmodell	causal model
+vergleichskriterium	das Vergleichskriterium	comparison criterion
+analyseinstrument	das Analyseinstrument	analysis tool
+bewertungsinstrument	das Bewertungsinstrument	evaluation tool
+diskussionsbedarf	der Diskussionsbedarf	need for discussion
+erklaerungsrahmen	der Erklärungsrahmen	explanation framework
+erklaerungswert	der Erklärungswert	explanation value
+fehlanreiz	der Fehlanreiz	perverse incentive; misaligned incentive
+grundbedarf	der Grundbedarf	need for basic
+grundtenor	der Grundtenor	overall tone; underlying message
+handlungsdruck	der Handlungsdruck	action pressure
+handlungsschritt	der Handlungsschritt	action step
+methodenmix	der Methodenmix	methods mix
+mitteleinsatz	der Mitteleinsatz	resources use
+normenkonflikt	der Normenkonflikt	norms conflict
+rechtsrahmen	der Rechtsrahmen	legal framework
+regelungsbedarf	der Regelungsbedarf	need for regulatory
+regelungsrahmen	der Regelungsrahmen	regulatory framework
+stellenanteil	der Stellenanteil	share of a full-time position
+vergleichsmassstab	der Vergleichsmaßstab	comparison benchmark
+beschlusslage	die Beschlusslage	current state of decisions
+forschungsluecke	die Forschungslücke	research gap
+handlungsoption	die Handlungsoption	action option
+handlungslogik	die Handlungslogik	action logic
+kernthese	die Kernthese	core thesis
+schwerpunktsetzung	die Schwerpunktsetzung	prioritization; setting of priorities
+anforderungsniveau	das Anforderungsniveau	requirement level
+argumentationsmuster	das Argumentationsmuster	argumentation pattern
+bewertungsmass	das Bewertungsmaß	evaluation measure
+bewertungsniveau	das Bewertungsniveau	evaluation level
+bewertungsraster	das Bewertungsraster	evaluation framework
+deutungsangebot	das Deutungsangebot	interpretive account; proposed interpretation
+entscheidungsmodell	das Entscheidungsmodell	decision model
+entscheidungsmuster	das Entscheidungsmuster	decision pattern
+erklaerungsangebot	das Erklärungsangebot	explanatory account
+erklaerungsdefizit	das Erklärungsdefizit	explanation deficit
+erkenntnisziel	das Erkenntnisziel	knowledge objective
+erfolgskriterium	das Erfolgskriterium	success criterion
+forschungsdesign	das Forschungsdesign	research design
+forschungsinteresse	das Forschungsinteresse	research interest
+handlungsmodell	das Handlungsmodell	action model
+handlungsziel	das Handlungsziel	action objective
+kriterienset	das Kriterienset	set of criteria
+massnahmenset	das Maßnahmenset	set of measures
+meinungsbild	das Meinungsbild	opinion landscape; overall opinion
+ordnungsmuster	das Ordnungsmuster	order pattern
+referenzmodell	das Referenzmodell	reference model
+stimmungsbild	das Stimmungsbild	public mood; overall sentiment
+themenspektrum	das Themenspektrum	topics range
+untersuchungsdesign	das Untersuchungsdesign	study design
+vergleichsmodell	das Vergleichsmodell	comparison model
+werteverstaendnis	das Werteverständnis	understanding of values
+wirkungsmodell	das Wirkungsmodell	impact model
+zielkriterium	das Zielkriterium	objective criterion
+qualitaetsmerkmal	das Qualitätsmerkmal	quality feature
+anpassungsbedarf	der Anpassungsbedarf	need for adaptation
+aenderungsbedarf	der Änderungsbedarf	need for change
+begruendungsbedarf	der Begründungsbedarf	need for justification
+begruendungszusammenhang	der Begründungszusammenhang	justification context
+bewertungsmassstab	der Bewertungsmaßstab	evaluation benchmark
+deutungsspielraum	der Deutungsspielraum	scope for interpretation
+einordnungsrahmen	der Einordnungsrahmen	classification framework
+koordinierungsbedarf	der Koordinierungsbedarf	need for coordination
+modernisierungsbedarf	der Modernisierungsbedarf	need for modernization
+pruefbedarf	der Prüfbedarf	need for review
+geltungsrahmen	der Geltungsrahmen	applicability framework
+wirkungsrahmen	der Wirkungsrahmen	impact framework
+argumentationsrahmen	der Argumentationsrahmen	argumentation framework
+forschungsrahmen	der Forschungsrahmen	research framework
+bewertungsprozess	der Bewertungsprozess	evaluation process
+problemhorizont	der Problemhorizont	broader problem context
+systemwechsel	der Systemwechsel	system change
+vermittlungsbedarf	der Vermittlungsbedarf	need for communication
+zielrahmen	der Zielrahmen	target framework
+argumentationsgang	der Argumentationsgang	line of argument
+ausgangsbefund	der Ausgangsbefund	initial finding
+deutungsrahmen	der Deutungsrahmen	interpretation framework
+entscheidungsrahmen	der Entscheidungsrahmen	decision framework
+geltungsgrund	der Geltungsgrund	basis for validity; basis for applicability
+aushandlungsprozess	der Aushandlungsprozess	negotiation process
+interpretationsrahmen	der Interpretationsrahmen	interpretation framework
+entscheidungsweg	der Entscheidungsweg	decision path
+koordinationsbedarf	der Koordinationsbedarf	need for coordination
+pruefmassstab	der Prüfmaßstab	review benchmark
+ordnungsrahmen	der Ordnungsrahmen	order framework
+problemzusammenhang	der Problemzusammenhang	problem context
+beurteilungsmassstab	der Beurteilungsmaßstab	assessment benchmark
+steuerungsbedarf	der Steuerungsbedarf	need for governance
+untersuchungsrahmen	der Untersuchungsrahmen	study framework
+vergleichsrahmen	der Vergleichsrahmen	comparison framework
+zielbezug	der Zielbezug	relation to the objective
+zielhorizont	der Zielhorizont	target horizon
+bewertungsrahmen	der Bewertungsrahmen	evaluation framework
+orientierungsbedarf	der Orientierungsbedarf	need for guidance
+revisionsbedarf	der Revisionsbedarf	need for revision
+abwaegungsprozess	der Abwägungsprozess	balancing process
+forschungsimpuls	der Forschungsimpuls	research impetus
+handlungsgrundsatz	der Handlungsgrundsatz	action principle
+abwaegungspraxis	die Abwägungspraxis	balancing practice
+anwendungstauglichkeit	die Anwendungstauglichkeit	application suitability
+begruendungstiefe	die Begründungstiefe	depth of justification
+beurteilungsgrundlage	die Beurteilungsgrundlage	basis for assessment
+datengrundlage	die Datengrundlage	data basis
+datenguete	die Datengüte	data quality
+ergebnisoffenheit	die Ergebnisoffenheit	openness to results
+erklaerungsleistung	die Erklärungsleistung	explanatory power
+ermessensausuebung	die Ermessensausübung	exercise of discretion
+geltungswirkung	die Geltungswirkung	legal effect; effect of applicability
+handlungsempfehlung	die Handlungsempfehlung	recommendation for action
+informationsgrundlage	die Informationsgrundlage	information basis
+interpretationslinie	die Interpretationslinie	interpretation line
+erklaerungstiefe	die Erklärungstiefe	depth of explanation
+reichweitenbegrenzung	die Reichweitenbegrenzung	limitation of scope
+regelungsdichte	die Regelungsdichte	regulatory density
+forschungspraxis	die Forschungspraxis	research practice
+geltungsreichweite	die Geltungsreichweite	scope of application
+wirksamkeitspruefung	die Wirksamkeitsprüfung	effectiveness review
+abwaegungsentscheidung	die Abwägungsentscheidung	balancing decision
+anschlusslogik	die Anschlusslogik	follow-on logic
+anwendungspraxis	die Anwendungspraxis	application practice
+argumentationsstruktur	die Argumentationsstruktur	argumentation structure
+begruendungslinie	die Begründungslinie	line of reasoning
+deutungsvariante	die Deutungsvariante	interpretation variant
+evidenzbasis	die Evidenzbasis	evidence basis
+forschungslogik	die Forschungslogik	research logic
+geltungsfrage	die Geltungsfrage	question of applicability
+interpretationsbreite	die Interpretationsbreite	breadth of interpretation
+interpretationsbasis	die Interpretationsbasis	interpretation basis
+kontrollgroesse	die Kontrollgröße	control variable
+loesungsstrategie	die Lösungsstrategie	solution strategy
+nachweislage	die Nachweislage	state of evidence
+problemstruktur	die Problemstruktur	problem structure
+regelungswirkung	die Regelungswirkung	regulatory impact
+sachpruefung	die Sachprüfung	substantive review
+steuerungslogik	die Steuerungslogik	governance logic
+untersuchungsfrage	die Untersuchungsfrage	question of study
+vergleichsgrundlage	die Vergleichsgrundlage	comparison basis
+wirkungsanalyse	die Wirkungsanalyse	impact analysis
+zugangsbarriere	die Zugangsbarriere	access barrier
+bewertungslogik	die Bewertungslogik	evaluation logic
+deutungslogik	die Deutungslogik	interpretation logic
+entscheidungslogik	die Entscheidungslogik	decision logic
+bewertungspraxis	die Bewertungspraxis	evaluation practice
+interpretationspraxis	die Interpretationspraxis	interpretation practice
+regelungslogik	die Regelungslogik	regulatory logic
+verfahrenslogik	die Verfahrenslogik	procedure logic
+wirkungslogik	die Wirkungslogik	impact logic
+argumentationsziel	das Argumentationsziel	argumentation objective
+aussagepotenzial	das Aussagepotenzial	informational value; evidentiary potential
+deutungsschema	das Deutungsschema	interpretation framework
+einordnungskriterium	das Einordnungskriterium	classification criterion
+entscheidungsfeld	das Entscheidungsfeld	decision field
+erkenntnispotenzial	das Erkenntnispotenzial	knowledge potential
+erklaerungsniveau	das Erklärungsniveau	explanation level
+interpretationsfeld	das Interpretationsfeld	interpretation field
+geltungsproblem	das Geltungsproblem	applicability problem
+informationsfeld	das Informationsfeld	information field
+informationsniveau	das Informationsniveau	level of information
+interpretationsschema	das Interpretationsschema	interpretation framework
+regelungsfeld	das Regelungsfeld	regulatory field
+loesungsmodell	das Lösungsmodell	solution model
+problemniveau	das Problemniveau	problem level
+regelungsziel	das Regelungsziel	regulatory objective
+sachargument	das Sachargument	factual argument
+steuerungsmodell	das Steuerungsmodell	governance model
+erkenntnisniveau	das Erkenntnisniveau	knowledge level
+evidenzniveau	das Evidenzniveau	evidence level
+wirkungskriterium	das Wirkungskriterium	impact criterion
+vergleichsniveau	das Vergleichsniveau	comparison level
+analyseraster	das Analyseraster	analysis framework
+anforderungsraster	das Anforderungsraster	requirement framework
+bewertungsziel	das Bewertungsziel	evaluation objective
+deutungsraster	das Deutungsraster	interpretation framework
+entscheidungsraster	das Entscheidungsraster	decision framework
+erkenntnismodell	das Erkenntnismodell	knowledge model
+erklaerungsraster	das Erklärungsraster	explanatory framework
+geltungskriterium	das Geltungskriterium	applicability criterion
+pruefziel	das Prüfziel	review objective
+interpretationsmodell	das Interpretationsmodell	interpretation model
+loesungsprinzip	das Lösungsprinzip	solution principle
+ordnungsmodell	das Ordnungsmodell	order model
+problemschema	das Problemschema	problem framework
+referenzkriterium	das Referenzkriterium	reference criterion
+regelungskonzept	das Regelungskonzept	regulatory concept
+steuerungskonzept	das Steuerungskonzept	governance concept
+untersuchungsmodell	das Untersuchungsmodell	study model
+vergleichsraster	das Vergleichsraster	comparison framework
+zielmodell	das Zielmodell	objective model
+anwendungskonzept	das Anwendungskonzept	application concept
+argumentationsschema	das Argumentationsschema	argumentation framework
+aussagekriterium	das Aussagekriterium	statement criterion
+deutungsmodell	das Deutungsmodell	interpretation model
+entscheidungsverfahren	das Entscheidungsverfahren	decision-making procedure
+erkenntniskriterium	das Erkenntniskriterium	knowledge criterion
+erklaerungsprinzip	das Erklärungsprinzip	explanation principle
+forschungskonzept	das Forschungskonzept	research concept
+geltungsmodell	das Geltungsmodell	applicability model
+handlungsprinzip	das Handlungsprinzip	action principle
+informationskonzept	das Informationskonzept	information concept
+interpretationsprinzip	das Interpretationsprinzip	interpretation principle
+loesungskriterium	das Lösungskriterium	solution criterion
+orientierungsmodell	das Orientierungsmodell	guidance model
+problemkriterium	das Problemkriterium	problem criterion
+referenzschema	das Referenzschema	reference framework
+regelungsprinzip	das Regelungsprinzip	regulatory principle
+steuerungsprinzip	das Steuerungsprinzip	governance principle
+untersuchungskriterium	das Untersuchungskriterium	study criterion
+vergleichsschema	das Vergleichsschema	comparison framework
+zielprinzip	das Zielprinzip	objective principle
+anwendungsmodell	das Anwendungsmodell	application model
+argumentationsprinzip	das Argumentationsprinzip	argumentation principle
+aussageziel	das Aussageziel	communication objective
+bewertungsprinzip	das Bewertungsprinzip	evaluation principle
+deutungsprinzip	das Deutungsprinzip	interpretation principle
+entscheidungsprinzip	das Entscheidungsprinzip	decision principle
+erkenntnisschema	das Erkenntnisschema	knowledge framework
+forschungsziel	das Forschungsziel	research objective
+geltungsprinzip	das Geltungsprinzip	principle of applicability
+analysemodell	das Analysemodell	analysis model
+analyseziel	das Analyseziel	analysis objective

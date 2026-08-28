@@ -9,9 +9,18 @@ from pathlib import Path
 
 def replace_once(text: str, old: str, new: str, label: str) -> str:
     count = text.count(old)
-    if count != 1:
-        raise ValueError(f"{label}: expected exactly one match, found {count}")
-    return text.replace(old, new, 1)
+    if count == 1:
+        return text.replace(old, new, 1)
+    if count == 0 and label == "practice keyboard scope":
+        listener = '      document.addEventListener("keydown",e=>{'
+        listener_position = text.find(listener)
+        input_marker = '        if(e.target.matches('
+        input_position = text.find(input_marker, listener_position)
+        active_marker = '        if(!DOM.$("#practiceView")?.classList.contains("active")) return;'
+        if listener_position >= 0 and input_position >= 0 and active_marker in text:
+            text = text[:input_position] + '        if(PracticeScreen.handleKeydown(e)) return;\n' + text[input_position:]
+            return text.replace(active_marker, '        if(!PracticeScreen.isOpen()) return;', 1)
+    raise ValueError(f"{label}: expected exactly one match, found {count}")
 
 
 PRACTICE_CSS = r'''
@@ -39,18 +48,18 @@ PRACTICE_CSS = r'''
   .practice-screen-body{min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);gap:6px}
   .practice-screen .session-bar{min-height:24px;margin:0;padding:0 4px;align-items:center}
   .practice-screen .session-metrics{gap:16px}
-  .practice-screen .quiz-card{height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}
-  .practice-screen #quizContent{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}
+  .practice-screen .quiz-card{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;margin:0;padding:clamp(14px,2.3vw,28px);border-radius:16px;overflow:hidden;display:block}
+  .practice-screen #quizContent{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:100%;min-height:0;overflow:hidden;display:grid;grid-template-rows:auto minmax(88px,1fr) auto}
   .practice-screen #quizContent>div:last-child{min-height:0;display:flex;flex-direction:column;justify-content:flex-end}
   .practice-screen .quiz-top{min-height:25px}
-  .practice-screen .question-wrap{min-height:0;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}
+  .practice-screen .question-wrap{box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:0;overflow:hidden;padding:clamp(12px,3vh,30px) 0 clamp(8px,2vh,18px);display:flex;flex-direction:column;justify-content:center}
   .practice-screen .noun{font-size:clamp(2.2rem,7vw,5rem)}
   .practice-screen .quiz-card.format-context .noun{font-size:clamp(1.25rem,3.3vw,2.45rem);line-height:1.28}
-  .translation-hint{min-height:38px;margin:7px auto 0;padding:7px 12px;max-width:min(100%,700px);border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:.86rem;line-height:1.25;text-align:center;visibility:hidden;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .12s ease}
+  .translation-hint{align-self:center;width:min(100%,calc(100vw - 36px),700px);max-width:calc(100vw - 36px);min-width:0;box-sizing:border-box;overflow:hidden;min-height:38px;margin:7px auto 0;padding:7px 12px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:.86rem;line-height:1.25;text-align:center;visibility:hidden;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .12s ease}
   .translation-hint.show{visibility:visible;opacity:1;border-color:var(--border);background:var(--surface-2)}
   .translation-hint .translation-label{flex:0 0 auto;color:var(--accent);font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
   .translation-hint #translationText{min-width:0;color:var(--text);font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .translation-hint.is-fallback #translationLabel::after{content:" cue"}
+  .translation-hint.is-fallback #translationLabel::after{content:""}
   .practice-screen .confidence-capture{margin-bottom:9px}
   .practice-screen .unknown-row{margin-top:8px}
   .practice-screen .feedback{max-width:none;margin:8px 0 0;padding-top:8px}
