@@ -28,10 +28,10 @@ async function desktop(browser){
   assert.equal(await page.locator("#openPracticeBtn").isVisible(),true,"primary practice CTA must be visible");
   await page.locator("#tabStats").click();
   await page.locator("#statsView.active").waitFor({state:"visible"});
-  assert.match((await page.locator("#statsView .view-heading h2").textContent())||"",/learning picture/i);
+  assert.equal(((await page.locator("#statsView .view-heading h2").textContent())||"").trim(),"Progress");
   await page.locator("#tabLibrary").click();
   await page.locator("#libraryView.active").waitFor({state:"visible"});
-  assert.match((await page.locator("#libraryView .view-heading h2").textContent())||"",/reviewed noun library/i);
+  assert.equal(((await page.locator("#libraryView .view-heading h2").textContent())||"").trim(),"Vocabulary");
   await page.locator("#tabPractice").click();
   await page.locator("#practiceView.active").waitFor({state:"visible"});
   await noHorizontalOverflow(page,"desktop");

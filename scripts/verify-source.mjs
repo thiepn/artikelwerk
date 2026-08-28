@@ -32,8 +32,8 @@ requireFragment(html, '<span class="nav-label">Progress</span>', 'learner-facing
 requireFragment(html, 'class="panel practice-hero"', 'UI2 practice hero');
 requireFragment(html, 'class="practice-support-grid"', 'UI2 supporting practice hierarchy');
 requireFragment(html, 'id="practiceSetupHeading"', 'UI2 session setup heading');
-requireFragment(html, 'Your learning picture', 'progress view heading');
-requireFragment(html, 'Your reviewed noun library', 'vocabulary view heading');
+requireFragment(html, '<h2>Progress</h2>', 'progress view heading');
+requireFragment(html, '<h2>Vocabulary</h2>', 'vocabulary view heading');
 requireFragment(html, 'position:fixed;left:0;right:0;bottom:0;top:auto;z-index:70', 'mobile bottom navigation');
 requireFragment(html, 'grid-template-columns:minmax(210px,1fr) auto minmax(210px,1fr)', 'desktop shell layout');
 requireFragment(html, '.modal-backdrop{z-index:80}', 'dialogs above application chrome');
@@ -45,6 +45,14 @@ requireFragment(html, 'library-primary-toolbar library-filter-bar', 'UI3 vocabul
 requireFragment(html, 'class="panel library-table-panel"', 'UI3 vocabulary reference surface');
 requireFragment(html, '/* UI3 — practice, vocabulary, and progress surface polish */', 'UI3 surface style contract');
 requireFragment(html, '/* UI4 — motion, interaction states, accessibility, and responsive finish */', 'UI4 finish style contract');
+requireFragment(html, '/* UI5 — editorial rebuild: typography and rules instead of dashboard cards */', 'UI5 editorial rebuild');
+requireFragment(html, '--accent:#d45532', 'UI5 terracotta accent');
+requireFragment(html, '--bg:#f7f4ee', 'UI5 paper background');
+requireFragment(html, '--font-display:', 'UI5 editorial display typography');
+requireFragment(html, '.practice-hero{display:block', 'UI5 borderless practice landing');
+requireFragment(html, '.practice-hero-articles{display:none}', 'UI5 removed decorative article trio');
+requireFragment(html, '.ui3-practice .quiz-card{border:0!important', 'UI5 cardless practice canvas');
+requireFragment(html, '.article-chip{min-width:0;padding:0;border:0', 'UI5 typographic article labels');
 requireFragment(html, 'aria-pressed="false" title="Switch to dark mode"', 'theme toggle pressed-state semantics');
 requireFragment(html, '--focus-ring:var(--accent)', 'visible focus token');
 requireFragment(html, '@media(prefers-reduced-motion:reduce)', 'reduced-motion support');
@@ -55,7 +63,7 @@ requireFragment(html, 'const wasOpen=!screen.hidden;', 'practice focus-return pr
 requireFragment(html, 'this.setAppInert(true);', 'modal background inertness');
 requireFragment(html, 'this.setBackgroundInert(true);', 'practice background inertness');
 requireFragment(html, 'this.prefersReducedMotion()?"auto":"smooth"', 'motion-aware programmatic scrolling');
-requireFragment(html, 'themeMeta.setAttribute("content",dark?"#131817":"#1d6f5f")', 'theme-color synchronization');
+requireFragment(html, 'themeMeta.setAttribute("content",dark?"#181614":"#d45532")', 'theme-color synchronization');
 requireFragment(html, '<link rel="icon" href="favicon.svg" type="image/svg+xml" />', 'SVG favicon');
 requireFragment(html, '<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />', 'Apple touch icon');
 requireFragment(html, '<link rel="manifest" href="site.webmanifest" />', 'web app manifest');
@@ -76,11 +84,13 @@ for (const relativePath of uiAssetPaths) {
 }
 try { await access(join(rootDir, 'docs', 'ui4-interaction-accessibility.md')); }
 catch { fail('Missing UI4 interaction/accessibility specification.'); }
+try { await access(join(rootDir, 'docs', 'ui5-editorial-rebuild.md')); }
+catch { fail('Missing UI5 editorial rebuild specification.'); }
 const manifest = JSON.parse(await readFile(join(rootDir, 'site.webmanifest'), 'utf8'));
-if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#1d6f5f') fail('Invalid Artikelwerk manifest identity.');
+if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#d45532') fail('Invalid Artikelwerk manifest identity.');
 if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');
 const faviconSvg = await readFile(join(rootDir, 'favicon.svg'), 'utf8');
-if (faviconSvg.includes('gradient') || !faviconSvg.includes('#1d6f5f') || !faviconSvg.includes('#fffaf0')) fail('Favicon must use the flat UI1 brand palette without gradients.');
+if (faviconSvg.includes('gradient') || !faviconSvg.includes('#d45532') || !faviconSvg.includes('#f7f4ee') || !faviconSvg.includes('#191715')) fail('Favicon must use the flat UI5 editorial palette without gradients.');
 requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
