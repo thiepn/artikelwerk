@@ -8,6 +8,13 @@ DOC = ROOT / "docs" / "ui4-interaction-accessibility.md"
 
 html = INDEX.read_text(encoding="utf-8")
 
+# Fullscreen practice must never create scrollable overflow: its entrance motion is opacity-only.
+motion_anchor = '@keyframes ui4SurfaceIn{from{opacity:.99;transform:translateY(2px)}to{opacity:1;transform:none}}'
+motion_replacement = '@keyframes ui4SurfaceIn{from{opacity:.985}to{opacity:1}}'
+if motion_anchor not in html:
+    raise SystemExit("UI4 practice-motion keyframe anchor not found")
+html = html.replace(motion_anchor, motion_replacement, 1)
+
 anchor = '''    isOpen(){ return Boolean(this.element() && !this.element().hidden); },
     isTouchLike(){ return Boolean(navigator.maxTouchPoints>0 || window.matchMedia?.("(pointer: coarse)").matches); },
     open(){'''
@@ -60,6 +67,12 @@ if verify_line not in verify:
     if verify_anchor not in verify:
         raise SystemExit("UI4 modal inert verification anchor not found")
     verify = verify.replace(verify_anchor, verify_anchor + verify_line, 1)
+motion_verify_anchor = "requireFragment(html, '@media(prefers-reduced-motion:reduce)', 'reduced-motion support');\n"
+motion_verify_line = "requireFragment(html, '@keyframes ui4SurfaceIn{from{opacity:.985}to{opacity:1}}', 'scroll-neutral practice entrance motion');\n"
+if motion_verify_line not in verify:
+    if motion_verify_anchor not in verify:
+        raise SystemExit("UI4 reduced-motion verification anchor not found")
+    verify = verify.replace(motion_verify_anchor, motion_verify_anchor + motion_verify_line, 1)
 VERIFY.write_text(verify, encoding="utf-8")
 
 test = TEST.read_text(encoding="utf-8")
@@ -101,7 +114,11 @@ if forced_anchor not in test:
 test = test.replace(forced_anchor, forced_replacement, 1)
 TEST.write_text(test, encoding="utf-8")
 
-doc = DOC.read_text(encoding="utf-8")
+doc = DOC.read_text(encoding="utf-8")ndoc_anchor = "- Motion is restrained to short opacity/2–4 px entrance transitions for views and dialogs.\n"
+doc_replacement = "- Motion is restrained to short opacity/2–4 px entrance transitions for ordinary views and dialogs; fullscreen Practice uses opacity-only motion so animation cannot create scrollable overflow.\n"
+if doc_anchor not in doc:
+    raise SystemExit("UI4 motion document anchor not found")
+doc = doc.replace(doc_anchor, doc_replacement, 1)
 doc_anchor = "- Opening a modal makes the background application inert.\n"
 doc_line = "- Opening fullscreen Practice makes the app header, setup surface, and inactive views inert while leaving the practice dialog operable.\n"
 if doc_line not in doc:
@@ -110,4 +127,4 @@ if doc_line not in doc:
     doc = doc.replace(doc_anchor, doc_anchor + doc_line, 1)
 DOC.write_text(doc, encoding="utf-8")
 
-print("Hardened UI4 practice isolation and forced-colors state verification.")
+print("Hardened UI4 scroll-neutral practice motion, practice isolation, and forced-colors state verification.")
