@@ -114,7 +114,8 @@ if forced_anchor not in test:
 test = test.replace(forced_anchor, forced_replacement, 1)
 TEST.write_text(test, encoding="utf-8")
 
-doc = DOC.read_text(encoding="utf-8")ndoc_anchor = "- Motion is restrained to short opacity/2–4 px entrance transitions for views and dialogs.\n"
+doc = DOC.read_text(encoding="utf-8")
+doc_anchor = "- Motion is restrained to short opacity/2–4 px entrance transitions for views and dialogs.\n"
 doc_replacement = "- Motion is restrained to short opacity/2–4 px entrance transitions for ordinary views and dialogs; fullscreen Practice uses opacity-only motion so animation cannot create scrollable overflow.\n"
 if doc_anchor not in doc:
     raise SystemExit("UI4 motion document anchor not found")
