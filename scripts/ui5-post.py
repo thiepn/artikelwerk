@@ -12,6 +12,18 @@ new_theme_size = '#themeBtn{width:44px;min-width:44px;height:44px;border:0;backg
 if old_theme_size not in html:
     raise SystemExit("Missing UI5 theme-target size anchor")
 html = html.replace(old_theme_size, new_theme_size, 1)
+
+# UI5 is appended after UI4, so reassert non-color answer-state distinctions for forced colors here.
+forced_colors = '''
+  @media(forced-colors:active){
+    .ui3-practice .answer-btn.correct{border:3px double Highlight!important;box-shadow:none!important}
+    .ui3-practice .answer-btn.incorrect{border:3px dashed CanvasText!important;box-shadow:none!important}
+  }
+'''
+if forced_colors.strip() not in html:
+    if "\n</style>" not in html:
+        raise SystemExit("Missing style close for UI5 forced-colors hardening")
+    html = html.replace("\n</style>", forced_colors + "\n</style>", 1)
 INDEX.write_text(html, encoding="utf-8")
 
 verify = VERIFY.read_text(encoding="utf-8")
@@ -37,4 +49,4 @@ for old, new in changes:
     shell = shell.replace(old, new, 1)
 SHELL.write_text(shell, encoding="utf-8")
 
-print("Updated UI5 target sizing and legacy UI2/UI4 assertions")
+print("Updated UI5 target sizing, forced-colors states, and legacy UI2/UI4 assertions")
