@@ -1,0 +1,46 @@
+name: Clean tested release tree
+
+on:
+  push:
+    branches:
+      - codex/dedicated-practice-screen
+    paths:
+      - .github/workflows/cleanup-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove generated test and legacy payload artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf node_modules test-artifacts scripts/__pycache__ payload
+          rm -f partial-source.html source-index.txt source-metadata.txt translation-audit.txt
+          rm -f .github/workflows/build-practice-screen.yml
+          rm -f .github/workflows/decode-source.yml
+          rm -f .github/workflows/translation-audit.yml
+          rm -f .github/workflows/translation-coverage-debug.yml
+
+      - name: Commit clean release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: clean production release tree"
+          git pull --rebase origin codex/dedicated-practice-screen
+          git push origin HEAD:codex/dedicated-practice-screen
