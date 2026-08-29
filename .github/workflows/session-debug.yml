@@ -13,33 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Print final-check and retry source contexts
+      - name: Print compact state-machine contexts
         run: |
           python - <<'PY'
           from pathlib import Path
-          s=Path('index.html').read_text(encoding='utf-8')
-          needles=[
-            'nextFinalCheckOrEnd',
-            'finalCheckQueue',
-            'finalCheckCursor',
-            'questionKind==="finalCheck"',
-            'questionKind==="shortRetry"',
-            'shortRetries.set',
-            'popDueShortRetry',
-            'answer(article',
-            'end(){',
-            '#nextBtn").addEventListener',
-          ]
+          lines=Path('index.html').read_text(encoding='utf-8').splitlines()
+          needles=['nextFinalCheckOrEnd','answer(article','shortRetries.set','questionKind==="shortRetry"','questionKind==="finalCheck"','end(){','nextBtn").addEventListener']
+          shown=set()
           for needle in needles:
-              print('\n'+'='*30, needle, '='*30)
-              start=0; found=0
-              while True:
-                  i=s.find(needle,start)
-                  if i<0: break
-                  found+=1
-                  a=max(0,i-3000); b=min(len(s),i+6500)
-                  print(f'-- occurrence {found} at char {i} --')
-                  print(s[a:b])
-                  start=i+len(needle)
-                  if found>=6: break
+              hits=[i for i,l in enumerate(lines) if needle in l]
+              print(f'\n### {needle}: {[i+1 for i in hits]}')
+              for i in hits[:3]:
+                  key=(max(0,i-18),min(len(lines),i+75))
+                  if key in shown: continue
+                  shown.add(key)
+                  a,b=key
+                  for n in range(a,b): print(f'{n+1:05d}: {lines[n]}')
           PY
