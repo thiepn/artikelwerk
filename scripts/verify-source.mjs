@@ -53,6 +53,12 @@ requireFragment(html, '.practice-hero{display:block', 'UI5 borderless practice l
 requireFragment(html, '.practice-hero-articles{display:none}', 'UI5 removed decorative article trio');
 requireFragment(html, '.ui3-practice .quiz-card{border:0!important', 'UI5 cardless practice canvas');
 requireFragment(html, '.article-chip{min-width:0;padding:0;border:0', 'UI5 typographic article labels');
+requireFragment(html, '/* UI5.1 — visual acceptance fixes */', 'UI5.1 visual acceptance contract');
+requireFragment(html, 'fitNounPrompt(){', 'dynamic German-compound fitting');
+requireFragment(html, 'noun-single-line', 'single-line standard noun prompt');
+requireFragment(html, '--mobile-nav-reserve:104px', 'mobile navigation exclusion zone');
+requireFragment(html, 'id="libraryMobileFilterToggle"', 'mobile Vocabulary filter disclosure');
+requireFragment(html, 'id="progressDiagnostics"', 'mobile Progress diagnostics disclosure');
 requireFragment(html, 'aria-pressed="false" title="Switch to dark mode"', 'theme toggle pressed-state semantics');
 requireFragment(html, '--focus-ring:var(--accent)', 'visible focus token');
 requireFragment(html, '@media(prefers-reduced-motion:reduce)', 'reduced-motion support');
@@ -86,6 +92,8 @@ try { await access(join(rootDir, 'docs', 'ui4-interaction-accessibility.md')); }
 catch { fail('Missing UI4 interaction/accessibility specification.'); }
 try { await access(join(rootDir, 'docs', 'ui5-editorial-rebuild.md')); }
 catch { fail('Missing UI5 editorial rebuild specification.'); }
+try { await access(join(rootDir, 'docs', 'ui5-1-visual-acceptance.md')); }
+catch { fail('Missing UI5.1 visual acceptance specification.'); }
 const manifest = JSON.parse(await readFile(join(rootDir, 'site.webmanifest'), 'utf8'));
 if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#d45532') fail('Invalid Artikelwerk manifest identity.');
 if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');

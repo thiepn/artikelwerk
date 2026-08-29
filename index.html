@@ -1049,6 +1049,69 @@
     .library-table .word-subline{display:block;max-width:none;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35}
   }
 
+
+
+  /* UI5.1 — visual acceptance fixes */
+  :root{--mobile-nav-reserve:104px}
+  .ui3-practice .noun{font-size:var(--practice-noun-size,clamp(3.25rem,7.2vw,5.6rem));overflow-wrap:normal;word-break:normal;hyphens:none}
+  .ui3-practice .noun.noun-single-line{white-space:nowrap}
+  .ui3-practice .noun .sense-cue{white-space:normal}
+  .ui3-practice .quiz-card.format-context .noun{white-space:normal;overflow-wrap:break-word;hyphens:auto}
+  .ui3-practice .question-wrap{padding:18px 0 16px}
+  .ui3-practice #quizContent{grid-template-rows:auto minmax(118px,auto) minmax(0,1fr)}
+  .ui3-practice #quizContent>div:last-child{justify-content:flex-end}
+
+  .library-mobile-filter-toggle{display:none}
+  .library-primary-filter-controls{display:contents}
+  .library-mobile-filter-toggle.has-active{color:var(--accent-dark);border-color:var(--accent)}
+
+  .progress-diagnostics{margin:14px 0 0;border:0}
+  .progress-diagnostics>summary{display:none}
+  .progress-diagnostics-body{display:block}
+  #statsView .section>p.muted{font-size:.82rem!important;line-height:1.5}
+
+  @media(max-width:720px){
+    .app{padding-bottom:0}
+    main{padding-bottom:calc(var(--mobile-nav-reserve) + env(safe-area-inset-bottom))}
+    .view{scroll-margin-bottom:var(--mobile-nav-reserve)}
+    .app-nav{isolation:isolate}
+
+    .ui3-practice .noun{font-size:var(--practice-noun-size,clamp(2.7rem,12vw,4.15rem))}
+    .ui3-practice .question-wrap{padding:12px 0 10px}
+
+    .library-primary-toolbar{grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .library-primary-toolbar #librarySearch{grid-column:1/2;min-height:44px}
+    .library-mobile-filter-toggle{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:44px;white-space:nowrap}
+    .library-primary-filter-controls{display:none;grid-column:1/-1;grid-template-columns:1fr 1fr;gap:8px;padding-top:10px}
+    .library-primary-toolbar.filters-open .library-primary-filter-controls{display:grid}
+    .library-primary-filter-controls select,.library-primary-filter-controls #clearLibraryFiltersBtn{width:100%;min-height:44px}
+    .library-primary-filter-controls #clearLibraryFiltersBtn{grid-column:1/-1}
+
+    #statsView .stats-layout{gap:26px}
+    #statsView .panel.section{padding:26px 0 12px}
+    #statsView .section h3{font-size:1.38rem;margin-bottom:18px}
+    #statsView .activity-box span,#statsView .stat-label,#statsView .progress-meta-item span{font-size:.76rem;line-height:1.35}
+    .progress-diagnostics{margin-top:28px;border-top:1px solid var(--text)}
+    .progress-diagnostics>summary{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:56px;padding:12px 0;cursor:pointer;list-style:none;font-size:.86rem;font-weight:700}
+    .progress-diagnostics>summary::-webkit-details-marker{display:none}
+    .progress-diagnostics>summary::after{content:'+';font-family:var(--font-display);font-size:1.4rem;font-weight:500;color:var(--muted)}
+    .progress-diagnostics[open]>summary::after{content:'−'}
+    .progress-diagnostics>summary small{display:block;margin-left:auto;color:var(--muted);font-size:.72rem;font-weight:500;text-align:right;line-height:1.35}
+    .progress-diagnostics-body{padding-top:4px}
+  }
+  @media(max-width:520px){
+    .library-primary-filter-controls{grid-template-columns:1fr}
+    .library-primary-filter-controls #clearLibraryFiltersBtn{grid-column:auto}
+    .progress-diagnostics>summary small{display:none}
+  }
+
+
+  /* UI5.1 desktop Practice rhythm */
+  @media(min-width:1000px) and (min-height:700px){
+    .ui3-practice #quizContent{grid-template-rows:auto auto auto;align-content:start}
+    .ui3-practice #quizContent>div:last-child{justify-content:flex-start;margin-top:clamp(30px,4vh,44px)}
+  }
+
 </style>
 </head>
 <body>
@@ -1341,6 +1404,9 @@
         </div>
       </div>
 
+      <details class="progress-diagnostics" id="progressDiagnostics" open>
+        <summary><span>More learning diagnostics</span><small>Speed, confusion patterns, stubborn words</small></summary>
+        <div class="progress-diagnostics-body">
       <div class="panel section" style="margin-top:14px">
         <h3>Response speed</h3>
         <div id="speedProfile"></div>
@@ -1365,6 +1431,9 @@
         <div id="leechList" class="missed-list"></div>
         <p class="muted" style="font-size:.8rem;margin:12px 0 0">Stubborn status requires substantial repeated evidence and clears after sustained recovery.</p>
       </div>
+
+        </div>
+      </details>
 
       <div class="panel section" id="dataControlsPanel" style="margin-top:14px" tabindex="-1">
         <h3>Progress &amp; data</h3>
@@ -1398,6 +1467,8 @@
       </div>
       <div class="panel library-toolbar library-primary-toolbar library-filter-bar">
         <input type="search" id="librarySearch" placeholder="Search nouns…" aria-label="Search nouns" />
+        <button type="button" class="ghost-btn library-mobile-filter-toggle" id="libraryMobileFilterToggle" aria-expanded="false" aria-controls="libraryPrimaryFilterControls">Filters <span id="libraryPrimaryFilterCount" aria-hidden="true"></span></button>
+        <div class="library-primary-filter-controls" id="libraryPrimaryFilterControls">
         <select id="articleFilter" aria-label="Filter by article">
           <option value="all">All articles</option><option value="der">der</option><option value="die">die</option><option value="das">das</option>
         </select>
@@ -1414,6 +1485,7 @@
           <option value="all">All gender status</option><option value="meaning-dependent">Meaning-dependent</option><option value="current-variant">Current variants</option><option value="historical-variant">Historical variant recorded</option><option value="single">Single current gender</option>
         </select>
         <button type="button" class="ghost-btn" id="clearLibraryFiltersBtn">Clear filters</button>
+        </div>
       </div>
 
       <details class="panel library-advanced" id="advancedLibraryFilters">
@@ -5446,6 +5518,29 @@
       DOM.$("#showTranslationBtn").setAttribute("aria-expanded","true");
       if(announce) AccessibilityManager.announce(`${label}: ${text}`);
     },
+    fitNounPrompt(){
+      const el=DOM.$("#nounPrompt");
+      const wrap=DOM.$("#questionWrap");
+      if(!el || !wrap || !PracticeScreen.isOpen()) return;
+      const context=DOM.$("#quizCard")?.classList.contains("format-context");
+      el.classList.toggle("noun-single-line",!context);
+      el.style.removeProperty("--practice-noun-size");
+      if(context) return;
+      requestAnimationFrame(()=>{
+        if(!el.isConnected || !PracticeScreen.isOpen()) return;
+        const available=Math.max(120,wrap.clientWidth-4);
+        const mobile=window.innerWidth<=720;
+        let low=mobile?25:38;
+        let high=mobile?68:90;
+        const fits=size=>{ el.style.setProperty("--practice-noun-size",`${size}px`); return el.scrollWidth<=available+1; };
+        if(fits(high)) return;
+        while(high-low>1){
+          const mid=Math.floor((low+high)/2);
+          if(fits(mid)) low=mid; else high=mid;
+        }
+        fits(low);
+      });
+    },
     showEmpty(){
       TimingAnalytics.clearQuestion();
       DOM.$("#quizContent").style.display = "none";
@@ -5496,6 +5591,7 @@
       Runtime.currentContext=prompt.context||null;
       DOM.$("#promptKicker").textContent=prompt.kicker;
       DOM.$("#nounPrompt").innerHTML=prompt.html;
+      this.fitNounPrompt();
       DOM.$("#modeBadge").textContent = mode==="unknownWords" || mode==="timed"
         ? (MODE_LABELS[mode]||mode)
         : `${MODE_LABELS[mode]||mode} · ${FORMAT_LABELS[format]||format}`;
@@ -5976,8 +6072,25 @@
         personalDifficulty:value("personalDifficultyFilter")
       };
     },
+    primaryFilterIds:["articleFilter","levelFilter","vocabularyStatusFilter","masteryFilter","variantGenderFilter"],
+    syncPrimaryFilterUI(){
+      const count=this.primaryFilterIds.filter(id=>(DOM.$("#"+id)?.value||"all")!=="all").length;
+      const toggle=DOM.$("#libraryMobileFilterToggle");
+      const label=DOM.$("#libraryPrimaryFilterCount");
+      if(label) label.textContent=count?`(${count})`:"";
+      if(toggle) toggle.classList.toggle("has-active",count>0);
+    },
+    togglePrimaryFilters(force=null){
+      const toolbar=DOM.$(".library-primary-toolbar");
+      const toggle=DOM.$("#libraryMobileFilterToggle");
+      if(!toolbar || !toggle) return;
+      const next=force==null?!toolbar.classList.contains("filters-open"):Boolean(force);
+      toolbar.classList.toggle("filters-open",next);
+      toggle.setAttribute("aria-expanded",next?"true":"false");
+    },
     render(){
       const f=this.filterValues();
+      this.syncPrimaryFilterUI();
       let rows = VOCAB.filter(w=>{
         const ws=LearningModel.getWordState(w.id);
         const mastery=LearningModel.mastery(ws);
@@ -6160,6 +6273,7 @@
     clearFilters(){
       DOM.$("#librarySearch").value="";
       ["articleFilter","levelFilter","vocabularyStatusFilter","masteryFilter","variantGenderFilter","frequencyFilter","registerFilter","morphologyFilter","reliabilityFilter","contrastFilter","wordFamilyFilter","collocationFilter","inflectionFilter","personalDifficultyFilter"].forEach(id=>{ const el=DOM.$("#"+id); if(el) el.value="all"; });
+      this.togglePrimaryFilters(false);
       this.render();
     }
   };
@@ -6616,7 +6730,7 @@
       document.body.classList.add("practice-open");
       this.setBackgroundInert(true);
       this.updateSubtitle();
-      requestAnimationFrame(()=>DOM.$("#nounPrompt")?.focus({preventScroll:true}));
+      requestAnimationFrame(()=>{ QuizView.fitNounPrompt(); DOM.$("#nounPrompt")?.focus({preventScroll:true}); });
     },
     close({restoreFocus=true}={}){
       const screen=this.element();
@@ -6846,6 +6960,7 @@
       });
       ["librarySearch","articleFilter","levelFilter","vocabularyStatusFilter","frequencyFilter","registerFilter","morphologyFilter","reliabilityFilter","contrastFilter","wordFamilyFilter","collocationFilter","inflectionFilter","variantGenderFilter","masteryFilter","personalDifficultyFilter"].forEach(id=>DOM.$("#"+id).addEventListener("input",()=>VocabularyView.render()));
       DOM.$("#clearLibraryFiltersBtn").addEventListener("click",()=>VocabularyView.clearFilters());
+      DOM.$("#libraryMobileFilterToggle").addEventListener("click",()=>VocabularyView.togglePrimaryFilters());
       DOM.$("#libraryBody").addEventListener("click",event=>{
         const target=event.target.closest("[data-word-id]");
         if(target?.dataset.wordId) VocabularyView.open(target.dataset.wordId);
@@ -6865,6 +6980,7 @@
       DOM.$("#summaryModal").addEventListener("click",e=>{
         if(e.target===DOM.$("#summaryModal")) AccessibilityManager.closeModal(DOM.$("#summaryModal"));
       });
+      window.addEventListener("resize",()=>QuizView.fitNounPrompt(),{passive:true});
       document.addEventListener("keydown",e=>{
         const modal=AccessibilityManager.activeModal();
         if(modal){
@@ -6896,6 +7012,7 @@
       Runtime.state = ProgressStore.load();
       ThemeManager.init();
       AppUI.bindEvents();
+      if(window.innerWidth<=720){ const diagnostics=DOM.$("#progressDiagnostics"); if(diagnostics) diagnostics.open=false; }
       ReviewQueueView.render();
       setInterval(()=>ReviewQueueView.render(),60000);
       SessionEngine.start();
