@@ -40,13 +40,29 @@ const GENERIC_EXAMPLE_FRAGMENTS = [
 const GARBAGE_GLOSS_TERMS = [
   'flibbertigibbet', 'mittimus', 'orphanry', 'ambuscade', 'tropæum', 'quittance',
   'baldie', 'psychologie:', 'amerikanisch:', 'article', 'antetype', 'prefiguration',
-  'scout movement', 'decanium', 'decanium', 'article;', '; article',
+  'scout movement', 'decanium', 'article;', '; article',
 ];
 const SENSE_RISK_TERMS = [
   'obsolete', 'archaic', 'dated', 'regional', 'colloquial', 'figurative', 'jocular',
 ];
 const TRANSPARENT_LOAN_SUFFIXES = ['tion', 'ität', 'ismus', 'ik', 'ie'];
 const ARTICLE_CAP = { der: 'Der', die: 'Die', das: 'Das' };
+const HARD_BLOCKING_FLAGS = [
+  'not-release-reviewed',
+  'missing-reviewed-sense',
+  'generic-example',
+  'garbage-gloss',
+  'source-annotation-in-gloss',
+  'too-many-gloss-senses',
+  'article-example-mismatch',
+  'tuple-contract',
+];
+const SOFT_REVIEW_FLAGS = [
+  'generic-rule',
+  'generic-taxonomy',
+  'transparent-cognate',
+  'sense-register-risk',
+];
 
 function normalizeLetters(value) {
   return String(value)
@@ -109,11 +125,18 @@ const entries = rows.map((row) => {
 
 const countFlag = (flag) => entries.filter((entry) => entry.flags.includes(flag)).length;
 const levelCounts = Object.fromEntries([1, 2, 3].map((level) => [level, entries.filter((entry) => entry.level === level).length]));
+const hardBlockers = Object.fromEntries(HARD_BLOCKING_FLAGS.map((flag) => [flag, countFlag(flag)]));
+const softSignals = Object.fromEntries(SOFT_REVIEW_FLAGS.map((flag) => [flag, countFlag(flag)]));
+const hardBlockerEntries = entries.filter((entry) => entry.flags.some((flag) => HARD_BLOCKING_FLAGS.includes(flag)));
 const summary = {
-  schema: 1,
+  schema: 2,
   phase: 'V2-3',
   total: entries.length,
   levelCounts,
+  releaseReady: hardBlockerEntries.length === 0,
+  hardBlockerEntries: hardBlockerEntries.length,
+  hardBlockers,
+  softSignals,
   flags: {
     notReleaseReviewed: countFlag('not-release-reviewed'),
     missingReviewedSense: countFlag('missing-reviewed-sense'),
@@ -139,4 +162,14 @@ if (hasFlag('--write-report')) {
   const path = join(root, 'content', 'bridge-editorial-audit.json');
   await writeFile(path, JSON.stringify({ ...summary, entries }, null, 2) + '\n', 'utf8');
   console.log(`Wrote ${path}`);
+}
+
+if (hasFlag('--assert-release') && !summary.releaseReady) {
+  const activeBlockers = Object.entries(hardBlockers).filter(([, count]) => count > 0);
+  console.error('Bridge release certification FAILED.');
+  for (const [flag, count] of activeBlockers) console.error(`  ${flag}: ${count}`);
+  console.error(`  affected entries: ${summary.hardBlockerEntries}/${summary.total}`);
+  process.exitCode = 1;
+} else if (hasFlag('--assert-release')) {
+  console.log('Bridge release certification PASSED.');
 }
