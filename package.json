@@ -1,9 +1,9 @@
 {
   "name": "artikelwerk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "C1/C2 German noun-gender trainer",
+  "description": "German noun-gender trainer with Challenge C1/C2 and Bridge B2/C1 vocabulary tracks",
   "engines": {
     "node": ">=20"
   },
@@ -19,7 +19,8 @@
     "test:surfaces-browser": "node tests/surface-polish.mjs",
     "test:a11y-browser": "node tests/accessibility-finish.mjs",
     "test:editorial-browser": "node tests/editorial-ui.mjs",
-    "test:visual-acceptance-browser": "node tests/visual-acceptance.mjs"
+    "test:visual-acceptance-browser": "node tests/visual-acceptance.mjs",
+    "test:tracks-browser": "node tests/vocabulary-tracks.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
