@@ -42,6 +42,8 @@ const bridge=corpusContext.window.ARTIKELWERK_BRIDGE_CORPUS;
 const meta=corpusContext.window.ARTIKELWERK_BRIDGE_CORPUS_META;
 if(!Array.isArray(bridge)||bridge.length!==1000) fail(`Bridge corpus must contain exactly 1000 rows; found ${bridge?.length}`);
 if(meta?.count!==1000) fail('Bridge corpus metadata count must be 1000.');
+if(JSON.stringify(meta?.levelCounts)!==JSON.stringify({'1':400,'2':350,'3':250})) fail('Bridge corpus metadata level counts are invalid.');
+if(JSON.stringify(meta?.cefrEstimateCounts)!==JSON.stringify({B2:600,C1:400})) fail('Bridge corpus metadata CEFR mix is invalid.');
 
 const translationContext={window:{
   ARTIKELWERK_TRANSLATIONS:Object.freeze({}),
@@ -59,6 +61,7 @@ const ids=new Set();
 const nouns=new Set();
 const levelCounts={1:0,2:0,3:0};
 const cefrCounts={B2:0,C1:0};
+const levelCefr={1:{B2:0,C1:0},2:{B2:0,C1:0},3:{B2:0,C1:0}};
 const articleCounts={der:0,die:0,das:0};
 const articleCaps={der:'Der',die:'Die',das:'Das'};
 for(const row of bridge){
@@ -78,7 +81,7 @@ for(const row of bridge){
   if(typeof example!=='string'||!example.includes(noun)||!example.startsWith(`${articleCaps[article]} ${noun}`)) fail(`Bridge example/article mismatch for ${id}: ${example}`);
   if(typeof group!=='string'||!group) fail(`Bridge semantic group missing for ${id}`);
   if(!evidence||!['B2','C1'].includes(evidence.cefrEstimate)||!Number.isInteger(evidence.frequencyRank)||evidence.frequencyRank<=0||!Number.isInteger(evidence.frequencyCount)||evidence.frequencyCount<=0||evidence.genderCorroborated!==true) fail(`Bridge source evidence is invalid for ${id}`);
-  if(level<3&&evidence.cefrEstimate!=='B2') fail(`Bridge Level ${level} must be B2-estimated: ${id}`);
+  if(level===1&&evidence.cefrEstimate!=='B2') fail(`Bridge Intermediate must be B2-estimated: ${id}`);
   if(level===3&&(evidence.cefrEstimate!=='C1'||evidence.frequencyRank<10500)) fail(`Bridge Advanced source gate failed for ${id}`);
   const gloss=translations[id];
   if(typeof gloss!=='string'||!gloss.trim()||gloss.length>145) fail(`Bridge gloss is missing/invalid for ${id}`);
@@ -90,22 +93,31 @@ for(const row of bridge){
   }
   levelCounts[level]++;
   cefrCounts[evidence.cefrEstimate]++;
+  levelCefr[level][evidence.cefrEstimate]++;
   articleCounts[article]++;
 }
 
 if(JSON.stringify(levelCounts)!==JSON.stringify({1:400,2:350,3:250})) fail(`Unexpected Bridge level counts: ${JSON.stringify(levelCounts)}`);
-if(JSON.stringify(cefrCounts)!==JSON.stringify({B2:750,C1:250})) fail(`Unexpected Bridge CEFR-estimate counts: ${JSON.stringify(cefrCounts)}`);
-if(Math.min(...Object.values(articleCounts))<120) fail(`Bridge article balance is too narrow: ${JSON.stringify(articleCounts)}`);
+if(JSON.stringify(cefrCounts)!==JSON.stringify({B2:600,C1:400})) fail(`Unexpected Bridge CEFR-estimate counts: ${JSON.stringify(cefrCounts)}`);
+if(JSON.stringify(levelCefr)!==JSON.stringify({1:{B2:400,C1:0},2:{B2:200,C1:150},3:{B2:0,C1:250}})) fail(`Unexpected Bridge level/CEFR mix: ${JSON.stringify(levelCefr)}`);
+if(Math.min(...Object.values(articleCounts))<100) fail(`Bridge article coverage is too narrow: ${JSON.stringify(articleCounts)}`);
 if(provenance.count!==1000||Object.keys(provenance.entries||{}).length!==1000||provenance.reviewStatus!=='source-certified'||provenance.license!=='CC-BY-SA-4.0') fail('Formal Bridge provenance summary is invalid.');
-if(report.selected!==1000||JSON.stringify(report.levelCounts)!==JSON.stringify({'1':400,'2':350,'3':250})||JSON.stringify(report.cefrEstimateCounts)!==JSON.stringify({B2:750,C1:250})) fail('Bridge corpus report does not match certified counts.');
-if(report.eligible?.eligibleAdvancedC1<250||report.eligible?.advancedMinFrequencyRank!==10500) fail('Bridge Advanced eligibility report is incomplete.');
-if(!docs.includes('targeting estimates, not official Goethe B2/C1 list membership')||!docs.includes('formal lexical evidence')) fail('Bridge methodology documentation is incomplete.');
+if(report.selected!==1000||JSON.stringify(report.levelCounts)!==JSON.stringify({'1':400,'2':350,'3':250})||JSON.stringify(report.cefrEstimateCounts)!==JSON.stringify({B2:600,C1:400})) fail('Bridge corpus report does not match certified counts.');
+if(JSON.stringify(report.levelCefrMix)!==JSON.stringify({'1':{B2:400},'2':{B2:200,C1:150},'3':{C1:250}})) fail('Bridge report level/CEFR mix is invalid.');
+if(report.eligible?.eligibleTransitionC1<150||report.eligible?.eligibleAdvancedC1<250||report.eligible?.advancedMinFrequencyRank!==10500||report.eligible?.transitionMaxFrequencyRank!==14000||report.eligible?.transitionMinLearnerValue!==5) fail('Bridge transition/Advanced eligibility report is incomplete.');
+if(report.learnerValueRanges?.['3']?.[0]<5) fail('Bridge Advanced learner-value floor is unexpectedly low.');
+if(!docs.includes('targeting estimates, not official Goethe B2/C1 list membership')||!docs.includes('learner value is at least 5')||!docs.includes('formal/abstract lexical evidence')) fail('Bridge methodology documentation is incomplete.');
 if(!license.includes('Attribution-ShareAlike 4.0 International')) fail('CC-BY-SA-4.0 license text is missing.');
 for(const fragment of [
   '83837efd46241e7226fc6daaa9d0cc81b57bf746434b8c539049c660d98ba761',
   '73075bb76c9261c44923f4909858586b261bfd83',
   'a56efcb80b64433107ec1f376b933c572f2427c9'
 ]) if(!generator.includes(fragment)) fail(`Bridge generator integrity pin missing: ${fragment}`);
-if(!refinement.includes('ADVANCED_MIN_FREQUENCY_RANK = 10500')||!refinement.includes('formal_advanced_evidence')) fail('Bridge learner-suitability refinement gate is missing.');
+for(const fragment of [
+  'ADVANCED_MIN_FREQUENCY_RANK = 10500',
+  'TRANSITION_MAX_FREQUENCY_RANK = 14000',
+  'TRANSITION_MIN_LEARNER_VALUE = 5',
+  'formal_advanced_evidence'
+]) if(!refinement.includes(fragment)) fail(`Bridge learner-suitability refinement gate is missing: ${fragment}`);
 
-console.log(`Bridge certification passed: 1000 nouns, L1/L2/L3 400/350/250, B2/C1 750/250, articles der/die/das ${articleCounts.der}/${articleCounts.die}/${articleCounts.das}, zero Challenge overlap.`);
+console.log(`Bridge certification passed: 1000 nouns, L1/L2/L3 400/350/250, B2/C1 600/400, Level 2 mix 200 B2 + 150 C1, articles der/die/das ${articleCounts.der}/${articleCounts.die}/${articleCounts.das}, zero Challenge overlap.`);
