@@ -20,8 +20,11 @@ const releaseFiles = [
   ['icon-512.png', 'icon-512.png'],
   ['index.html', 'index.html'],
   ['translations.js', 'translations.js'],
+  ['bridge-translations.js', 'bridge-translations.js'],
+  ['bridge-corpus.js', 'bridge-corpus.js'],
   ['THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.md'],
   ['LICENSES/GPL-3.0.txt', 'LICENSES/GPL-3.0.txt'],
+  ['LICENSES/CC-BY-SA-4.0.txt', 'LICENSES/CC-BY-SA-4.0.txt'],
   ['docs/translation-coverage.txt', 'docs/translation-coverage.txt'],
   ['docs/content-certification.md', 'docs/content-certification.md'],
   ['docs/real-device-verification.md', 'docs/real-device-verification.md'],
@@ -29,6 +32,9 @@ const releaseFiles = [
   ['content/ambiguous-gender-review.json', 'content/ambiguous-gender-review.json'],
   ['content/example-review.json', 'content/example-review.json'],
   ['content/inflection-review.json', 'content/inflection-review.json'],
+  ['content/bridge-provenance.json', 'content/bridge-provenance.json'],
+  ['content/bridge-corpus-report.json', 'content/bridge-corpus-report.json'],
+  ['docs/v2-2-bridge-corpus.md', 'docs/v2-2-bridge-corpus.md'],
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');

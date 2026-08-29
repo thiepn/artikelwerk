@@ -1,0 +1,684 @@
+{
+  "schema": 1,
+  "selected": 1000,
+  "levelCounts": {
+    "1": 400,
+    "2": 350,
+    "3": 250
+  },
+  "cefrEstimateCounts": {
+    "B2": 600,
+    "C1": 400
+  },
+  "articleCounts": {
+    "der": 219,
+    "die": 663,
+    "das": 118
+  },
+  "rankRanges": {
+    "1": [
+      4624,
+      7978
+    ],
+    "2": [
+      5694,
+      13870
+    ],
+    "3": [
+      11872,
+      18309
+    ]
+  },
+  "eligible": {
+    "eligibleB2": 935,
+    "eligibleC1": 2086,
+    "eligibleTransitionC1": 205,
+    "eligibleAdvancedC1": 381,
+    "advancedMinFrequencyRank": 10500,
+    "transitionMaxFrequencyRank": 14000,
+    "transitionMinLearnerValue": 5
+  },
+  "rejected": {
+    "no_clean_english_gloss": 460,
+    "gender_not_single_source_corroborated": 250,
+    "no_wiktionary_translation_entry": 877,
+    "challenge_overlap": 171,
+    "missing_or_invalid_gender": 89,
+    "special_name_only": 56,
+    "candidate_duplicate": 11,
+    "invalid_orthography": 2,
+    "learner_suitability_too_basic": 86,
+    "learner_suitability_explicit_noise": 86,
+    "learner_suitability_slang_or_noise": 2
+  },
+  "sample": [
+    {
+      "id": "eid",
+      "noun": "Eid",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4624,
+      "frequencyCount": 1545,
+      "gloss": "oath"
+    },
+    {
+      "id": "bude",
+      "noun": "Bude",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4630,
+      "frequencyCount": 1543,
+      "gloss": "shack"
+    },
+    {
+      "id": "stab",
+      "noun": "Stab",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4719,
+      "frequencyCount": 1502,
+      "gloss": "staff; rod"
+    },
+    {
+      "id": "gnade",
+      "noun": "Gnade",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4651,
+      "frequencyCount": 1531,
+      "gloss": "mercy"
+    },
+    {
+      "id": "geste",
+      "noun": "Geste",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4660,
+      "frequencyCount": 1527,
+      "gloss": "gesture; act of friendship"
+    },
+    {
+      "id": "orden",
+      "noun": "Orden",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4674,
+      "frequencyCount": 1522,
+      "gloss": "order; medal"
+    },
+    {
+      "id": "moor",
+      "noun": "Moor",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4819,
+      "frequencyCount": 1463,
+      "gloss": "bog; fen"
+    },
+    {
+      "id": "krach",
+      "noun": "Krach",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4753,
+      "frequencyCount": 1484,
+      "gloss": "crash; noise"
+    },
+    {
+      "id": "tumor",
+      "noun": "Tumor",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4811,
+      "frequencyCount": 1465,
+      "gloss": "tumor; tumour"
+    },
+    {
+      "id": "mafia",
+      "noun": "Mafia",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4827,
+      "frequencyCount": 1459,
+      "gloss": "mafia"
+    },
+    {
+      "id": "rueckzug",
+      "noun": "Rückzug",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4659,
+      "frequencyCount": 1528,
+      "gloss": "retreat"
+    },
+    {
+      "id": "masse",
+      "noun": "Masse",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4868,
+      "frequencyCount": 1440,
+      "gloss": "mass; bulk"
+    },
+    {
+      "id": "gauner",
+      "noun": "Gauner",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4818,
+      "frequencyCount": 1463,
+      "gloss": "crook; rogue"
+    },
+    {
+      "id": "verhoer",
+      "noun": "Verhör",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4858,
+      "frequencyCount": 1443,
+      "gloss": "examination; interrogation"
+    },
+    {
+      "id": "klub",
+      "noun": "Klub",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5074,
+      "frequencyCount": 1362,
+      "gloss": "club"
+    },
+    {
+      "id": "werft",
+      "noun": "Werft",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4976,
+      "frequencyCount": 1403,
+      "gloss": "shipyard; dockyard"
+    },
+    {
+      "id": "satellit",
+      "noun": "Satellit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4684,
+      "frequencyCount": 1518,
+      "gloss": "satellite"
+    },
+    {
+      "id": "winkel",
+      "noun": "Winkel",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4903,
+      "frequencyCount": 1428,
+      "gloss": "angle; corner"
+    },
+    {
+      "id": "fahne",
+      "noun": "Fahne",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5081,
+      "frequencyCount": 1361,
+      "gloss": "flag"
+    },
+    {
+      "id": "datenbank",
+      "noun": "Datenbank",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4706,
+      "frequencyCount": 1509,
+      "gloss": "data bank; data base"
+    },
+    {
+      "id": "frost",
+      "noun": "Frost",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5117,
+      "frequencyCount": 1346,
+      "gloss": "frost; frostiness"
+    },
+    {
+      "id": "drohne",
+      "noun": "Drohne",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5036,
+      "frequencyCount": 1374,
+      "gloss": "drone"
+    },
+    {
+      "id": "kuerze",
+      "noun": "Kürze",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5163,
+      "frequencyCount": 1331,
+      "gloss": "shortness; brevity"
+    },
+    {
+      "id": "ballon",
+      "noun": "Ballon",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5076,
+      "frequencyCount": 1362,
+      "gloss": "balloon"
+    },
+    {
+      "id": "charme",
+      "noun": "Charme",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5080,
+      "frequencyCount": 1361,
+      "gloss": "charm"
+    },
+    {
+      "id": "profit",
+      "noun": "Profit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5112,
+      "frequencyCount": 1348,
+      "gloss": "profit"
+    },
+    {
+      "id": "formel",
+      "noun": "Formel",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5118,
+      "frequencyCount": 1346,
+      "gloss": "formula"
+    },
+    {
+      "id": "standort",
+      "noun": "Standort",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4923,
+      "frequencyCount": 1423,
+      "gloss": "location"
+    },
+    {
+      "id": "schurke",
+      "noun": "Schurke",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5035,
+      "frequencyCount": 1374,
+      "gloss": "rogue; villain"
+    },
+    {
+      "id": "diagnose",
+      "noun": "Diagnose",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4936,
+      "frequencyCount": 1419,
+      "gloss": "diagnosis; diagnostics"
+    }
+  ],
+  "learnerValueRanges": {
+    "1": [
+      2,
+      23
+    ],
+    "2": [
+      3,
+      30
+    ],
+    "3": [
+      8,
+      18
+    ]
+  },
+  "levelCefrMix": {
+    "1": {
+      "B2": 400
+    },
+    "2": {
+      "B2": 200,
+      "C1": 150
+    },
+    "3": {
+      "C1": 250
+    }
+  },
+  "lowestLearnerValue": [
+    {
+      "id": "teich",
+      "noun": "Teich",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7209,
+      "gloss": "pond; pool",
+      "learnerValue": 2
+    },
+    {
+      "id": "aspirin",
+      "noun": "Aspirin",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6228,
+      "gloss": "aspirin; acetylsalicylic acid",
+      "learnerValue": 2
+    },
+    {
+      "id": "generator",
+      "noun": "Generator",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6025,
+      "gloss": "generator",
+      "learnerValue": 2
+    },
+    {
+      "id": "website",
+      "noun": "Website",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5907,
+      "gloss": "website",
+      "learnerValue": 2
+    },
+    {
+      "id": "astronaut",
+      "noun": "Astronaut",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5422,
+      "gloss": "astronaut",
+      "learnerValue": 2
+    },
+    {
+      "id": "echo",
+      "noun": "Echo",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5368,
+      "gloss": "echo",
+      "learnerValue": 2
+    },
+    {
+      "id": "bunker",
+      "noun": "Bunker",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5233,
+      "gloss": "bunker; stash",
+      "learnerValue": 2
+    },
+    {
+      "id": "frost",
+      "noun": "Frost",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5117,
+      "gloss": "frost; frostiness",
+      "learnerValue": 2
+    },
+    {
+      "id": "profit",
+      "noun": "Profit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5112,
+      "gloss": "profit",
+      "learnerValue": 2
+    },
+    {
+      "id": "mafia",
+      "noun": "Mafia",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4827,
+      "gloss": "mafia",
+      "learnerValue": 2
+    },
+    {
+      "id": "tumor",
+      "noun": "Tumor",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4811,
+      "gloss": "tumor; tumour",
+      "learnerValue": 2
+    },
+    {
+      "id": "ohnmacht",
+      "noun": "Ohnmacht",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8099,
+      "gloss": "faint; swoon",
+      "learnerValue": 3
+    },
+    {
+      "id": "hinterkopf",
+      "noun": "Hinterkopf",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8093,
+      "gloss": "occiput",
+      "learnerValue": 3
+    },
+    {
+      "id": "mithilfe",
+      "noun": "Mithilfe",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8080,
+      "gloss": "assistance",
+      "learnerValue": 3
+    },
+    {
+      "id": "scheinwerfer",
+      "noun": "Scheinwerfer",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8064,
+      "gloss": "spotlight; headlight",
+      "learnerValue": 3
+    },
+    {
+      "id": "koerperteil",
+      "noun": "Körperteil",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8053,
+      "gloss": "body part",
+      "learnerValue": 3
+    },
+    {
+      "id": "logbuch",
+      "noun": "Logbuch",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8051,
+      "gloss": "logbook",
+      "learnerValue": 3
+    },
+    {
+      "id": "schlucht",
+      "noun": "Schlucht",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8049,
+      "gloss": "gorge; ravine",
+      "learnerValue": 3
+    },
+    {
+      "id": "vorschuss",
+      "noun": "Vorschuss",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8039,
+      "gloss": "advance",
+      "learnerValue": 3
+    },
+    {
+      "id": "beifall",
+      "noun": "Beifall",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8024,
+      "gloss": "applause; clapping",
+      "learnerValue": 3
+    },
+    {
+      "id": "grieche",
+      "noun": "Grieche",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8006,
+      "gloss": "Greek",
+      "learnerValue": 3
+    },
+    {
+      "id": "verbrechen",
+      "noun": "Verbrechen",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8004,
+      "gloss": "crime; criminality",
+      "learnerValue": 3
+    },
+    {
+      "id": "jahrestag",
+      "noun": "Jahrestag",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7997,
+      "gloss": "anniversary",
+      "learnerValue": 3
+    },
+    {
+      "id": "eintrag",
+      "noun": "Eintrag",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7978,
+      "gloss": "entry",
+      "learnerValue": 3
+    },
+    {
+      "id": "kartell",
+      "noun": "Kartell",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7977,
+      "gloss": "cartel",
+      "learnerValue": 3
+    },
+    {
+      "id": "gruender",
+      "noun": "Gründer",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7967,
+      "gloss": "founder",
+      "learnerValue": 3
+    },
+    {
+      "id": "feldwebel",
+      "noun": "Feldwebel",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7965,
+      "gloss": "staff sergeant",
+      "learnerValue": 3
+    },
+    {
+      "id": "angeber",
+      "noun": "Angeber",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7954,
+      "gloss": "showoff; blusterer",
+      "learnerValue": 3
+    },
+    {
+      "id": "behaelter",
+      "noun": "Behälter",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7946,
+      "gloss": "bin; container",
+      "learnerValue": 3
+    },
+    {
+      "id": "sklaverei",
+      "noun": "Sklaverei",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7936,
+      "gloss": "slavery",
+      "learnerValue": 3
+    }
+  ]
+}

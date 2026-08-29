@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "German noun-gender trainer with Challenge C1/C2 and Bridge B2/C1 vocabulary tracks",
+  "description": "German noun-gender trainer with Challenge C1/C2 architecture and a staged B2/C1 Bridge corpus",
   "engines": {
     "node": ">=20"
   },
@@ -12,8 +12,9 @@
     "build": "node scripts/build.mjs",
     "test:build": "node scripts/verify-dist.mjs",
     "test:browser": "node tests/practice-screen.mjs",
-    "ci:static": "npm run check && npm run certify:content && npm run build && npm run test:build",
+    "ci:static": "npm run check && npm run certify:content && npm run certify:bridge && npm run build && npm run test:build",
     "certify:content": "node scripts/certify-content.mjs",
+    "certify:bridge": "node scripts/certify-bridge.mjs",
     "test:content-browser": "node tests/content-runtime.mjs",
     "test:shell-browser": "node tests/app-shell.mjs",
     "test:surfaces-browser": "node tests/surface-polish.mjs",
