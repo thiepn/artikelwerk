@@ -34,7 +34,9 @@ const releaseFiles = [
   ['content/inflection-review.json', 'content/inflection-review.json'],
   ['content/bridge-provenance.json', 'content/bridge-provenance.json'],
   ['content/bridge-corpus-report.json', 'content/bridge-corpus-report.json'],
+  ['content/bridge-editorial-review.json', 'content/bridge-editorial-review.json'],
   ['docs/v2-2-bridge-corpus.md', 'docs/v2-2-bridge-corpus.md'],
+  ['docs/v2-3-bridge-certification.md', 'docs/v2-3-bridge-certification.md'],
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
