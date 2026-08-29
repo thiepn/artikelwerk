@@ -46,6 +46,17 @@ requireFragment(html, 'class="panel library-table-panel"', 'UI3 vocabulary refer
 requireFragment(html, '/* UI3 — practice, vocabulary, and progress surface polish */', 'UI3 surface style contract');
 requireFragment(html, '/* UI4 — motion, interaction states, accessibility, and responsive finish */', 'UI4 finish style contract');
 requireFragment(html, '/* UI5 — editorial rebuild: typography and rules instead of dashboard cards */', 'UI5 editorial rebuild');
+requireFragment(html, '/* V2-1 — vocabulary track architecture */', 'V2-1 vocabulary track styles');
+requireFragment(html, 'const VOCABULARY_TRACKS = Object.freeze', 'V2-1 vocabulary track registry');
+requireFragment(html, 'track:track==="bridge"?"bridge":"challenge"', 'V2-1 vocabulary row track');
+requireFragment(html, 'aggregatesByTrack', 'V2-1 per-track aggregate storage');
+requireFragment(html, 'id="vocabularyTrackSelect"', 'V2-1 Practice vocabulary selector');
+requireFragment(html, 'id="bridgeTrackBtn"', 'V2-1 Bridge home action');
+requireFragment(html, 'id="progressTrackSelect"', 'V2-1 Progress vocabulary scope');
+requireFragment(html, 'id="libraryTrackSelect"', 'V2-1 Vocabulary scope');
+requireFragment(html, 'target?.focus?.({preventScroll:true});', 'synchronous Practice focus restoration');
+requireFragment(html, 'const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);', 'Progress render-time track availability guard');
+requireFragment(html, 'const V21VocabularyRender = VocabularyView.render.bind(VocabularyView);', 'Vocabulary render-time track availability guard');
 requireFragment(html, '--accent:#d45532', 'UI5 terracotta accent');
 requireFragment(html, '--bg:#f7f4ee', 'UI5 paper background');
 requireFragment(html, '--font-display:', 'UI5 editorial display typography');
@@ -102,7 +113,9 @@ if (faviconSvg.includes('gradient') || !faviconSvg.includes('#d45532') || !favic
 requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
-requireFragment(html, 'const APP_VERSION = "1.1.0";', 'application version 1.1.0');
+requireFragment(html, 'const APP_VERSION = "1.2.0";', 'application version 1.2.0');
+requireFragment(html, 'const VOCAB_SCHEMA_VERSION = 15;', 'vocabulary schema version 15');
+requireFragment(html, 'const SCHEMA_VERSION = 10;', 'persistence schema version 10');
 requireFragment(html, 'const VOCAB = [', 'vocabulary bank');
 requireFragment(html, 'const PracticeScreen = {', 'native practice controller');
 requireFragment(html, 'const App = {', 'application entrypoint');
