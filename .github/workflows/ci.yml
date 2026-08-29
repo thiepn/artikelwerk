@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   certify:
-    name: Source, Challenge, staged Bridge corpus, build, and visual acceptance
+    name: Source, Challenge, staged Bridge corpus, build, session completion, and visual acceptance
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
@@ -46,7 +46,7 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run full V2-1 browser, editorial, and visual-acceptance certification
+      - name: Run full browser, session-completion, editorial, and visual-acceptance certification
         shell: bash
         run: |
           set -euo pipefail
@@ -68,6 +68,7 @@ jobs:
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:editorial-browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:visual-acceptance-browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:tracks-browser
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:session-browser
 
       - name: Upload certified static artifact
         uses: actions/upload-artifact@v4

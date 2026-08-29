@@ -5537,6 +5537,7 @@
       const session=Runtime.session;
       if(!session?.shortRetries || session.mode==="timed") return false;
       const key=senseId?`${wordId}::${senseId}`:wordId;
+      session.resolvedRetries?.delete(key);
       const wasQueued=session.shortRetries.has(key);
       const gap=3+Math.floor(Math.random()*3);
       session.shortRetries.set(key,{wordId,senseId,dueQuestion:session.answers+gap});
@@ -5889,6 +5890,8 @@
       DOM.$("#correctionPrompt").textContent="";
       DOM.$("#correctionPrompt").className="correction-prompt";
       DOM.$("#nextBtn").disabled=true;
+      DOM.$("#nextBtn").textContent="Next";
+      DOM.$("#nextBtn").setAttribute("aria-label","Next question");
       DOM.$$(".answer-btn").forEach(b=>b.className="answer-btn");
       if(mode==="unknownWords"){
         DOM.$("#feedback").classList.add("show");
@@ -6634,6 +6637,7 @@
       DOM.$("#productionSubmitBtn").disabled=true;
       ProgressStore.save();
       QuizView.updateSessionBar();
+      SessionEngine.syncNextAction();
       ReviewQueueView.render();
       AccessibilityManager.announce(`${MeaningGenderModel.displayNoun(Runtime.current,Runtime.currentSense)} marked unfamiliar. This does not count as an article error.`);
     },
@@ -6699,7 +6703,7 @@
       const defaultTarget=selectedMode==="unknownWords"?unknownQueue.length:requestedTarget;
       const target = targetOverride!=null ? targetOverride : defaultTarget;
       Runtime.session = {
-        track:VocabularyTrackModel.selected(),mode:selectedMode,format:selectedFormat,target,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+        track:VocabularyTrackModel.selected(),mode:selectedMode,format:selectedFormat,target,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),resolvedRetries:new Set(),
         recentIds:[],seen:new Set(),lastId:null,lastGroup:null,reviewIds,contextCursors:new Map(),
         unknownQueue,unknownQueueCursor:0,
         orderedQueue:orderedQueue?[...orderedQueue]:null,queueCursor:0,
@@ -6733,7 +6737,7 @@
       if(!built.ids.length){
         this.clearTimer();
         Runtime.session={
-          track:built.track||VocabularyTrackModel.selected(),mode:"review",format:DOM.$("#formatSelect").value,target:0,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+          track:built.track||VocabularyTrackModel.selected(),mode:"review",format:DOM.$("#formatSelect").value,target:0,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),resolvedRetries:new Set(),
           recentIds:[],seen:new Set(),lastId:null,lastGroup:null,reviewIds:null,contextCursors:new Map(),
           unknownQueue:null,unknownQueueCursor:0,orderedQueue:[],queueCursor:0,nextQuestionKind:"normal",forceShortRetry:false,
           finalCheckQueue:null,finalCheckCursor:0,reinforcement:{shortCorrect:0,shortWrong:0,finalCorrect:0,finalWrong:0},
@@ -6810,15 +6814,48 @@
       QuizView.renderQuestion(Runtime.current);
       if(Runtime.session.mode!=="unknownWords") TimingAnalytics.startQuestion();
     },
+    finalCheckItems(session=Runtime.session){
+      if(!session) return [];
+      const resolved=session.resolvedRetries||new Set();
+      const senseKeys=[...(session.senseMistakes||new Map()).keys()];
+      const senseWordIds=new Set(senseKeys.map(key=>key.split("::")[0]));
+      const ordinary=[...session.mistakes.keys()]
+        .filter(id=>!senseWordIds.has(id) && !resolved.has(id))
+        .map(id=>({wordId:id,senseId:null}));
+      const sensed=senseKeys
+        .filter(key=>!resolved.has(key))
+        .map(key=>{ const [wordId,senseId]=key.split("::"); return {wordId,senseId}; });
+      return [...ordinary,...sensed];
+    },
+    hasPendingFinalChecks(session=Runtime.session){
+      if(!session) return false;
+      if(session.finalCheckQueue) return session.finalCheckCursor<session.finalCheckQueue.length;
+      return this.finalCheckItems(session).length>0;
+    },
+    isFinishReady(){
+      const session=Runtime.session;
+      if(!session || !Runtime.answered || Runtime.correctionPending || session.mode==="timed") return false;
+      if(Runtime.questionKind==="finalCheck") return Boolean(session.finalCheckQueue) && session.finalCheckCursor>=session.finalCheckQueue.length;
+      if(!Number.isFinite(session.target) || session.completed<session.target) return false;
+      if(session.shortRetries.size) return false;
+      return !this.hasPendingFinalChecks(session);
+    },
+    syncNextAction(){
+      const button=DOM.$("#nextBtn");
+      if(!button) return;
+      const finish=this.isFinishReady();
+      button.textContent=finish?"Finish":"Next";
+      button.setAttribute("aria-label",finish?"Finish session":"Next question");
+    },
+    advance(){
+      if(this.isFinishReady()) return this.end();
+      return this.nextQuestion();
+    },
     nextFinalCheckOrEnd(){
       const session=Runtime.session;
       if(!session || session.mode==="timed") return this.end();
       if(!session.finalCheckQueue){
-        const senseKeys=[...(session.senseMistakes||new Map()).keys()];
-        const senseWordIds=new Set(senseKeys.map(key=>key.split("::")[0]));
-        const ordinary=[...session.mistakes.keys()].filter(id=>!senseWordIds.has(id)).map(id=>({wordId:id,senseId:null}));
-        const sensed=senseKeys.map(key=>{ const [wordId,senseId]=key.split("::"); return {wordId,senseId}; });
-        session.finalCheckQueue=[...ordinary,...sensed];
+        session.finalCheckQueue=this.finalCheckItems(session);
         session.finalCheckCursor=0;
       }
       if(session.finalCheckCursor>=session.finalCheckQueue.length) return this.end();
@@ -6874,6 +6911,7 @@
         if(corrected){
           Runtime.correctionPending=null;
           Runtime.answered=true;
+          this.syncNextAction();
         }
         return;
       }
@@ -6890,12 +6928,20 @@
         Runtime.answered=true;
         const bucket=kind==="finalCheck"?"final":"short";
         Runtime.session.reinforcement[`${bucket}${expectedCorrect?"Correct":"Wrong"}`]++;
+        if(kind==="shortRetry"){
+          const retryKey=MeaningGenderModel.isMeaningDependent(Runtime.current) && Runtime.currentSense
+            ? `${Runtime.current.id}::${Runtime.currentSense.id}`
+            : Runtime.current.id;
+          if(expectedCorrect) Runtime.session.resolvedRetries.add(retryKey);
+          else Runtime.session.resolvedRetries.delete(retryKey);
+        }
         QuizView.renderFeedback(article,expectedCorrect,responseTimeMs,{reinforcement:true,kind});
         if(!expectedCorrect){
           Runtime.correctionPending={wordId:Runtime.current.id,kind};
           Runtime.answered=false;
           QuizView.requireCorrection();
         }
+        this.syncNextAction();
         return;
       }
 
@@ -6938,6 +6984,7 @@
         Runtime.answered=false;
         QuizView.requireCorrection();
       }
+      this.syncNextAction();
       ReviewQueueView.render();
 
       if(Runtime.session.mode === "timed" && Runtime.timedDeadline){
@@ -6990,6 +7037,7 @@
         : `<div class="muted">No mistakes in this session.</div>`;
       DOM.$("#retryMistakesBtn").disabled = mistakeItems.length === 0;
       DOM.$("#retryMistakesBtn").dataset.ids = [...new Set(mistakeItems.map(x=>x.w.id))].join(",");
+      PracticeScreen.close();
       AccessibilityManager.openModal(DOM.$("#summaryModal"),DOM.$("#summaryTitle"));
       AccessibilityManager.announce("Session complete.");
       ReviewQueueView.render();
@@ -7219,7 +7267,7 @@
       DOM.$("#productionInput").addEventListener("keydown",e=>{
         if(e.key==="Enter"){ e.preventDefault(); SessionEngine.submitProduction(); }
       });
-      DOM.$("#nextBtn").addEventListener("click",()=>SessionEngine.nextQuestion());
+      DOM.$("#nextBtn").addEventListener("click",()=>SessionEngine.advance());
       DOM.$("#openPracticeBtn").addEventListener("click",()=>PracticeScreen.open());
       DOM.$("#closePracticeBtn").addEventListener("click",()=>PracticeScreen.close());
       DOM.$("#showTranslationBtn").addEventListener("click",()=>QuizView.revealTranslation({announce:true}));
@@ -7326,7 +7374,7 @@
         if(!production && e.key==="1") SessionEngine.answer("der");
         if(!production && e.key==="2") SessionEngine.answer("die");
         if(!production && e.key==="3") SessionEngine.answer("das");
-        if(e.key==="Enter" && Runtime.answered) SessionEngine.nextQuestion();
+        if(e.key==="Enter" && Runtime.answered) SessionEngine.advance();
       });
     }
   };
