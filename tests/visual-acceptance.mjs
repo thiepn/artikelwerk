@@ -54,6 +54,8 @@ async function desktopCase(browser) {
     return { top: parseFloat(style.paddingTop), bottom: parseFloat(style.paddingBottom) };
   });
   assert(questionPadding.top <= 18 && questionPadding.bottom <= 16, `desktop: Practice vertical rhythm remains too loose (${questionPadding.top}/${questionPadding.bottom})`);
+  const answerBox = await page.locator('.answers').boundingBox();
+  assert(answerBox && answerBox.y < 560, `desktop: answer controls still sit too low at y=${answerBox?.y}`);
   await page.screenshot({ path: `${evidenceDir}/desktop-practice-long-noun.png`, fullPage: false });
   await page.keyboard.press('Escape');
 
