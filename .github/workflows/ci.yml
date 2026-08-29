@@ -42,7 +42,16 @@ jobs:
 
       - name: Export V2-3 Bridge editorial audit
         if: github.head_ref == 'v2-3-bridge-certification'
-        run: node scripts/audit-bridge-editorial.mjs --dump
+        run: node scripts/audit-bridge-editorial.mjs --write-report --dump
+
+      - name: Upload V2-3 Bridge editorial audit
+        if: github.head_ref == 'v2-3-bridge-certification'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-bridge-editorial-audit
+          path: content/bridge-editorial-audit.json
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
         run: npm run ci:static
