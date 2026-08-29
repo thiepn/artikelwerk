@@ -6,6 +6,7 @@ on:
       - codex/v2-1-vocabulary-track-architecture
     paths:
       - scripts/v2-1-migrate.py
+      - scripts/v2-1-post.py
       - tests/vocabulary-tracks.mjs
       - docs/v2-1-vocabulary-tracks.md
       - .github/workflows/v2-1-migration.yml
@@ -43,8 +44,9 @@ jobs:
       - name: Apply V2-1 track architecture
         shell: bash
         run: |
-          python -m py_compile scripts/v2-1-migrate.py
+          python -m py_compile scripts/v2-1-migrate.py scripts/v2-1-post.py
           python scripts/v2-1-migrate.py
+          python scripts/v2-1-post.py
 
       - name: Install pinned browser-test runtime
         run: npm install --no-package-lock --no-audit --no-fund
@@ -84,8 +86,8 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Remove staging script
-        run: rm -f scripts/v2-1-migrate.py
+      - name: Remove staging scripts
+        run: rm -f scripts/v2-1-migrate.py scripts/v2-1-post.py
 
       - name: Exclude workflow files from bot commit
         run: git checkout HEAD -- .github/workflows/v2-1-migration.yml .github/workflows/ci.yml
