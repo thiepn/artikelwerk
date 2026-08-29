@@ -86,8 +86,8 @@ jobs:
       - name: Remove one-time integration script
         run: rm -f scripts/v2-2-integrate.py
 
-      - name: Exclude one-time integration workflow from bot commit
-        run: git checkout HEAD -- .github/workflows/v2-2-integration.yml .github/workflows/v2-2-corpus-generation.yml
+      - name: Exclude workflow files from bot commit
+        run: git checkout HEAD -- .github/workflows/v2-2-integration.yml .github/workflows/v2-2-corpus-generation.yml .github/workflows/ci.yml
 
       - name: Commit certified V2-2 runtime
         shell: bash
