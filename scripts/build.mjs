@@ -35,6 +35,7 @@ const releaseFiles = [
   ['content/bridge-provenance.json', 'content/bridge-provenance.json'],
   ['content/bridge-corpus-report.json', 'content/bridge-corpus-report.json'],
   ['content/bridge-editorial-review.json', 'content/bridge-editorial-review.json'],
+  ['content/bridge-b1-lower-bound-review.json', 'content/bridge-b1-lower-bound-review.json'],
   ['docs/v2-2-bridge-corpus.md', 'docs/v2-2-bridge-corpus.md'],
   ['docs/v2-3-bridge-certification.md', 'docs/v2-3-bridge-certification.md'],
 ];
