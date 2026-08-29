@@ -40,6 +40,10 @@ jobs:
       - name: Verify content-generator syntax
         run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
 
+      - name: Export V2-3 Bridge editorial audit
+        if: github.head_ref == 'v2-3-bridge-certification'
+        run: node scripts/audit-bridge-editorial.mjs --dump
+
       - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
         run: npm run ci:static
 
