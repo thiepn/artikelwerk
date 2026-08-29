@@ -4,31 +4,34 @@ Artikelwerk is a German noun-gender trainer with adaptive review, contextual and
 
 ## Vocabulary tracks
 
-- **Challenge · C1–C2** — the original 1,000 difficult nouns. Challenge remains the default practice experience.
-- **Bridge · B2–C1** — 1,000 additional intermediate-to-advanced nouns: 400 Intermediate, 350 Upper Intermediate, and 250 Advanced.
+- **Challenge · C1–C2** — the original 1,000 difficult nouns. Challenge remains the default and only active practice corpus through V2-2.
+- **Bridge · B2–C1** — a constructed 1,000-noun corpus staged for later activation: 400 Intermediate, 350 Upper Intermediate, and 250 Advanced.
+- The final Bridge source-estimate mix is **600 B2 / 400 C1**. Level 2 deliberately bridges the bands with 200 B2 + 150 C1 nouns; Level 3 contains 250 upper-C1 candidates with additional lexical-complexity evidence.
 - Bridge difficulty is source-informed and editorially screened. Its B2/C1 labels are targeting estimates, not official Goethe list membership.
-- Existing progress remains Challenge progress; Bridge starts independently, while **All vocabulary** reports across all 2,000 installed nouns.
 - Challenge and Bridge have zero noun/ID overlap.
+- **V2-2 does not activate Bridge in the learner UI.** The V2-1 disabled-Bridge behavior remains on `index.html` until V2-3 content review and V2-4 runtime integration are complete.
 
 See `docs/v2-1-vocabulary-tracks.md` for the architecture/persistence contract and `docs/v2-2-bridge-corpus.md` for corpus construction, sources, screening, and licensing.
 
 ## Canonical source
 
-`index.html` is the single human-readable application source and the file served by the current GitHub Pages configuration. Challenge glosses remain in `translations.js`; the checked-in Bridge corpus and glosses live in the separate `bridge-corpus.js` and `bridge-translations.js` assets.
+`index.html` is the single human-readable application source and the file served by the current GitHub Pages configuration. Challenge glosses remain in `translations.js`. V2-2 checks in the future Bridge data as separate `bridge-corpus.js` and `bridge-translations.js` assets, but the application does not load them yet.
 
-The former packed payload, recovered-source duplicate, patch-on-build layer, heuristic practice adapter, and source-writing workflows have been retired. CI validates and packages the repository but never commits or pushes generated output.
+The former packed payload, recovered-source duplicate, patch-on-build layer, heuristic practice adapter, and source-writing workflows have been retired. Permanent CI is read-only: it validates source, Challenge content, the staged Bridge corpus, and deterministic packaging without committing or pushing generated output.
 
 ## Development
 
 Requirements:
 
 - Node.js 20 or newer
-- Python 3.12 for translation-generator syntax checks
+- Python 3.12 for content-generator syntax checks
 - Playwright Chromium for browser certification
 
 ```bash
 npm install --no-package-lock
 npm run check
+npm run certify:content
+npm run certify:bridge
 npm run build
 npm run test:build
 npx playwright install chromium
@@ -44,28 +47,32 @@ python -m http.server 4173 --directory dist
 ## Repository layout
 
 ```text
-index.html                         canonical application source
-translations.js                    Challenge English-gloss dataset
-bridge-corpus.js                    1,000-row Bridge vocabulary asset
-bridge-translations.js              Bridge English gloss + provenance runtime asset
-docs/translation-coverage.txt      generated coverage evidence
-scripts/generate_translations*.py  translation-data generators
-scripts/verify-source.mjs          source, vocabulary, and translation checks
-scripts/build.mjs                  deterministic static build
-scripts/verify-dist.mjs            artifact round-trip verification
-tests/practice-screen.mjs          responsive native practice-flow test
-tests/vocabulary-tracks.mjs        Challenge/Bridge architecture and migration test
-.github/workflows/ci.yml           read-only certification workflow
-dist/                              generated artifact; never committed
+index.html                         canonical active application source
+translations.js                    release-reviewed Challenge English-gloss dataset
+bridge-corpus.js                    staged 1,000-row Bridge vocabulary asset
+bridge-translations.js              staged Bridge English gloss/provenance runtime asset
+content/bridge-provenance.json      per-entry Bridge source evidence
+content/bridge-corpus-report.json   machine-readable corpus audit
+scripts/generate_bridge_corpus.py   deterministic source/candidate generator
+scripts/refine_bridge_corpus.py     learner-value and difficulty curation layer
+scripts/certify-bridge.mjs          static Bridge corpus certification
+scripts/generate_translations*.py   Challenge translation-data generators
+scripts/verify-source.mjs           active source/vocabulary/translation checks
+scripts/build.mjs                   deterministic static build
+tests/practice-screen.mjs           responsive native practice-flow test
+tests/vocabulary-tracks.mjs         V2-1 Challenge/disabled-Bridge architecture test
+.github/workflows/ci.yml            read-only certification workflow
+dist/                               generated artifact; never committed
 ```
 
 ## Release rules
 
 - Edit `index.html`; do not restore a second editable HTML copy.
-- Keep all installed vocabulary IDs synchronized with `translations.js`.
+- Keep the active Challenge vocabulary IDs synchronized with `translations.js`.
+- Keep all 1,000 staged Bridge rows synchronized with `bridge-translations.js` and `content/bridge-provenance.json`.
 - Run `npm run ci:static` before opening a pull request.
 - CI uses read-only repository permissions and uploads artifacts instead of creating commits.
-- The root application remains directly deployable by GitHub Pages while a later deployment migration can publish the certified `dist/` artifact.
+- Bridge must not be enabled in the learner UI until its editorial content gate and runtime-integration phase are complete.
 
 ## Licensing
 
@@ -73,11 +80,12 @@ See `THIRD_PARTY_NOTICES.md`, `LICENSES/GPL-3.0.txt`, and `LICENSES/CC-BY-SA-4.0
 
 ## Content certification
 
-- `translations.js` is the release-reviewed Challenge gloss asset; `bridge-translations.js` is the source-certified Bridge gloss asset.
-- `content/provenance.json` retains the 1,000-word Challenge provenance; `content/bridge-provenance.json` independently records all 1,000 Bridge entries.
-- `content/ambiguous-gender-review.json` records externally verified variant and meaning-dependent gender decisions.
-- `scripts/certify-content.mjs` preserves the mature Challenge certification. `scripts/certify-bridge.mjs` separately certifies the 1,000-row Bridge split, source evidence, translations, licensing, examples, and zero overlap.
-- `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
+- `translations.js` remains the release-reviewed Challenge gloss asset.
+- `bridge-translations.js` is a **source-certified staging asset**, not yet the final editorial/release-reviewed Bridge copy.
+- `content/provenance.json` retains the 1,000-word Challenge provenance; `content/bridge-provenance.json` independently records all 1,000 staged Bridge entries.
+- `content/ambiguous-gender-review.json` records externally verified Challenge variant and meaning-dependent gender decisions.
+- `scripts/certify-content.mjs` preserves the mature Challenge certification. `scripts/certify-bridge.mjs` separately certifies the Bridge count, 400/350/250 levels, 600/400 B2/C1 proxy mix, source evidence, local gloss coverage, licensing, article consistency, learner-value gates, and zero Challenge overlap.
+- V2-3 is responsible for editorial review of Bridge glosses/examples/article notes and ambiguity handling before learner-facing activation.
 
 Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.
 
@@ -121,4 +129,8 @@ UI5.1 keeps the editorial UI5 direction while fixing the release-gate defects fo
 
 ## V2-1 vocabulary track architecture
 
-V2-1 introduces one shared learning engine with two vocabulary scopes rather than six global difficulty levels. Challenge stays primary and default; Bridge is opt-in and automatically becomes available when V2-2 installs Bridge-tagged rows. Practice pools, review queues, Progress analytics, Vocabulary reference views, and persistence are track-aware. Persistence schema v10 migrates all pre-V2 history into Challenge and starts Bridge at zero. `tests/vocabulary-tracks.mjs` certifies isolation, migration, responsive UX, and forward compatibility.
+V2-1 introduces one shared learning engine with two vocabulary scopes rather than six global difficulty levels. Challenge stays primary and default; Bridge is opt-in and automatically becomes available when later phases install Bridge-tagged rows. Practice pools, review queues, Progress analytics, Vocabulary reference views, and persistence are track-aware. Persistence schema v10 migrates all pre-V2 history into Challenge and starts Bridge at zero. `tests/vocabulary-tracks.mjs` certifies isolation, migration, responsive UX, and forward compatibility.
+
+## V2-2 Bridge corpus research and construction
+
+V2-2 constructs the 1,000-row Bridge dataset without activating it. The corpus is selected from pinned open lexical sources, independently corroborates single-gender nouns, excludes Challenge overlap and ambiguous/multi-gender candidates, filters basic/subtitle-noise vocabulary, and applies learner-value screening before difficulty assignment. The checked-in corpus is source-certified under CC-BY-SA-4.0 and is the input to V2-3 editorial certification.
