@@ -65,7 +65,9 @@ try{
     assert.match((await page.locator('#libraryMeta').textContent())||'',/1000 of 1000 nouns.*Challenge/i,`${profile.name}: Challenge library count changed`);
     await page.locator('.word-open-btn').first().click();
     await page.locator('#wordDetailModal.show').waitFor({state:'visible'});
-    assert.match((await page.locator('#wordDetailContent').textContent())||'',/Set\s+Challenge.*C1.*C2/is,`${profile.name}: word detail does not expose vocabulary set`);
+    const setField=page.locator('#wordDetailContent .detail-field').filter({has:page.locator('strong', {hasText:'Set'})}).first();
+    assert.equal(await setField.count(),1,`${profile.name}: word detail Set field is missing`);
+    assert.match((await setField.locator('span').textContent())||'',/Challenge.*C1.*C2/i,`${profile.name}: word detail does not expose Challenge · C1–C2 set`);
     await page.keyboard.press('Escape');
     await page.locator('#libraryTrackSelect').selectOption('all');
     await page.locator('#libraryTrackSelect').dispatchEvent('change');
