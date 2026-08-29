@@ -9,7 +9,7 @@ advanced vocabulary.
 
 Final composition:
 - Level 1: 400 B2 nouns
-- Level 2: 200 stronger B2 + 150 accessible C1 nouns
+- Level 2: 200 stronger B2 + 150 accessible, useful C1 nouns
 - Level 3: 250 upper-C1 nouns with formal/abstract lexical evidence
 - total: 600 B2 + 400 C1
 """
@@ -24,7 +24,8 @@ import generate_bridge_corpus as base
 
 ROOT = Path(__file__).resolve().parents[1]
 ADVANCED_MIN_FREQUENCY_RANK = 10500
-TRANSITION_MAX_FREQUENCY_RANK = 11500
+TRANSITION_MAX_FREQUENCY_RANK = 14000
+TRANSITION_MIN_LEARNER_VALUE = 5
 
 TOO_BASIC_GLOSS_FRAGMENTS = {
     "birthday party", "valentine's day", "saint valentine", "phone book", "telephone directory",
@@ -44,6 +45,7 @@ TOO_BASIC_GLOSS_FRAGMENTS = {
     "taxi", "delivery van", "bus stop", "airport", "vacuum cleaner", "hoover", "evening meal",
     "pancake", "popcorn", "muffin", "doughnut", "donut", "lipstick", "mattress", "earring",
     "garlic", "hazelnut", "sparrow", "north", "fur", "pelt", "gin", "jet", "outfit",
+    "omelet", "omelette", "peach", "raccoon", "headphone", "bridesmaid", "villager",
 }
 EXPLICIT_LOW_VALUE_NOUNS = {
     "Samurai", "Satan", "Dinosaurier", "Valentinstag", "Geburtstagsparty", "Telefonbuch",
@@ -56,6 +58,7 @@ EXPLICIT_LOW_VALUE_NOUNS = {
     "Gespenst", "Greif", "Zauberei", "Magier", "Gorilla", "Pinguin", "Truthahn", "Welpe",
     "Schildkröte", "Fledermaus", "Ameise", "Maulwurf", "Falke", "Geier", "Gans", "Schnecke",
     "Pisse", "Drive", "Gin", "Jet", "Outfit", "Nord", "Spatz", "Nuss", "Brei",
+    "Omelett", "Waschbär", "Pfirsich", "Kopfhörer", "Brautjungfer", "Dorfbewohner", "Zeitreise",
 }
 BLOCKED_GLOSS_TERMS = {
     "bimbo", "dyke", "sissy", "wimp", "shit", "crap", "piss", "whore", "junkie", "klingon",
@@ -112,6 +115,7 @@ PERSON_GLOSS_TERMS = {
     "murderer", "officer", "pastor", "patriot", "priest", "prisoner", "prophet", "rescuer",
     "sailor", "soldier", "spaniard", "speaker", "technician", "veterinarian", "woman", "man",
     "rector", "principal", "supervisor", "observer", "boxer", "sultan", "sheik", "sheikh",
+    "inventor", "banker", "critic", "publisher", "viking", "referee", "umpire", "empress",
 }
 ENTERTAINMENT_GLOSS_TERMS = {
     "ghost", "werewolf", "witchcraft", "wizardry", "magic", "superhero", "vampire", "zombie",
@@ -221,24 +225,34 @@ def curated_candidates(wordhoard, translations, challenge_nouns, challenge_ids):
 def curated_assign_levels(candidates):
     b2 = [c for c in candidates if c["cefrEstimate"] == "B2"]
     c1 = [c for c in candidates if c["cefrEstimate"] == "C1"]
-    transition = [c for c in c1 if c["frequencyRank"] < TRANSITION_MAX_FREQUENCY_RANK]
-    advanced_pool = [c for c in c1 if c["frequencyRank"] >= ADVANCED_MIN_FREQUENCY_RANK and formal_advanced_evidence(c)]
+    transition = [
+        c for c in c1
+        if c["frequencyRank"] < TRANSITION_MAX_FREQUENCY_RANK
+        and c["learnerValue"] >= TRANSITION_MIN_LEARNER_VALUE
+    ]
+    advanced_pool = [
+        c for c in c1
+        if c["frequencyRank"] >= ADVANCED_MIN_FREQUENCY_RANK and formal_advanced_evidence(c)
+    ]
     if len(b2) < 600:
         base.die(f"Need at least 600 curated B2 nouns; found {len(b2)}")
     if len(transition) < 150:
-        base.die(f"Need at least 150 accessible C1 transition nouns; found {len(transition)}")
+        base.die(f"Need at least 150 useful accessible C1 transition nouns; found {len(transition)}")
 
     b2_selected = choose(b2, 600)
     b2_selected.sort(key=lambda x: (x["difficultyScore"], -x["learnerValue"], x["frequencyRank"]))
     level1 = [{**x, "level": 1} for x in b2_selected[:400]]
     level2_b2 = [{**x, "level": 2} for x in b2_selected[400:]]
 
-    transition_selected = choose(transition, 150)
+    transition_selected = sorted(
+        transition,
+        key=lambda x: (x["difficultyScore"], -x["learnerValue"], x["frequencyRank"], x["noun"].casefold())
+    )[:150]
     transition_ids = {x["id"] for x in transition_selected}
     advanced = [x for x in advanced_pool if x["id"] not in transition_ids]
     if len(advanced) < 250:
         base.die(f"Need at least 250 distinct formally qualified Advanced nouns; found {len(advanced)}")
-    level2_c1 = [{**x, "level": 2} for x in sorted(transition_selected, key=lambda x: (x["difficultyScore"], -x["learnerValue"]))]
+    level2_c1 = [{**x, "level": 2} for x in transition_selected]
     level3 = [{**x, "level": 3} for x in choose(advanced, 250)]
 
     return level1 + level2_b2 + level2_c1 + level3, {
@@ -248,6 +262,7 @@ def curated_assign_levels(candidates):
         "eligibleAdvancedC1": len(advanced_pool),
         "advancedMinFrequencyRank": ADVANCED_MIN_FREQUENCY_RANK,
         "transitionMaxFrequencyRank": TRANSITION_MAX_FREQUENCY_RANK,
+        "transitionMinLearnerValue": TRANSITION_MIN_LEARNER_VALUE,
     }
 
 
@@ -268,9 +283,12 @@ def curated_validate(selected, challenge_nouns, challenge_ids):
         base.die(f"Unexpected Bridge CEFR-estimate distribution: {dict(cefr)}")
     if any(x["cefrEstimate"] != "B2" for x in selected if x["level"] == 1):
         base.die("Bridge Level 1 must remain B2-estimated")
-    level2_cefr = Counter(x["cefrEstimate"] for x in selected if x["level"] == 2)
+    level2 = [x for x in selected if x["level"] == 2]
+    level2_cefr = Counter(x["cefrEstimate"] for x in level2)
     if level2_cefr != Counter({"B2": 200, "C1": 150}):
         base.die(f"Unexpected Level 2 B2/C1 composition: {dict(level2_cefr)}")
+    if any(x["learnerValue"] < TRANSITION_MIN_LEARNER_VALUE for x in level2 if x["cefrEstimate"] == "C1"):
+        base.die("Bridge C1 transition contains a low learner-value noun")
     if any(x["cefrEstimate"] != "C1" or x["frequencyRank"] < ADVANCED_MIN_FREQUENCY_RANK for x in selected if x["level"] == 3):
         base.die("Bridge Level 3 Advanced source gate failed")
     articles = Counter(x["article"] for x in selected)
@@ -306,7 +324,7 @@ def curated_report(selected, reject, pool_stats, candidate_count):
     text = text.replace("- Source CEFR estimates: **750 B2 / 250 C1**", "- Source CEFR estimates: **600 B2 / 400 C1**")
     text = text.replace(
         "6. Sort by wordhoard frequency rank. Select the first 750 eligible B2 nouns and first 250 eligible C1 nouns.\n7. Assign the first 400 B2 nouns to Intermediate, the next 350 B2 nouns to Upper Intermediate, and the 250 C1 nouns to Advanced.",
-        "6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.\n7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence."
+        "6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.\n7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate only if learner value is at least 5 and source frequency rank is below 14,000. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence."
     )
     low = sorted(selected, key=lambda x: (x["learnerValue"], -x["frequencyRank"]))[:30]
     text += "\n## Editorial QA\n\n"
