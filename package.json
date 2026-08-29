@@ -21,7 +21,8 @@
     "test:a11y-browser": "node tests/accessibility-finish.mjs",
     "test:editorial-browser": "node tests/editorial-ui.mjs",
     "test:visual-acceptance-browser": "node tests/visual-acceptance.mjs",
-    "test:tracks-browser": "node tests/vocabulary-tracks.mjs"
+    "test:tracks-browser": "node tests/vocabulary-tracks.mjs",
+    "test:session-browser": "node tests/session-completion.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
