@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "selected": 1000,
+  "levelCounts": {
+    "1": 400,
+    "2": 350,
+    "3": 250
+  },
+  "cefrEstimateCounts": {
+    "B2": 750,
+    "C1": 250
+  },
+  "articleCounts": {
+    "der": 418,
+    "das": 174,
+    "die": 408
+  },
+  "rankRanges": {
+    "1": [
+      4624,
+      6614
+    ],
+    "2": [
+      6616,
+      8039
+    ],
+    "3": [
+      9245,
+      10222
+    ]
+  },
+  "eligible": {
+    "eligibleB2": 1036,
+    "eligibleC1": 2159
+  },
+  "rejected": {
+    "no_clean_english_gloss": 460,
+    "gender_not_single_source_corroborated": 250,
+    "no_wiktionary_translation_entry": 877,
+    "challenge_overlap": 171,
+    "missing_or_invalid_gender": 89,
+    "special_name_only": 56,
+    "candidate_duplicate": 11,
+    "invalid_orthography": 2
+  },
+  "sample": [
+    {
+      "id": "eid",
+      "noun": "Eid",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4624,
+      "frequencyCount": 1545,
+      "gloss": "oath"
+    },
+    {
+      "id": "funkgeraet",
+      "noun": "Funkgerät",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4625,
+      "frequencyCount": 1545,
+      "gloss": "radio"
+    },
+    {
+      "id": "bude",
+      "noun": "Bude",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4630,
+      "frequencyCount": 1543,
+      "gloss": "shack"
+    },
+    {
+      "id": "haeftling",
+      "noun": "Häftling",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4636,
+      "frequencyCount": 1540,
+      "gloss": "detainee; prisoner"
+    },
+    {
+      "id": "zeitverschwendung",
+      "noun": "Zeitverschwendung",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4638,
+      "frequencyCount": 1539,
+      "gloss": "waste of time"
+    },
+    {
+      "id": "gnade",
+      "noun": "Gnade",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4651,
+      "frequencyCount": 1531,
+      "gloss": "mercy"
+    },
+    {
+      "id": "weltkrieg",
+      "noun": "Weltkrieg",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4653,
+      "frequencyCount": 1530,
+      "gloss": "world war"
+    },
+    {
+      "id": "pirat",
+      "noun": "Pirat",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4656,
+      "frequencyCount": 1529,
+      "gloss": "pirate"
+    },
+    {
+      "id": "rueckzug",
+      "noun": "Rückzug",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4659,
+      "frequencyCount": 1528,
+      "gloss": "retreat"
+    },
+    {
+      "id": "geste",
+      "noun": "Geste",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4660,
+      "frequencyCount": 1527,
+      "gloss": "gesture; act of friendship"
+    },
+    {
+      "id": "genehmigung",
+      "noun": "Genehmigung",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4668,
+      "frequencyCount": 1524,
+      "gloss": "approval"
+    },
+    {
+      "id": "orden",
+      "noun": "Orden",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4674,
+      "frequencyCount": 1522,
+      "gloss": "order; medal; decoration"
+    },
+    {
+      "id": "statue",
+      "noun": "Statue",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4681,
+      "frequencyCount": 1520,
+      "gloss": "statue"
+    },
+    {
+      "id": "satellit",
+      "noun": "Satellit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4684,
+      "frequencyCount": 1518,
+      "gloss": "satellite"
+    },
+    {
+      "id": "kater",
+      "noun": "Kater",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4692,
+      "frequencyCount": 1515,
+      "gloss": "cat; tomcat; tom"
+    },
+    {
+      "id": "prophet",
+      "noun": "Prophet",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4700,
+      "frequencyCount": 1513,
+      "gloss": "prophet"
+    },
+    {
+      "id": "division",
+      "noun": "Division",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4703,
+      "frequencyCount": 1511,
+      "gloss": "division"
+    },
+    {
+      "id": "pastor",
+      "noun": "Pastor",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4705,
+      "frequencyCount": 1509,
+      "gloss": "pastor"
+    },
+    {
+      "id": "datenbank",
+      "noun": "Datenbank",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4706,
+      "frequencyCount": 1509,
+      "gloss": "data bank; data base; databank"
+    },
+    {
+      "id": "stab",
+      "noun": "Stab",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4719,
+      "frequencyCount": 1502,
+      "gloss": "staff; rod; bar"
+    },
+    {
+      "id": "handtasche",
+      "noun": "Handtasche",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4725,
+      "frequencyCount": 1499,
+      "gloss": "handbag; bag"
+    },
+    {
+      "id": "samurai",
+      "noun": "Samurai",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4735,
+      "frequencyCount": 1495,
+      "gloss": "samurai"
+    },
+    {
+      "id": "satan",
+      "noun": "Satan",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4746,
+      "frequencyCount": 1490,
+      "gloss": "Satan; Devil; fiend"
+    },
+    {
+      "id": "ablenkung",
+      "noun": "Ablenkung",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4751,
+      "frequencyCount": 1488,
+      "gloss": "deflection"
+    },
+    {
+      "id": "krach",
+      "noun": "Krach",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4753,
+      "frequencyCount": 1484,
+      "gloss": "crash; noise; quarrel"
+    },
+    {
+      "id": "fahrstuhl",
+      "noun": "Fahrstuhl",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4763,
+      "frequencyCount": 1481,
+      "gloss": "lift; elevator"
+    },
+    {
+      "id": "maerz",
+      "noun": "März",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4765,
+      "frequencyCount": 1480,
+      "gloss": "March"
+    },
+    {
+      "id": "autopsie",
+      "noun": "Autopsie",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4780,
+      "frequencyCount": 1475,
+      "gloss": "autopsy"
+    },
+    {
+      "id": "republik",
+      "noun": "Republik",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4782,
+      "frequencyCount": 1474,
+      "gloss": "republic"
+    },
+    {
+      "id": "silber",
+      "noun": "Silber",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4784,
+      "frequencyCount": 1474,
+      "gloss": "silver; silverware; silver medal"
+    }
+  ]
+}
