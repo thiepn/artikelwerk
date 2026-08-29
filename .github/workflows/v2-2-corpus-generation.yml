@@ -60,7 +60,9 @@ jobs:
           assert p['eligible']['eligibleTransitionC1']>=150
           assert p['eligible']['eligibleAdvancedC1']>=250
           assert p['eligible']['advancedMinFrequencyRank']==10500
-          assert p['eligible']['transitionMaxFrequencyRank']==11500
+          assert p['eligible']['transitionMaxFrequencyRank']==14000
+          assert p['eligible']['transitionMinLearnerValue']==5
+          assert p['learnerValueRanges']['3'][0]>=5
           print(json.dumps({k:p[k] for k in ('selected','levelCounts','cefrEstimateCounts','levelCefrMix','articleCounts','rankRanges','eligible','learnerValueRanges')},indent=2))
           PY
 
