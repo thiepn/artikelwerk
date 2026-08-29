@@ -7,8 +7,8 @@
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
 - Source CEFR estimates: **600 B2 / 400 C1**
-- Articles: **der 232 / die 647 / das 121**
-- Eligible source-corroborated pool before final rank cut: **3,028** nouns (935 B2, 2,093 C1)
+- Articles: **der 219 / die 663 / das 118**
+- Eligible source-corroborated pool before final rank cut: **3,021** nouns (935 B2, 2,086 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -23,7 +23,7 @@
 4. Require at least one clean English Wiktionary translation.
 5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
 6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.
-7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence.
+7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate only if learner value is at least 5 and source frequency rank is below 14,000. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence.
 
 ## Source and licensing
 
@@ -34,17 +34,17 @@
 ## Frequency-rank ranges
 
 - Level 1: 4,624–7,978
-- Level 2: 5,694–11,499
-- Level 3: 11,509–17,831
+- Level 2: 5,694–13,870
+- Level 3: 11,872–18,309
 
 ## Largest semantic groups
 
-- bridge-general: 922
+- bridge-general: 923
 - legal: 13
 - economy: 12
 - technology: 9
 - process: 8
-- politics: 7
+- politics: 6
 - structure: 5
 - communication: 5
 - health: 5
@@ -60,7 +60,7 @@
 - challenge_overlap: 171
 - missing_or_invalid_gender: 89
 - learner_suitability_too_basic: 86
-- learner_suitability_explicit_noise: 79
+- learner_suitability_explicit_noise: 86
 - special_name_only: 56
 - candidate_duplicate: 11
 - invalid_orthography: 2
@@ -137,38 +137,38 @@
 ## Editorial QA
 
 - Level 1: learner-value 2–23; difficulty 4.92–8.68; CEFR proxy {'B2': 400}
-- Level 2: learner-value 1–30; difficulty 8.68–14.59; CEFR proxy {'B2': 200, 'C1': 150}
-- Level 3: learner-value 8–18; difficulty 13.71–20.56; CEFR proxy {'C1': 250}
+- Level 2: learner-value 3–30; difficulty 8.68–14.75; CEFR proxy {'B2': 200, 'C1': 150}
+- Level 3: learner-value 8–18; difficulty 14.77–21.23; CEFR proxy {'C1': 250}
 
 ### Lowest learner-value selections
 
-- **die Hypnose** — hypnosis (value 1, rank 9,596, C1)
-- **das Omelett** — omelet; omelette (value 1, rank 9,581, C1)
-- **der Erfinder** — inventor (value 1, rank 9,562, C1)
-- **der Bankier** — banker (value 1, rank 9,546, C1)
-- **der Kritiker** — critic (value 1, rank 9,533, C1)
-- **der Verleger** — issuer; publisher (value 1, rank 9,509, C1)
-- **die Brautjungfer** — bridesmaid (value 1, rank 9,505, C1)
-- **der Wikinger** — viking (value 1, rank 9,502, C1)
-- **der Neuling** — newcomer; novice (value 1, rank 9,490, C1)
-- **der Verschluss** — closing (value 1, rank 9,479, C1)
-- **der Hochverrat** — high treason (value 1, rank 9,441, C1)
-- **der Verwalter** — administrator (value 1, rank 9,438, C1)
-- **der Dorfbewohner** — villager (value 1, rank 9,437, C1)
-- **der Schiedsrichter** — referee; umpire (value 1, rank 9,433, C1)
-- **der Waschbär** — Common Raccoon; Northern Raccoon (value 1, rank 9,410, C1)
-- **der Pfirsich** — peach (value 1, rank 9,399, C1)
-- **das Bataillon** — battalion (value 1, rank 9,396, C1)
-- **der Kopfhörer** — headphone (value 1, rank 9,349, C1)
-- **die Kaiserin** — empress (value 1, rank 9,344, C1)
-- **das Amulett** — amulet (value 1, rank 9,340, C1)
-- **das Raubtier** — carnivore; predator (value 1, rank 9,324, C1)
-- **der Sündenbock** — scapegoat (value 1, rank 9,321, C1)
-- **der Beschuss** — fire; shelling (value 1, rank 9,308, C1)
-- **die Kleinstadt** — town; township (value 1, rank 9,297, C1)
-- **die Periode** — tide; period (value 1, rank 9,291, C1)
-- **die Schwachstelle** — trouble spot; weak point (value 1, rank 9,277, C1)
-- **der Elternteil** — parent (value 1, rank 9,267, C1)
-- **das Frühjahr** — spring (value 1, rank 9,263, C1)
-- **das Abzeichen** — badge (value 1, rank 9,251, C1)
-- **die Zeitreise** — time travel (value 1, rank 9,245, C1)
+- **der Teich** — pond; pool (value 2, rank 7,209, B2)
+- **das Aspirin** — aspirin; acetylsalicylic acid (value 2, rank 6,228, B2)
+- **der Generator** — generator (value 2, rank 6,025, B2)
+- **die Website** — website (value 2, rank 5,907, B2)
+- **der Astronaut** — astronaut (value 2, rank 5,422, B2)
+- **das Echo** — echo (value 2, rank 5,368, B2)
+- **der Bunker** — bunker; stash (value 2, rank 5,233, B2)
+- **der Frost** — frost; frostiness (value 2, rank 5,117, B2)
+- **der Profit** — profit (value 2, rank 5,112, B2)
+- **die Mafia** — mafia (value 2, rank 4,827, B2)
+- **der Tumor** — tumor; tumour (value 2, rank 4,811, B2)
+- **die Ohnmacht** — faint; swoon (value 3, rank 8,099, B2)
+- **der Hinterkopf** — occiput (value 3, rank 8,093, B2)
+- **die Mithilfe** — assistance (value 3, rank 8,080, B2)
+- **der Scheinwerfer** — spotlight; headlight (value 3, rank 8,064, B2)
+- **der Körperteil** — body part (value 3, rank 8,053, B2)
+- **das Logbuch** — logbook (value 3, rank 8,051, B2)
+- **die Schlucht** — gorge; ravine (value 3, rank 8,049, B2)
+- **der Vorschuss** — advance (value 3, rank 8,039, B2)
+- **der Beifall** — applause; clapping (value 3, rank 8,024, B2)
+- **der Grieche** — Greek (value 3, rank 8,006, B2)
+- **das Verbrechen** — crime; criminality (value 3, rank 8,004, B2)
+- **der Jahrestag** — anniversary (value 3, rank 7,997, B2)
+- **der Eintrag** — entry (value 3, rank 7,978, B2)
+- **das Kartell** — cartel (value 3, rank 7,977, B2)
+- **der Gründer** — founder (value 3, rank 7,967, B2)
+- **der Feldwebel** — staff sergeant (value 3, rank 7,965, B2)
+- **der Angeber** — showoff; blusterer (value 3, rank 7,954, B2)
+- **der Behälter** — bin; container (value 3, rank 7,946, B2)
+- **die Sklaverei** — slavery (value 3, rank 7,936, B2)
