@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="light dark" />
 <meta name="application-name" content="Artikelwerk" />
-<meta name="description" content="A focused B2–C2 German noun-gender trainer with Challenge and Bridge vocabulary tracks, adaptive review, and productive recall." />
+<meta name="description" content="A focused C1/C2 German noun-gender trainer with adaptive review, contextual practice, and productive recall." />
 <meta name="theme-color" content="#d45532" />
 <meta name="apple-mobile-web-app-title" content="Artikelwerk" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 <link rel="mask-icon" href="safari-pinned-tab.svg" color="#d45532" />
 <link rel="manifest" href="site.webmanifest" />
-<title>Artikelwerk — B2–C2 German Article Trainer</title>
+<title>Artikelwerk — C1/C2 German Article Trainer</title>
 <style>
   :root{
     color-scheme:light;
@@ -1624,15 +1624,13 @@
 </div>
 
 <script src="translations.js"></script>
-<script src="bridge-translations.js"></script>
-<script src="bridge-corpus.js"></script>
 <script>
 (() => {
   "use strict";
 
   // C16 lexical schema: meaning-dependent gender with sense-scoped article semantics.
-  const APP_VERSION = "1.3.0";
-  const VOCAB_SCHEMA_VERSION = 16;
+  const APP_VERSION = "1.2.0";
+  const VOCAB_SCHEMA_VERSION = 15;
 
   const FREQUENCY_META = {
     bands:{
@@ -2531,7 +2529,6 @@
     provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{}),
     fallbackIds:new Set(window.ARTIKELWERK_TRANSLATION_FALLBACKS||[]),
     senseCertification:new Set(window.ARTIKELWERK_SENSE_CERTIFICATION||[]),
-    certifiedReview(review){ return ["release-reviewed","source-certified"].includes(review?.reviewStatus); },
     text(word,sense=null){
       if(!word) return "English gloss unavailable";
       const active=sense||MeaningGenderModel.activeSense(word);
@@ -2540,20 +2537,20 @@
       }
       const stored=this.data[word.id];
       const review=this.provenance[word.id];
-      if(this.certifiedReview(review) && typeof stored==="string" && stored.trim()) return stored.trim();
+      if(review?.reviewStatus==="release-reviewed" && typeof stored==="string" && stored.trim()) return stored.trim();
       return "English gloss unavailable";
     },
     isFallback(word,sense=null){
       if(!word) return true;
       const active=sense||MeaningGenderModel.activeSense(word);
       if(MeaningGenderModel.isMeaningDependent(word) && active?.gloss) return !this.senseCertification.has(`${word.id}:${active.id}`);
-      return this.fallbackIds.has(word.id) || !this.certifiedReview(this.provenance[word.id]) || !this.data[word.id];
+      return this.fallbackIds.has(word.id) || this.provenance[word.id]?.reviewStatus!=="release-reviewed" || !this.data[word.id];
     },
     label(word,sense=null){ return this.isFallback(word,sense)?"English unavailable":"English"; }
   };
 
 
-  function createVocabularyEntry([id,noun,article,level,rule,example,group,coverageTier="full-depth",expansionPhase=null,track="challenge",sourceMeta=null]){
+  function createVocabularyEntry([id,noun,article,level,rule,example,group,coverageTier="full-depth",expansionPhase=null,track="challenge"]){
     const canonicalArticle=article;
     const morphology=morphologyMetadataFor(id);
     const compound=compoundMetadataFor(id);
@@ -2584,7 +2581,7 @@
 
       // Fixed editorial difficulty is separate from B12 personal difficulty.
       level,
-      frequency:sourceMeta?.frequencyRank ? {band:level===1?"frequent":level===2?"common":"less-common",rank:sourceMeta.frequencyRank,source:"V2-2 wordhoard v0.1.0 frequency rank"} : frequencyMetadataFor(id,level),
+      frequency:frequencyMetadataFor(id,level),
       register:registerMetadataFor(id,group),
       categories:group?[group]:[],
 
@@ -2617,8 +2614,7 @@
       // `group` is retained for B9/B10 contrast behavior; categories[] is canonical.
       group,
       metadataCoverage:coverageTier,
-      source:track==="bridge" ? {kind:"bridge",status:"source-certified",phase:expansionPhase||"V2-2",evidence:sourceMeta||null} : {kind:"core",status:coverageTier==="full-depth"?"curated":"curated-expansion",...(expansionPhase?{phase:expansionPhase}:{})},
-      sourceEvidence:sourceMeta||null,
+      source:{kind:"core",status:coverageTier==="full-depth"?"curated":"curated-expansion",...(expansionPhase?{phase:expansionPhase}:{})},
       contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null
     };
   }
@@ -3637,9 +3633,6 @@
     ["analyseziel","Analyseziel","das",3,"No single productive gender rule is reliable enough here; learn the noun as das Analyseziel.","Das Analyseziel wurde in der abschließenden Analyse ausdrücklich berücksichtigt.","analysis","core-expanded","C14"],
     ["handlungskonzept","Handlungskonzept","das",3,"This is best learned as the complete lexical unit das Handlungskonzept; no additional C4/C5 morphology is claimed in C14.","Das Handlungskonzept wurde in der politischen Debatte unterschiedlich bewertet.","politics","core-expanded","C14"],
    ].map(createVocabularyEntry);
-
-  const BRIDGE_CORPUS = Array.isArray(window.ARTIKELWERK_BRIDGE_CORPUS) ? window.ARTIKELWERK_BRIDGE_CORPUS : [];
-  VOCAB.push(...BRIDGE_CORPUS.map(createVocabularyEntry));
 
   // V2-1: Challenge remains the default corpus. Bridge is automatically enabled as soon as
   // V2-2 adds entries whose final tuple field is "bridge".

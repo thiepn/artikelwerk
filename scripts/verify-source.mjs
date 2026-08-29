@@ -110,15 +110,11 @@ if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#d45532') fai
 if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');
 const faviconSvg = await readFile(join(rootDir, 'favicon.svg'), 'utf8');
 if (faviconSvg.includes('gradient') || !faviconSvg.includes('#d45532') || !faviconSvg.includes('#f7f4ee') || !faviconSvg.includes('#191715')) fail('Favicon must use the flat UI5 editorial palette without gradients.');
-requireFragment(html, '<script src="translations.js"></script>', 'Challenge local translation asset');
-requireFragment(html, '<script src="bridge-translations.js"></script>', 'Bridge local translation asset');
-requireFragment(html, '<script src="bridge-corpus.js"></script>', 'Bridge local corpus asset');
-requireFragment(html, 'VOCAB.push(...BRIDGE_CORPUS.map(createVocabularyEntry));', 'Bridge corpus runtime integration');
-requireFragment(html, 'certifiedReview(review){ return ["release-reviewed","source-certified"].includes(review?.reviewStatus); }', 'dual content certification status');
+requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
-requireFragment(html, 'const APP_VERSION = "1.3.0";', 'application version 1.3.0');
-requireFragment(html, 'const VOCAB_SCHEMA_VERSION = 16;', 'vocabulary schema version 16');
+requireFragment(html, 'const APP_VERSION = "1.2.0";', 'application version 1.2.0');
+requireFragment(html, 'const VOCAB_SCHEMA_VERSION = 15;', 'vocabulary schema version 15');
 requireFragment(html, 'const SCHEMA_VERSION = 10;', 'persistence schema version 10');
 requireFragment(html, 'const VOCAB = [', 'vocabulary bank');
 requireFragment(html, 'const PracticeScreen = {', 'native practice controller');
@@ -178,7 +174,7 @@ const missingIds = requiredIds.filter((id) => !staticIdSet.has(id));
 if (missingIds.length) fail(`Missing native practice ids: ${missingIds.join(', ')}`);
 
 const externalScripts = [...html.matchAll(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/gi)].map((match) => match[1]);
-if (JSON.stringify(externalScripts) !== JSON.stringify(['translations.js','bridge-translations.js','bridge-corpus.js'])) {
+if (JSON.stringify(externalScripts) !== JSON.stringify(['translations.js'])) {
   fail(`Unexpected script dependencies: ${externalScripts.join(', ') || 'none'}`);
 }
 
@@ -198,7 +194,7 @@ for (const line of html.split(/\r?\n/)) {
   vocabulary.push(parsed);
 }
 
-if (vocabulary.length !== 1000) fail(`Expected exactly 1000 inline Challenge vocabulary entries, found ${vocabulary.length}.`);
+if (vocabulary.length !== 1000) fail(`Expected exactly 1000 vocabulary entries, found ${vocabulary.length}.`);
 
 const vocabularyIds = new Set();
 for (const [id, noun, article, level, explanation, example, group] of vocabulary) {
@@ -248,5 +244,4 @@ requireFragment(coverage, 'vocabulary_entries=1000', 'complete translation cover
 const coverageRatio = Number(coverage.match(/^coverage_ratio=([0-9.]+)$/m)?.[1]);
 if (!Number.isFinite(coverageRatio) || coverageRatio < 0.9) fail(`English gloss coverage is below 90%: ${String(coverageRatio)}`);
 
-for (const relativePath of ['bridge-corpus.js','bridge-translations.js','content/bridge-provenance.json','content/bridge-corpus-report.json','docs/v2-2-bridge-corpus.md','LICENSES/CC-BY-SA-4.0.txt']) { try { await access(join(rootDir, relativePath)); } catch { fail(`Missing V2-2 Bridge asset: ${relativePath}`); } }
-console.log(`Source verification passed: ${vocabulary.length} Challenge nouns + certified Bridge assets, ${translationIds.length} Challenge glosses, ${staticIds.length} static ids.`);
+console.log(`Source verification passed: ${vocabulary.length} nouns, ${translationIds.length} local glosses, ${staticIds.length} static ids.`);
