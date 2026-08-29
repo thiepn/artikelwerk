@@ -1,7 +1,17 @@
 from pathlib import Path
 
 ROOT = Path('.')
+INDEX = ROOT / 'index.html'
 VERIFY = ROOT / 'scripts' / 'verify-source.mjs'
+
+html = INDEX.read_text(encoding='utf-8')
+bridge_option = '<option value="bridge">Bridge · B2–C1</option>'
+count = html.count(bridge_option)
+if count != 3:
+    raise SystemExit(f'Expected 3 Bridge selector options, found {count}')
+html = html.replace(bridge_option, '<option value="bridge" disabled>Bridge · B2–C1</option>')
+INDEX.write_text(html, encoding='utf-8')
+
 verify = VERIFY.read_text(encoding='utf-8')
 
 old = "requireFragment(html, 'const APP_VERSION = \"1.1.0\";', 'application version 1.1.0');"
@@ -17,4 +27,4 @@ if anchor not in verify:
 verify = verify.replace(anchor, addition, 1)
 
 VERIFY.write_text(verify, encoding='utf-8')
-print('Updated permanent source verifier for V2-1')
+print('Updated permanent source verifier and empty Bridge selector state for V2-1')
