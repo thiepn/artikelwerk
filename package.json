@@ -16,6 +16,7 @@
     "certify:content": "node scripts/certify-content.mjs",
     "certify:bridge": "node scripts/certify-bridge.mjs",
     "audit:bridge-editorial": "node scripts/audit-bridge-editorial.mjs",
+    "certify:bridge-release": "node scripts/audit-bridge-editorial.mjs --assert-release",
     "test:content-browser": "node tests/content-runtime.mjs",
     "test:shell-browser": "node tests/app-shell.mjs",
     "test:surfaces-browser": "node tests/surface-polish.mjs",
