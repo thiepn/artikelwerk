@@ -38,7 +38,7 @@ jobs:
         run: npm install --no-package-lock --no-audit --no-fund
 
       - name: Verify content-generator syntax
-        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
+        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py scripts/propose_bridge_replacements.py
 
       - name: Export V2-3 Bridge editorial audit
         if: github.head_ref == 'v2-3-bridge-certification'
@@ -50,6 +50,19 @@ jobs:
         with:
           name: artikelwerk-bridge-editorial-audit
           path: content/bridge-editorial-audit.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Generate V2-3 Bridge replacement proposals
+        if: github.head_ref == 'v2-3-bridge-certification'
+        run: npm run propose:bridge-replacements
+
+      - name: Upload V2-3 Bridge replacement proposals
+        if: github.head_ref == 'v2-3-bridge-certification'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-bridge-replacement-candidates
+          path: content/bridge-replacement-candidates.json
           if-no-files-found: error
           retention-days: 14
 
