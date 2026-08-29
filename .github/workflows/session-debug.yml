@@ -13,23 +13,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Print session/repeat source contexts
+      - name: Print final-check and retry source contexts
         run: |
           python - <<'PY'
           from pathlib import Path
           s=Path('index.html').read_text(encoding='utf-8')
-          needles=['const PracticeScreen = {','nextBtn','finishSession','sessionSummary','summaryModal','nextQuestion','currentIndex','sessionQueue','recent','lastAsked','pickNext','buildPool','Today’s Review','Today\'s Review']
+          needles=[
+            'nextFinalCheckOrEnd',
+            'finalCheckQueue',
+            'finalCheckCursor',
+            'questionKind==="finalCheck"',
+            'questionKind==="shortRetry"',
+            'shortRetries.set',
+            'popDueShortRetry',
+            'answer(article',
+            'end(){',
+            '#nextBtn").addEventListener',
+          ]
           for needle in needles:
-              print('\n'+'='*24, needle, '='*24)
-              start=0
-              found=0
+              print('\n'+'='*30, needle, '='*30)
+              start=0; found=0
               while True:
                   i=s.find(needle,start)
                   if i<0: break
                   found+=1
-                  a=max(0,i-1800); b=min(len(s),i+3800)
+                  a=max(0,i-3000); b=min(len(s),i+6500)
                   print(f'-- occurrence {found} at char {i} --')
                   print(s[a:b])
                   start=i+len(needle)
-                  if found>=8: break
+                  if found>=6: break
           PY
