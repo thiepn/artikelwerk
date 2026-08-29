@@ -47,7 +47,7 @@ EXPLICIT_LOW_VALUE_NOUNS = {
     "Schildkröte", "Fledermaus", "Ameise", "Maulwurf", "Falke", "Geier", "Gans", "Schnecke",
 }
 BLOCKED_GLOSS_TERMS = {
-    "bimbo", "dyke", "sissy", "wimp", "shit", "crap", "whore", "junkie", "klingon",
+    "bimbo", "dyke", "sissy", "wimp", "shit", "crap", "piss", "whore", "junkie", "klingon",
     "daddy", "spaghetti", "pancake", "muffin", "donut", "doughnut", "popcorn",
 }
 
@@ -178,27 +178,11 @@ def advanced_qualified(item) -> bool:
     return bool(s["abstract_suffix"] or s["formal_compound"] or s["abstract"] or s["institutional"])
 
 
-def choose(pool, count: int, soft_article_targets: dict[str, int]):
+def choose(pool, count: int):
     ranked = sorted(pool, key=lambda x: (-x["learnerValue"], x["frequencyRank"], x["noun"].casefold()))
-    chosen, used = [], set()
-    # Article targets are soft: take up to the target from each article, never lower
-    # the vocabulary bar merely to satisfy a ratio.
-    for article, target in soft_article_targets.items():
-        for item in [x for x in ranked if x["article"] == article][:target]:
-            chosen.append(item)
-            used.add(item["id"])
-    if len(chosen) > count:
-        chosen = sorted(chosen, key=lambda x: (-x["learnerValue"], x["frequencyRank"]))[:count]
-        used = {x["id"] for x in chosen}
-    for item in ranked:
-        if len(chosen) >= count:
-            break
-        if item["id"] not in used:
-            chosen.append(item)
-            used.add(item["id"])
-    if len(chosen) != count:
-        base.die(f"Could not select {count} quality candidates; found {len(chosen)}")
-    return chosen
+    if len(ranked) < count:
+        base.die(f"Could not select {count} quality candidates; found {len(ranked)}")
+    return ranked[:count]
 
 
 _original_build = base.build_candidates
@@ -231,12 +215,12 @@ def curated_assign_levels(candidates):
     if len(advanced) < 250:
         base.die(f"Need at least 250 formally qualified upper-C1 nouns; found {len(advanced)}")
 
-    b2_selected = choose(b2, 750, {"der": 220, "die": 300, "das": 110})
+    b2_selected = choose(b2, 750)
     b2_selected.sort(key=lambda x: (x["difficultyScore"], -x["learnerValue"], x["frequencyRank"]))
     level1 = [{**x, "level": 1} for x in b2_selected[:400]]
     level2 = [{**x, "level": 2} for x in b2_selected[400:]]
 
-    advanced_selected = choose(advanced, 250, {"der": 35, "die": 90, "das": 25})
+    advanced_selected = choose(advanced, 250)
     advanced_selected.sort(key=lambda x: (-x["learnerValue"], x["frequencyRank"], x["noun"].casefold()))
     level3 = [{**x, "level": 3} for x in advanced_selected]
     return level1 + level2 + level3, {
@@ -250,7 +234,7 @@ def curated_report(selected, reject, pool_stats, candidate_count):
     text = report_path.read_text(encoding="utf-8")
     text = text.replace(
         "6. Sort by wordhoard frequency rank. Select the first 750 eligible B2 nouns and first 250 eligible C1 nouns.\n7. Assign the first 400 B2 nouns to Intermediate, the next 350 B2 nouns to Upper Intermediate, and the 250 C1 nouns to Advanced.",
-        "6. Rank eligible B2 nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article-diversity targets are soft and never override lexical quality.\n7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value."
+        "6. Rank eligible B2 nouns strictly by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.\n7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value."
     )
     low = sorted(selected, key=lambda x: (x["learnerValue"], -x["frequencyRank"]))[:30]
     text += "\n## Editorial QA\n\n"
