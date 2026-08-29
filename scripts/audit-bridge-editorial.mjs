@@ -10,6 +10,8 @@ const hasFlag = (flag) => process.argv.includes(flag);
 const corpusSource = await read('bridge-corpus.js');
 const translationSource = await read('bridge-translations.js');
 const formalProvenance = JSON.parse(await read('content', 'bridge-provenance.json'));
+const editorialReview = JSON.parse(await read('content', 'bridge-editorial-review.json'));
+const editorialEntries = editorialReview.entries || {};
 
 const corpusContext = { window: {} };
 vm.runInNewContext(corpusSource, corpusContext, { filename: 'bridge-corpus.js' });
@@ -26,6 +28,12 @@ const translations = translationContext.window.ARTIKELWERK_TRANSLATIONS || {};
 const runtimeProvenance = translationContext.window.ARTIKELWERK_TRANSLATION_PROVENANCE || {};
 
 if (rows.length !== 1000) throw new Error(`Expected 1000 Bridge rows, found ${rows.length}`);
+if (editorialReview.phase !== 'V2-3' || editorialReview.status !== 'in-progress') {
+  throw new Error('Bridge editorial review ledger metadata is invalid.');
+}
+for (const id of Object.keys(editorialEntries)) {
+  if (!rows.some((row) => row[0] === id)) throw new Error(`Editorial review references unknown Bridge id: ${id}`);
+}
 
 const GENERIC_EXAMPLE_FRAGMENTS = [
   'wurde in diesem Zusammenhang genauer betrachtet',
@@ -46,15 +54,19 @@ const SENSE_RISK_TERMS = [
   'obsolete', 'archaic', 'dated', 'regional', 'colloquial', 'figurative', 'jocular',
 ];
 const TRANSPARENT_LOAN_SUFFIXES = ['tion', 'ität', 'ismus', 'ik', 'ie'];
-const ARTICLE_CAP = { der: 'Der', die: 'Die', das: 'Das' };
 const HARD_BLOCKING_FLAGS = [
   'not-release-reviewed',
   'missing-reviewed-sense',
+  'missing-gloss-review',
+  'missing-example-review',
+  'missing-rule-review',
+  'missing-level-review',
+  'replacement-pending',
   'generic-example',
   'garbage-gloss',
   'source-annotation-in-gloss',
   'too-many-gloss-senses',
-  'article-example-mismatch',
+  'example-missing-headword',
   'tuple-contract',
 ];
 const SOFT_REVIEW_FLAGS = [
@@ -88,13 +100,19 @@ function isTransparentGloss(noun, gloss) {
 }
 
 const entries = rows.map((row) => {
-  const [id, noun, article, level, rule, example, group, coverage, phase, track, evidence] = row;
-  const gloss = translations[id] || '';
-  const provenance = runtimeProvenance[id] || formalProvenance.entries?.[id] || {};
+  const [id, noun, article, level, sourceRule, sourceExample, group, coverage, phase, track, evidence] = row;
+  const sourceGloss = translations[id] || '';
+  const sourceProvenance = runtimeProvenance[id] || formalProvenance.entries?.[id] || {};
+  const review = editorialEntries[id] || {};
+  const decision = review.decision || 'unreviewed';
+  const gloss = review.gloss ?? sourceGloss;
+  const rule = review.rule ?? sourceRule;
+  const example = review.example ?? sourceExample;
   const lowGloss = gloss.toLocaleLowerCase('en-US');
   const flags = [];
 
-  if (GENERIC_EXAMPLE_FRAGMENTS.some((fragment) => example.includes(fragment))) flags.push('generic-example');
+  if (decision === 'replace') flags.push('replacement-pending');
+  if (decision !== 'replace' && GENERIC_EXAMPLE_FRAGMENTS.some((fragment) => example.includes(fragment))) flags.push('generic-example');
   if (String(rule).startsWith('No reliable productive ending rule is strong enough here')) flags.push('generic-rule');
   if (GARBAGE_GLOSS_TERMS.some((term) => lowGloss.includes(term))) flags.push('garbage-gloss');
   if (SENSE_RISK_TERMS.some((term) => lowGloss.includes(term))) flags.push('sense-register-risk');
@@ -102,9 +120,16 @@ const entries = rows.map((row) => {
   if (glossParts(gloss).length > 2) flags.push('too-many-gloss-senses');
   if (isTransparentGloss(noun, gloss)) flags.push('transparent-cognate');
   if (group === 'bridge-general') flags.push('generic-taxonomy');
-  if (provenance.reviewStatus !== 'release-reviewed') flags.push('not-release-reviewed');
-  if (!Array.isArray(provenance.reviewedSenseIds) || provenance.reviewedSenseIds.length < 1) flags.push('missing-reviewed-sense');
-  if (!example.startsWith(`${ARTICLE_CAP[article]} ${noun}`)) flags.push('article-example-mismatch');
+
+  if (review.reviewStatus !== 'release-reviewed') flags.push('not-release-reviewed');
+  if (decision !== 'replace') {
+    if (!Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length < 1) flags.push('missing-reviewed-sense');
+    if (review.glossReview !== 'editorial') flags.push('missing-gloss-review');
+    if (review.exampleReview !== 'editorial') flags.push('missing-example-review');
+    if (review.ruleReview !== 'editorial') flags.push('missing-rule-review');
+    if (review.levelReview !== 'editorial') flags.push('missing-level-review');
+    if (!String(example).includes(noun)) flags.push('example-missing-headword');
+  }
   if (coverage !== 'core-expanded' || phase !== 'V2-2' || track !== 'bridge') flags.push('tuple-contract');
 
   return {
@@ -115,31 +140,64 @@ const entries = rows.map((row) => {
     cefrEstimate: evidence?.cefrEstimate,
     frequencyRank: evidence?.frequencyRank,
     group,
+    sourceGloss,
     gloss,
+    sourceRule,
     rule,
+    sourceExample,
     example,
-    reviewStatus: provenance.reviewStatus || null,
+    sourceStatus: sourceProvenance.reviewStatus || null,
+    decision,
+    reviewStatus: review.reviewStatus || null,
+    reviewedSenseIds: review.reviewedSenseIds || [],
+    componentReview: {
+      gloss: review.glossReview || 'pending',
+      example: review.exampleReview || 'pending',
+      rule: review.ruleReview || 'pending',
+      level: review.levelReview || 'pending',
+    },
     flags,
   };
 });
 
 const countFlag = (flag) => entries.filter((entry) => entry.flags.includes(flag)).length;
+const countComponent = (component) => entries.filter((entry) => entry.componentReview[component] === 'editorial').length;
 const levelCounts = Object.fromEntries([1, 2, 3].map((level) => [level, entries.filter((entry) => entry.level === level).length]));
 const hardBlockers = Object.fromEntries(HARD_BLOCKING_FLAGS.map((flag) => [flag, countFlag(flag)]));
 const softSignals = Object.fromEntries(SOFT_REVIEW_FLAGS.map((flag) => [flag, countFlag(flag)]));
 const hardBlockerEntries = entries.filter((entry) => entry.flags.some((flag) => HARD_BLOCKING_FLAGS.includes(flag)));
+const reviewDecisions = {
+  reviewedLedgerEntries: Object.keys(editorialEntries).length,
+  retain: entries.filter((entry) => entry.decision === 'retain').length,
+  replace: entries.filter((entry) => entry.decision === 'replace').length,
+  unreviewed: entries.filter((entry) => entry.decision === 'unreviewed').length,
+};
+const componentProgress = {
+  glossReviewed: countComponent('gloss'),
+  exampleReviewed: countComponent('example'),
+  ruleReviewed: countComponent('rule'),
+  levelReviewed: countComponent('level'),
+  releaseReviewed: entries.filter((entry) => entry.reviewStatus === 'release-reviewed').length,
+};
 const summary = {
-  schema: 2,
+  schema: 3,
   phase: 'V2-3',
   total: entries.length,
   levelCounts,
   releaseReady: hardBlockerEntries.length === 0,
   hardBlockerEntries: hardBlockerEntries.length,
+  reviewDecisions,
+  componentProgress,
   hardBlockers,
   softSignals,
   flags: {
     notReleaseReviewed: countFlag('not-release-reviewed'),
     missingReviewedSense: countFlag('missing-reviewed-sense'),
+    missingGlossReview: countFlag('missing-gloss-review'),
+    missingExampleReview: countFlag('missing-example-review'),
+    missingRuleReview: countFlag('missing-rule-review'),
+    missingLevelReview: countFlag('missing-level-review'),
+    replacementPending: countFlag('replacement-pending'),
     genericExample: countFlag('generic-example'),
     genericRule: countFlag('generic-rule'),
     genericTaxonomy: countFlag('generic-taxonomy'),
