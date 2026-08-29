@@ -11,8 +11,8 @@
     "C1": 250
   },
   "articleCounts": {
-    "der": 321,
-    "die": 546,
+    "der": 318,
+    "die": 549,
     "das": 133
   },
   "rankRanges": {
@@ -21,18 +21,19 @@
       6699
     ],
     "2": [
-      6700,
-      8171
+      6716,
+      8172
     ],
     "3": [
-      9276,
-      16330
+      10513,
+      17372
     ]
   },
   "eligible": {
-    "eligibleB2": 997,
+    "eligibleB2": 996,
     "eligibleC1": 2099,
-    "eligibleAdvancedC1": 338
+    "eligibleAdvancedC1": 291,
+    "advancedMinFrequencyRank": 10500
   },
   "rejected": {
     "no_clean_english_gloss": 460,
@@ -44,7 +45,7 @@
     "candidate_duplicate": 11,
     "invalid_orthography": 2,
     "learner_suitability_too_basic": 77,
-    "learner_suitability_explicit_noise": 22
+    "learner_suitability_explicit_noise": 23
   },
   "sample": [
     {

@@ -7,8 +7,8 @@
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
 - Source CEFR estimates: **750 B2 / 250 C1**
-- Articles: **der 321 / die 546 / das 133**
-- Eligible source-corroborated pool before final rank cut: **3,096** nouns (997 B2, 2,099 C1)
+- Articles: **der 318 / die 549 / das 133**
+- Eligible source-corroborated pool before final rank cut: **3,095** nouns (996 B2, 2,099 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -23,8 +23,8 @@
 4. Require at least one clean English Wiktionary translation.
 5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise/basic-concept categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
 6. Keep the B2 pool frequency-led for Intermediate/Upper Intermediate. Limit every gloss to the two strongest clean source translations.
-7. For Advanced, require a C1 source estimate **plus formal lexical evidence**: strong abstract/derivational morphology or an abstract/formal semantic signal. Rarity, word length, and polysemy alone cannot qualify a noun as Advanced.
-8. Assign the first 400 curated B2 nouns to Intermediate, the next 350 to Upper Intermediate, and the first 250 formally qualified C1 nouns to Advanced.
+7. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and **formal lexical evidence**: strong abstract/derivational morphology or an abstract/formal semantic signal. Rarity, word length, and polysemy alone cannot qualify a noun as Advanced.
+8. Assign the first 400 curated B2 nouns to Intermediate, the next 350 to Upper Intermediate, and the first 250 upper-C1 formally qualified nouns to Advanced.
 
 ## Source and licensing
 
@@ -35,22 +35,22 @@
 ## Frequency-rank ranges
 
 - Level 1: 4,624–6,699
-- Level 2: 6,700–8,171
-- Level 3: 9,276–16,330
+- Level 2: 6,716–8,172
+- Level 3: 10,513–17,372
 
 ## Largest semantic groups
 
-- bridge-general: 964
-- process: 6
+- bridge-general: 962
 - technology: 5
-- economy: 4
+- process: 5
+- economy: 5
 - emotion: 3
 - politics: 3
+- structure: 3
+- communication: 3
 - health: 3
 - society: 2
-- structure: 2
 - education: 2
-- communication: 2
 - legal: 2
 
 ## Rejection audit
@@ -62,7 +62,7 @@
 - missing_or_invalid_gender: 89
 - learner_suitability_too_basic: 77
 - special_name_only: 56
-- learner_suitability_explicit_noise: 22
+- learner_suitability_explicit_noise: 23
 - candidate_duplicate: 11
 - invalid_orthography: 2
 
@@ -91,7 +91,6 @@
 - **die Bestellung** — order (source estimate B2, frequency rank 4,802)
 
 ### Level 2 — Upper Intermediate
-- **die Made** — maggot (source estimate B2, frequency rank 6,700)
 - **die Bemühung** — effort; endeavour (source estimate B2, frequency rank 6,716)
 - **der Attentäter** — assassin (source estimate B2, frequency rank 6,717)
 - **der Schöpfer** — creator; Maker (source estimate B2, frequency rank 6,732)
@@ -111,25 +110,26 @@
 - **der Drang** — urge (source estimate B2, frequency rank 6,808)
 - **die Blondine** — blonde (source estimate B2, frequency rank 6,814)
 - **der Zins** — interest (source estimate B2, frequency rank 6,825)
+- **der Zauberspruch** — incantation; spell (source estimate B2, frequency rank 6,826)
 
 ### Level 3 — Advanced
-- **die Strömung** — tide (source estimate C1, frequency rank 9,276)
-- **die Atmung** — respiration (source estimate C1, frequency rank 9,279)
-- **die Auseinandersetzung** — argument; dispute (source estimate C1, frequency rank 9,311)
-- **die Neigung** — inclination; propensity (source estimate C1, frequency rank 9,322)
-- **die Freundlichkeit** — affability; attention (source estimate C1, frequency rank 9,352)
-- **der Heiratsantrag** — marriage proposal (source estimate C1, frequency rank 9,450)
-- **die Besorgnis** — concern; worriedness (source estimate C1, frequency rank 9,469)
-- **die Intuition** — intuition (source estimate C1, frequency rank 9,485)
-- **der Terrorismus** — terrorism (source estimate C1, frequency rank 9,486)
-- **die Sequenz** — sequence (source estimate C1, frequency rank 9,489)
-- **die Offenbarung** — revelation; Revelations (source estimate C1, frequency rank 9,519)
-- **die Notwendigkeit** — necessity; need (source estimate C1, frequency rank 9,537)
-- **die Behinderung** — handicap (source estimate C1, frequency rank 9,538)
-- **die Öffnung** — opening (source estimate C1, frequency rank 9,539)
-- **die Begrüßung** — greeting; welcoming (source estimate C1, frequency rank 9,576)
-- **die Berühmtheit** — celebrity; fame (source estimate C1, frequency rank 9,579)
-- **die Verwandlung** — metamorphosis; transformation (source estimate C1, frequency rank 9,606)
-- **die Unverschämtheit** — impudence; insolence (source estimate C1, frequency rank 9,660)
-- **die Wendung** — turning; turn (source estimate C1, frequency rank 9,662)
-- **die Krönung** — coronation; crowning (source estimate C1, frequency rank 9,685)
+- **die Selbstverteidigung** — self-defence (source estimate C1, frequency rank 10,513)
+- **die Lungenentzündung** — pneumonia (source estimate C1, frequency rank 10,551)
+- **die Übernahme** — takeover; appropriation (source estimate C1, frequency rank 10,590)
+- **die Präsenz** — presence (source estimate C1, frequency rank 10,636)
+- **die Sensation** — sensation (source estimate C1, frequency rank 10,686)
+- **die Prozedur** — procedure (source estimate C1, frequency rank 10,768)
+- **die Zündung** — ignition; firing (source estimate C1, frequency rank 10,777)
+- **die Begabung** — gift; flair (source estimate C1, frequency rank 10,784)
+- **die Brandstiftung** — arson (source estimate C1, frequency rank 10,856)
+- **die Kapitulation** — capitulation; surrender (source estimate C1, frequency rank 10,920)
+- **die Prellung** — bruise (source estimate C1, frequency rank 10,924)
+- **die Anspielung** — allusion; insinuation (source estimate C1, frequency rank 10,954)
+- **die Arroganz** — arrogance (source estimate C1, frequency rank 10,957)
+- **die Eroberung** — conquest (source estimate C1, frequency rank 10,968)
+- **die Audienz** — audience (source estimate C1, frequency rank 11,074)
+- **die Zärtlichkeit** — tenderness; caresses (source estimate C1, frequency rank 11,101)
+- **die Bewunderung** — admiration (source estimate C1, frequency rank 11,108)
+- **die Kanalisation** — sewage system (source estimate C1, frequency rank 11,123)
+- **die Barmherzigkeit** — mercy; tenderheartedness (source estimate C1, frequency rank 11,125)
+- **die Verachtung** — contempt (source estimate C1, frequency rank 11,126)
