@@ -5,15 +5,16 @@ Artikelwerk is a German noun-gender trainer with adaptive review, contextual and
 ## Vocabulary tracks
 
 - **Challenge · C1–C2** — the original 1,000 difficult nouns. Challenge remains the default practice experience.
-- **Bridge · B2–C1** — the optional intermediate/upper-intermediate track. V2-1 provides its complete Practice/Progress/Vocabulary architecture, but the track remains unavailable until the 1,000-word Bridge corpus is installed in V2-2.
-- Existing progress is preserved as Challenge progress. Global totals remain available through the All-vocabulary Progress scope.
-- No easier placeholder nouns or duplicated Challenge nouns are used to simulate Bridge availability.
+- **Bridge · B2–C1** — 1,000 additional intermediate-to-advanced nouns: 400 Intermediate, 350 Upper Intermediate, and 250 Advanced.
+- Bridge difficulty is source-informed and editorially screened. Its B2/C1 labels are targeting estimates, not official Goethe list membership.
+- Existing progress remains Challenge progress; Bridge starts independently, while **All vocabulary** reports across all 2,000 installed nouns.
+- Challenge and Bridge have zero noun/ID overlap.
 
-See `docs/v2-1-vocabulary-tracks.md` for the architecture and persistence contract.
+See `docs/v2-1-vocabulary-tracks.md` for the architecture/persistence contract and `docs/v2-2-bridge-corpus.md` for corpus construction, sources, screening, and licensing.
 
 ## Canonical source
 
-`index.html` is the single human-readable application source and the file served by the current GitHub Pages configuration. `translations.js` is the checked-in local English-gloss dataset used by that application.
+`index.html` is the single human-readable application source and the file served by the current GitHub Pages configuration. Challenge glosses remain in `translations.js`; the checked-in Bridge corpus and glosses live in the separate `bridge-corpus.js` and `bridge-translations.js` assets.
 
 The former packed payload, recovered-source duplicate, patch-on-build layer, heuristic practice adapter, and source-writing workflows have been retired. CI validates and packages the repository but never commits or pushes generated output.
 
@@ -44,7 +45,9 @@ python -m http.server 4173 --directory dist
 
 ```text
 index.html                         canonical application source
-translations.js                    local English-gloss dataset
+translations.js                    Challenge English-gloss dataset
+bridge-corpus.js                    1,000-row Bridge vocabulary asset
+bridge-translations.js              Bridge English gloss + provenance runtime asset
 docs/translation-coverage.txt      generated coverage evidence
 scripts/generate_translations*.py  translation-data generators
 scripts/verify-source.mjs          source, vocabulary, and translation checks
@@ -66,14 +69,14 @@ dist/                              generated artifact; never committed
 
 ## Licensing
 
-See `THIRD_PARTY_NOTICES.md` and `LICENSES/GPL-3.0.txt` for the FreeDict-derived English-gloss subset.
+See `THIRD_PARTY_NOTICES.md`, `LICENSES/GPL-3.0.txt`, and `LICENSES/CC-BY-SA-4.0.txt`. Challenge and Bridge data licenses are documented separately.
 
 ## Content certification
 
-- `translations.js` is the runtime-certified local gloss asset.
-- `content/provenance.json` records source kind and review state for all currently installed nouns.
+- `translations.js` is the release-reviewed Challenge gloss asset; `bridge-translations.js` is the source-certified Bridge gloss asset.
+- `content/provenance.json` retains the 1,000-word Challenge provenance; `content/bridge-provenance.json` independently records all 1,000 Bridge entries.
 - `content/ambiguous-gender-review.json` records externally verified variant and meaning-dependent gender decisions.
-- `scripts/certify-content.mjs` exhaustively validates translation, provenance, example, ambiguity, and targeted inflection invariants.
+- `scripts/certify-content.mjs` preserves the mature Challenge certification. `scripts/certify-bridge.mjs` separately certifies the 1,000-row Bridge split, source evidence, translations, licensing, examples, and zero overlap.
 - `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
 
 Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.
