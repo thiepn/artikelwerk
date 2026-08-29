@@ -17,11 +17,11 @@ if old_focus not in html:
     raise SystemExit('Missing Practice focus-return anchor')
 html = html.replace(old_focus, new_focus, 1)
 
-render_anchor = '\n\n  const DataControls = {'
-render_guard = r'''
+stats_anchor = '\n\n  const DataControls = {'
+stats_guard = r'''
 
   // Track availability is derived from installed vocabulary, not from initial markup.
-  // Re-assert it after scoped views render so V2-2 can enable Bridge automatically.
+  // Re-assert it after Progress renders so V2-2 can enable Bridge automatically.
   const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);
   StatisticsView.render = function(...args){
     const result=V21StatisticsRender(...args);
@@ -29,6 +29,15 @@ render_guard = r'''
     VocabularyTrackModel.syncSurfaceCopy();
     return result;
   };
+'''
+if stats_anchor not in html:
+    raise SystemExit('Missing Statistics render-guard anchor')
+html = html.replace(stats_anchor, stats_guard + stats_anchor, 1)
+
+vocab_anchor = '\n\n  const CoreTrainingModel = {'
+vocab_guard = r'''
+
+  // Vocabulary is declared later than Progress, so its availability guard belongs here.
   const V21VocabularyRender = VocabularyView.render.bind(VocabularyView);
   VocabularyView.render = function(...args){
     const result=V21VocabularyRender(...args);
@@ -36,9 +45,9 @@ render_guard = r'''
     return result;
   };
 '''
-if render_anchor not in html:
-    raise SystemExit('Missing scoped-render guard anchor')
-html = html.replace(render_anchor, render_guard + render_anchor, 1)
+if vocab_anchor not in html:
+    raise SystemExit('Missing Vocabulary render-guard anchor')
+html = html.replace(vocab_anchor, vocab_guard + vocab_anchor, 1)
 INDEX.write_text(html, encoding='utf-8')
 
 verify = VERIFY.read_text(encoding='utf-8')
@@ -50,10 +59,10 @@ if old not in verify:
 verify = verify.replace(old, new, 1)
 
 anchor = "requireFragment(html, '/* UI5 — editorial rebuild: typography and rules instead of dashboard cards */', 'UI5 editorial rebuild');"
-addition = anchor + "\nrequireFragment(html, '/* V2-1 — vocabulary track architecture */', 'V2-1 vocabulary track styles');\nrequireFragment(html, 'const VOCABULARY_TRACKS = Object.freeze', 'V2-1 vocabulary track registry');\nrequireFragment(html, 'track:track===\"bridge\"?\"bridge\":\"challenge\"', 'V2-1 vocabulary row track');\nrequireFragment(html, 'aggregatesByTrack', 'V2-1 per-track aggregate storage');\nrequireFragment(html, 'id=\"vocabularyTrackSelect\"', 'V2-1 Practice vocabulary selector');\nrequireFragment(html, 'id=\"bridgeTrackBtn\"', 'V2-1 Bridge home action');\nrequireFragment(html, 'id=\"progressTrackSelect\"', 'V2-1 Progress vocabulary scope');\nrequireFragment(html, 'id=\"libraryTrackSelect\"', 'V2-1 Vocabulary scope');\nrequireFragment(html, 'target?.focus?.({preventScroll:true});', 'synchronous Practice focus restoration');\nrequireFragment(html, 'const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);', 'render-time track availability guard');"
+addition = anchor + "\nrequireFragment(html, '/* V2-1 — vocabulary track architecture */', 'V2-1 vocabulary track styles');\nrequireFragment(html, 'const VOCABULARY_TRACKS = Object.freeze', 'V2-1 vocabulary track registry');\nrequireFragment(html, 'track:track===\"bridge\"?\"bridge\":\"challenge\"', 'V2-1 vocabulary row track');\nrequireFragment(html, 'aggregatesByTrack', 'V2-1 per-track aggregate storage');\nrequireFragment(html, 'id=\"vocabularyTrackSelect\"', 'V2-1 Practice vocabulary selector');\nrequireFragment(html, 'id=\"bridgeTrackBtn\"', 'V2-1 Bridge home action');\nrequireFragment(html, 'id=\"progressTrackSelect\"', 'V2-1 Progress vocabulary scope');\nrequireFragment(html, 'id=\"libraryTrackSelect\"', 'V2-1 Vocabulary scope');\nrequireFragment(html, 'target?.focus?.({preventScroll:true});', 'synchronous Practice focus restoration');\nrequireFragment(html, 'const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);', 'Progress render-time track availability guard');\nrequireFragment(html, 'const V21VocabularyRender = VocabularyView.render.bind(VocabularyView);', 'Vocabulary render-time track availability guard');"
 if anchor not in verify:
     raise SystemExit('Missing V2-1 UI5 verifier anchor')
 verify = verify.replace(anchor, addition, 1)
 
 VERIFY.write_text(verify, encoding='utf-8')
-print('Updated V2-1 verifier, availability guards, and Practice focus return')
+print('Updated V2-1 verifier, correctly placed availability guards, and Practice focus return')
