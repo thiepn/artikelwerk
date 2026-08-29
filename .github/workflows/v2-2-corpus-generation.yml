@@ -6,6 +6,7 @@ on:
       - codex/v2-2-bridge-corpus
     paths:
       - scripts/generate_bridge_corpus.py
+      - scripts/refine_bridge_corpus.py
       - .github/workflows/v2-2-corpus-generation.yml
   workflow_dispatch:
 
@@ -32,10 +33,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Generate and validate Bridge corpus
+      - name: Generate and validate curated Bridge corpus
         run: |
-          python -m py_compile scripts/generate_bridge_corpus.py
-          python scripts/generate_bridge_corpus.py
+          python -m py_compile scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
+          python scripts/refine_bridge_corpus.py
 
       - name: Verify generated artifact structure
         shell: bash
@@ -55,6 +56,7 @@ jobs:
           assert p['levelCounts']=={'1':400,'2':350,'3':250}
           assert p['cefrEstimateCounts']=={'B2':750,'C1':250}
           assert min(p['articleCounts'].values())>=120
+          assert p['eligible']['eligibleAdvancedC1']>=250
           print(json.dumps({k:p[k] for k in ('selected','levelCounts','cefrEstimateCounts','articleCounts','rankRanges','eligible')},indent=2))
           PY
 
@@ -76,5 +78,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add bridge-corpus.js bridge-translations.js content/bridge-provenance.json content/bridge-corpus-report.json docs/v2-2-bridge-corpus.md LICENSES/CC-BY-SA-4.0.txt
           git diff --cached --quiet && exit 0
-          git commit -m "content: generate certified 1000-word Bridge corpus"
+          git commit -m "content: refine certified 1000-word Bridge corpus"
           git push origin HEAD:codex/v2-2-bridge-corpus
