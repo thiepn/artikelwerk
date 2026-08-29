@@ -15,6 +15,7 @@
     "ci:static": "npm run check && npm run certify:content && npm run certify:bridge && npm run build && npm run test:build",
     "certify:content": "node scripts/certify-content.mjs",
     "certify:bridge": "node scripts/certify-bridge.mjs",
+    "audit:bridge-editorial": "node scripts/audit-bridge-editorial.mjs",
     "test:content-browser": "node tests/content-runtime.mjs",
     "test:shell-browser": "node tests/app-shell.mjs",
     "test:surfaces-browser": "node tests/surface-polish.mjs",
