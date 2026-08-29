@@ -1112,6 +1112,27 @@
     .ui3-practice #quizContent>div:last-child{justify-content:flex-start;margin-top:clamp(30px,4vh,44px)}
   }
 
+
+  /* V2-1 — vocabulary track architecture */
+  .track-link-btn{min-height:0;padding:2px 0;border:0;border-bottom:1px solid currentColor;border-radius:0;background:transparent;color:var(--accent);font:inherit;font-weight:800;cursor:pointer}
+  .track-link-btn:hover:not(:disabled){color:var(--accent-dark)}
+  .track-link-btn:disabled{color:var(--muted);border-bottom-color:transparent;cursor:not-allowed;opacity:.72}
+  .control-help{display:block;margin-top:6px;color:var(--muted);font-size:.78rem;line-height:1.35}
+  .track-aware-heading{display:flex;align-items:end;justify-content:space-between;gap:28px}
+  .track-aware-heading>div{min-width:0}
+  .track-scope-control{display:grid;gap:4px;min-width:210px;color:var(--muted);font-size:.78rem;font-weight:700}
+  .track-scope-control>span{letter-spacing:.02em}
+  .track-scope-control select{min-width:210px;background:transparent}
+  .track-scope-control small{font-weight:500;line-height:1.25}
+  #trackControl{grid-column:auto}
+  @media(max-width:720px){
+    .track-aware-heading{display:grid;gap:14px;align-items:start}
+    .track-scope-control,.track-scope-control select{min-width:0;width:100%}
+    #trackControl{grid-column:1/-1}
+    .practice-hero-actions{align-items:flex-start}
+    #bridgeTrackNote{max-width:34rem}
+  }
+
 </style>
 </head>
 <body>
@@ -1148,12 +1169,14 @@
     <section class="view active" id="practiceView" role="tabpanel" aria-labelledby="tabPractice" aria-hidden="false">
       <section class="panel practice-hero" aria-labelledby="practiceHeroTitle">
         <div class="practice-hero-main">
-          <span class="section-kicker">C1/C2 noun gender</span>
+          <span class="section-kicker" id="practiceTrackKicker">Challenge · C1–C2 noun gender</span>
           <h2 id="practiceHeroTitle">Practice German articles.</h2>
           <p>One word at a time. Choose the article, check the English meaning when you need it, and keep moving.</p>
           <div class="practice-hero-actions">
             <button type="button" class="primary-btn practice-hero-btn" id="openPracticeBtn">Start practice</button>
-            <span class="practice-hero-note">Uses your session settings below.</span>
+            <button type="button" class="track-link-btn" id="bridgeTrackBtn" aria-describedby="bridgeTrackNote">Study B2–C1 vocabulary →</button>
+            <span class="practice-hero-note" id="currentTrackNote">Challenge is selected.</span>
+            <span class="practice-hero-note" id="bridgeTrackNote">Bridge is wired into the app; its corpus is added in V2-2.</span>
           </div>
         </div>
         <div class="practice-hero-articles" aria-hidden="true">
@@ -1189,6 +1212,14 @@
             <p>Adjust only what you need. The defaults are ready to use.</p>
           </div>
           <div class="controls" id="practiceSetup">
+            <div class="control" id="trackControl">
+              <label for="vocabularyTrackSelect">Vocabulary</label>
+              <select id="vocabularyTrackSelect" aria-describedby="vocabularyTrackHelp">
+                <option value="challenge">Challenge · C1–C2</option>
+                <option value="bridge" disabled>Bridge · B2–C1</option>
+              </select>
+              <small class="control-help" id="vocabularyTrackHelp">Default track · the original 1,000 difficult nouns.</small>
+            </div>
             <div class="control">
               <label for="modeSelect">Mode</label>
               <select id="modeSelect">
@@ -1338,10 +1369,21 @@
     </section>
 
     <section class="view" id="statsView" role="tabpanel" aria-labelledby="tabStats" aria-hidden="true">
-      <div class="view-heading">
-        <span class="section-kicker">Learning record</span>
-        <h2>Progress</h2>
-        <p>Recall, review load, response speed, and the words that still need work.</p>
+      <div class="view-heading track-aware-heading">
+        <div>
+          <span class="section-kicker">Learning record</span>
+          <h2>Progress</h2>
+          <p>Recall, review load, response speed, and the words that still need work.</p>
+        </div>
+        <label class="track-scope-control" for="progressTrackSelect"><span>Vocabulary</span>
+          <select id="progressTrackSelect">
+            <option value="current">Current track</option>
+            <option value="challenge">Challenge · C1–C2</option>
+            <option value="bridge" disabled>Bridge · B2–C1</option>
+            <option value="all">All vocabulary</option>
+          </select>
+          <small id="progressTrackMeta">Challenge · C1–C2</small>
+        </label>
       </div>
       <section class="panel stats-grid progress-overview" aria-label="Learning overview">
         <div class="stat-card progress-primary">
@@ -1448,7 +1490,7 @@
           <div class="data-divider"></div>
           <div>
             <strong>Selective reset</strong>
-            <p class="muted" style="font-size:.82rem;margin:5px 0 10px">These controls preserve the 1,000-word vocabulary and app itself. Export a backup first if you may want to undo a reset.</p>
+            <p class="muted" style="font-size:.82rem;margin:5px 0 10px">These controls preserve the installed vocabulary and app itself. Export a backup first if you may want to undo a reset.</p>
             <div class="data-actions">
               <button type="button" class="ghost-btn" id="resetSessionsBtn">Reset session summaries</button>
               <button type="button" class="ghost-btn" id="resetVocabularyStatusBtn">Clear unknown / suspended status</button>
@@ -1460,10 +1502,20 @@
     </section>
 
     <section class="view" id="libraryView" role="tabpanel" aria-labelledby="tabLibrary" aria-hidden="true">
-      <div class="view-heading">
-        <span class="section-kicker">Reference</span>
-        <h2>Vocabulary</h2>
-        <p>1,000 reviewed C1/C2 nouns with English meanings, examples, grammar notes, and learning status.</p>
+      <div class="view-heading track-aware-heading">
+        <div>
+          <span class="section-kicker">Reference</span>
+          <h2>Vocabulary</h2>
+          <p id="libraryIntro">1,000 installed nouns in Challenge · C1–C2, with English meanings, examples, grammar notes, and learning status.</p>
+        </div>
+        <label class="track-scope-control" for="libraryTrackSelect"><span>Vocabulary set</span>
+          <select id="libraryTrackSelect">
+            <option value="current">Current track</option>
+            <option value="challenge">Challenge · C1–C2</option>
+            <option value="bridge" disabled>Bridge · B2–C1</option>
+            <option value="all">All vocabulary</option>
+          </select>
+        </label>
       </div>
       <div class="panel library-toolbar library-primary-toolbar library-filter-bar">
         <input type="search" id="librarySearch" placeholder="Search nouns…" aria-label="Search nouns" />
@@ -1577,8 +1629,8 @@
   "use strict";
 
   // C16 lexical schema: meaning-dependent gender with sense-scoped article semantics.
-  const APP_VERSION = "1.1.0";
-  const VOCAB_SCHEMA_VERSION = 14;
+  const APP_VERSION = "1.2.0";
+  const VOCAB_SCHEMA_VERSION = 15;
 
   const FREQUENCY_META = {
     bands:{
@@ -2498,7 +2550,7 @@
   };
 
 
-  function createVocabularyEntry([id,noun,article,level,rule,example,group,coverageTier="full-depth",expansionPhase=null]){
+  function createVocabularyEntry([id,noun,article,level,rule,example,group,coverageTier="full-depth",expansionPhase=null,track="challenge"]){
     const canonicalArticle=article;
     const morphology=morphologyMetadataFor(id);
     const compound=compoundMetadataFor(id);
@@ -2511,6 +2563,7 @@
       : (variantGender.explanation||rule);
     return {
       lexicalSchemaVersion:VOCAB_SCHEMA_VERSION,
+      track:track==="bridge"?"bridge":"challenge",
       id,
       noun,
 
@@ -3581,6 +3634,162 @@
     ["handlungskonzept","Handlungskonzept","das",3,"This is best learned as the complete lexical unit das Handlungskonzept; no additional C4/C5 morphology is claimed in C14.","Das Handlungskonzept wurde in der politischen Debatte unterschiedlich bewertet.","politics","core-expanded","C14"],
    ].map(createVocabularyEntry);
 
+  // V2-1: Challenge remains the default corpus. Bridge is automatically enabled as soon as
+  // V2-2 adds entries whose final tuple field is "bridge".
+  const VOCABULARY_TRACKS = Object.freeze({
+    challenge:Object.freeze({
+      id:"challenge",label:"Challenge",band:"C1–C2",description:"Advanced and difficult noun gender",availableLabel:"advanced C1/C2 nouns",
+      difficulty:Object.freeze({all:"All advanced levels",1:"Level 1 — Advanced",2:"Level 2 — Difficult",3:"Level 3 — Very Difficult"})
+    }),
+    bridge:Object.freeze({
+      id:"bridge",label:"Bridge",band:"B2–C1",description:"Intermediate to advanced-intermediate noun gender",availableLabel:"B2–C1 nouns",
+      difficulty:Object.freeze({all:"All B2–C1 levels",1:"Level 1 — Intermediate",2:"Level 2 — Upper Intermediate",3:"Level 3 — Advanced"})
+    })
+  });
+  const DEFAULT_VOCABULARY_TRACK = "challenge";
+
+  const VocabularyTrackModel = {
+    ids:Object.freeze(["challenge","bridge"]),
+    normalize(value){ return this.ids.includes(value)?value:DEFAULT_VOCABULARY_TRACK; },
+    meta(track){ return VOCABULARY_TRACKS[this.normalize(track)]; },
+    wordTrack(word){ return this.normalize(word?.track); },
+    words(track){
+      const id=this.normalize(track);
+      return VOCAB.filter(word=>this.wordTrack(word)===id);
+    },
+    count(track){ return this.words(track).length; },
+    hasWords(track){ return this.count(track)>0; },
+    selected(){
+      const control=typeof DOM!=="undefined"?DOM.$("#vocabularyTrackSelect"):null;
+      const candidate=control?.value || Runtime.state?.settings?.vocabularyTrack || DEFAULT_VOCABULARY_TRACK;
+      const normalized=this.normalize(candidate);
+      return this.hasWords(normalized)?normalized:DEFAULT_VOCABULARY_TRACK;
+    },
+    resolveScope(scope="current"){
+      if(scope==="all") return "all";
+      if(scope==="current") return this.selected();
+      return this.normalize(scope);
+    },
+    wordsForScope(scope="current"){
+      const resolved=this.resolveScope(scope);
+      return resolved==="all"?[...VOCAB]:this.words(resolved);
+    },
+    scopeLabel(scope="current"){
+      const resolved=this.resolveScope(scope);
+      return resolved==="all"?"All vocabulary":`${this.meta(resolved).label} · ${this.meta(resolved).band}`;
+    },
+    levelLabel(track,level){ return this.meta(track).difficulty[String(level)] || `Level ${level}`; },
+    levelLabelForScope(scope,level){
+      const resolved=this.resolveScope(scope);
+      return resolved==="all"?`Level ${level}`:this.levelLabel(resolved,level);
+    },
+    aggregateForScope(scope="current"){
+      const empty={answers:0,correct:0,currentStreak:0,bestStreak:0};
+      if(!Runtime.state) return empty;
+      const resolved=this.resolveScope(scope);
+      if(resolved==="all") return Runtime.state.aggregates||empty;
+      return Runtime.state.aggregatesByTrack?.[resolved]||empty;
+    },
+    ensureAggregate(track){
+      const id=this.normalize(track);
+      Runtime.state.aggregatesByTrack ||= {};
+      Runtime.state.aggregatesByTrack[id] ||= {answers:0,correct:0,currentStreak:0,bestStreak:0};
+      return Runtime.state.aggregatesByTrack[id];
+    },
+    difficultyOptions(track=this.selected()){
+      const meta=this.meta(track);
+      return ["all","1","2","3"].map(value=>({value,label:meta.difficulty[value]}));
+    },
+    syncDifficultyOptions({preserve=true}={}){
+      const select=DOM.$("#difficultySelect");
+      if(!select) return;
+      const previous=preserve?select.value:"all";
+      select.innerHTML=this.difficultyOptions().map(item=>`<option value="${item.value}">${item.label}</option>`).join("");
+      select.value=["all","1","2","3"].includes(previous)?previous:"all";
+    },
+    syncLibraryLevelOptions(){
+      const select=DOM.$("#levelFilter");
+      if(!select) return;
+      const previous=select.value||"all";
+      const scope=DOM.$("#libraryTrackSelect")?.value||"current";
+      const resolved=this.resolveScope(scope);
+      const labels=resolved==="all" ? {all:"All levels",1:"Level 1",2:"Level 2",3:"Level 3"} : this.meta(resolved).difficulty;
+      select.innerHTML=["all","1","2","3"].map(value=>`<option value="${value}">${labels[value]}</option>`).join("");
+      select.value=["all","1","2","3"].includes(previous)?previous:"all";
+    },
+    syncAvailability(){
+      const bridgeCount=this.count("bridge");
+      for(const id of ["vocabularyTrackSelect","progressTrackSelect","libraryTrackSelect"]){
+        const select=DOM.$(`#${id}`);
+        const option=select?.querySelector('option[value="bridge"]');
+        if(option){
+          option.disabled=bridgeCount===0;
+          option.textContent=bridgeCount?`Bridge · B2–C1 (${bridgeCount.toLocaleString()})`:`Bridge · B2–C1 (corpus not installed)`;
+        }
+      }
+      const bridgeButton=DOM.$("#bridgeTrackBtn");
+      if(bridgeButton){
+        bridgeButton.disabled=bridgeCount===0;
+        bridgeButton.setAttribute("aria-disabled",bridgeCount===0?"true":"false");
+      }
+      const note=DOM.$("#bridgeTrackNote");
+      if(note) note.textContent=bridgeCount ? `${bridgeCount.toLocaleString()} intermediate and upper-intermediate nouns are ready.` : "Bridge is wired into the app; its 1,000-word B2–C1 corpus is added in V2-2.";
+    },
+    syncSurfaceCopy(){
+      const track=this.selected();
+      const meta=this.meta(track);
+      const count=this.count(track);
+      const kicker=DOM.$("#practiceTrackKicker");
+      if(kicker) kicker.textContent=`${meta.label} · ${meta.band} noun gender`;
+      const note=DOM.$("#currentTrackNote");
+      if(note) note.textContent=`${meta.label} is selected · ${count.toLocaleString()} ${meta.availableLabel}.`;
+      const help=DOM.$("#vocabularyTrackHelp");
+      if(help) help.textContent=track==="challenge" ? "Default track · the original 1,000 difficult nouns." : "Optional track · intermediate and upper-intermediate vocabulary.";
+      const libraryIntro=DOM.$("#libraryIntro");
+      if(libraryIntro){
+        const scope=DOM.$("#libraryTrackSelect")?.value||"current";
+        const words=this.wordsForScope(scope);
+        libraryIntro.textContent=`${words.length.toLocaleString()} installed nouns in ${this.scopeLabel(scope)}, with English meanings, examples, grammar notes, and learning status.`;
+      }
+      const progressMeta=DOM.$("#progressTrackMeta");
+      if(progressMeta){
+        const scope=DOM.$("#progressTrackSelect")?.value||"current";
+        progressMeta.textContent=`${this.scopeLabel(scope)} · ${this.wordsForScope(scope).length.toLocaleString()} installed nouns`;
+      }
+    },
+    init(){
+      const saved=this.normalize(Runtime.state?.settings?.vocabularyTrack);
+      const active=this.hasWords(saved)?saved:DEFAULT_VOCABULARY_TRACK;
+      const select=DOM.$("#vocabularyTrackSelect");
+      if(select) select.value=active;
+      Runtime.state.settings ||= {};
+      Runtime.state.settings.vocabularyTrack=active;
+      this.syncAvailability();
+      this.syncDifficultyOptions({preserve:true});
+      this.syncLibraryLevelOptions();
+      this.syncSurfaceCopy();
+    },
+    select(track,{persist=true,announce=true}={}){
+      const id=this.normalize(track);
+      if(!this.hasWords(id)){
+        if(announce) AccessibilityManager.announce(`${this.meta(id).label} vocabulary is not installed yet.`);
+        return false;
+      }
+      const select=DOM.$("#vocabularyTrackSelect");
+      if(select) select.value=id;
+      Runtime.state.settings ||= {};
+      Runtime.state.settings.vocabularyTrack=id;
+      this.syncDifficultyOptions({preserve:false});
+      this.syncLibraryLevelOptions();
+      this.syncAvailability();
+      this.syncSurfaceCopy();
+      if(persist) ProgressStore.save();
+      if(announce) AccessibilityManager.announce(`${this.meta(id).label} vocabulary selected.`);
+      return true;
+    }
+  };
+
+
   const FrequencyModel = {
     meta(band){ return FREQUENCY_META.bands[band] || FREQUENCY_META.bands["common"]; },
     label(word){ return this.meta(word?.frequency?.band).label; },
@@ -3594,7 +3803,7 @@
   const STORAGE_TEMP_KEY = "artikelwerk_data_tmp";
   const QUARANTINE_PREFIX = "artikelwerk_quarantine_";
   const LEGACY_STORAGE_KEYS = ["artikelwerk_v1"];
-  const SCHEMA_VERSION = 9;
+  const SCHEMA_VERSION = 10;
   const MAX_REVIEW_EVENTS = 10000;
   const THEME_KEY = "artikelwerk_theme";
   const MODE_LABELS = {
@@ -3988,6 +4197,28 @@
       if(bestStreak !== Number(source.bestStreak||0)) issues.push("aggregates.bestStreak: clamped to a possible value");
       return {answers,correct,currentStreak,bestStreak};
     },
+
+    repairAggregatesByTrack(raw,wordProgress,globalAggregates,issues){
+      const source=this.isPlainObject(raw)?raw:{};
+      if(raw!=null && !this.isPlainObject(raw)) issues.push("aggregatesByTrack: replaced invalid object");
+      const result={};
+      for(const track of VocabularyTrackModel.ids){
+        const ids=new Set(VocabularyTrackModel.words(track).map(word=>word.id));
+        let detailedAttempts=0,detailedCorrect=0;
+        for(const [id,ws] of Object.entries(wordProgress)){
+          if(!ids.has(id)) continue;
+          detailedAttempts+=this.nonNegativeInt(ws.attempts);
+          detailedCorrect+=this.nonNegativeInt(ws.correct);
+        }
+        const rawBucket=this.isPlainObject(source[track])?source[track]:(track==="challenge"?globalAggregates:{});
+        let answers=Math.max(this.nonNegativeInt(rawBucket.answers),detailedAttempts);
+        let correct=Math.min(answers,Math.max(this.nonNegativeInt(rawBucket.correct),detailedCorrect));
+        let currentStreak=Math.min(this.nonNegativeInt(rawBucket.currentStreak),correct);
+        let bestStreak=Math.min(Math.max(this.nonNegativeInt(rawBucket.bestStreak),currentStreak),correct);
+        result[track]={answers,correct,currentStreak,bestStreak};
+      }
+      return result;
+    },
     repairSummaries(raw,issues){
       if(!this.isPlainObject(raw)){
         if(raw != null) issues.push("sessions.summaries: replaced invalid collection");
@@ -4101,18 +4332,22 @@
       const base=StateSchema.create({now:Date.now()});
       const wordProgress=this.repairWordProgress(data.wordProgress,issues);
       const reviewEvents=this.repairReviewEvents(data.reviewEvents,issues);
+      const aggregates=this.repairAggregates(data.aggregates,wordProgress,issues);
+      const settings={...this.plainObject(data.settings,"settings",issues)};
+      settings.vocabularyTrack=VocabularyTrackModel.normalize(settings.vocabularyTrack);
       const state={
         schemaVersion:SCHEMA_VERSION,
         meta:this.repairMeta(data.meta,base,issues),
         user:this.plainObject(data.user,"user",issues),
         wordProgress,
-        aggregates:this.repairAggregates(data.aggregates,wordProgress,issues),
+        aggregates,
+        aggregatesByTrack:this.repairAggregatesByTrack(data.aggregatesByTrack,wordProgress,aggregates,issues),
         sessions:{
           summaries:this.repairSummaries(data?.sessions?.summaries,issues),
           history:this.objectArray(data?.sessions?.history,"sessions.history",issues)
         },
         reviewEvents,
-        settings:this.plainObject(data.settings,"settings",issues),
+        settings,
         customWords:this.objectArray(data.customWords,"customWords",issues),
         suspendedWords:this.stringArray(data.suspendedWords,"suspendedWords",issues)
       };
@@ -4134,9 +4369,10 @@
         user:{},
         wordProgress:{},
         aggregates:{answers:0,correct:0,currentStreak:0,bestStreak:0},
+        aggregatesByTrack:{challenge:{answers:0,correct:0,currentStreak:0,bestStreak:0},bridge:{answers:0,correct:0,currentStreak:0,bestStreak:0}},
         sessions:{summaries:{},history:[]},
         reviewEvents:[],
-        settings:{},
+        settings:{vocabularyTrack:DEFAULT_VOCABULARY_TRACK},
         customWords:[],
         suspendedWords:[]
       };
@@ -4270,6 +4506,20 @@
           migratedWords[id]={...raw,vocabularyStatus:"normal",unknownWordCount:0,lastUnknownWordAt:0,vocabularyLearningStartedAt:0,vocabularyRestoredAt:0,unfamiliarSenseIds:[]};
         }
         return {...data,schemaVersion:9,meta:{...(data?.meta||{}),updatedAt:now,migratedFrom:data?.meta?.migratedFrom ?? 8,migratedAt:data?.meta?.migratedAt ?? now},wordProgress:migratedWords};
+      },
+      9(data){
+        const now=Date.now();
+        const aggregate=data?.aggregates&&typeof data.aggregates==="object"&&!Array.isArray(data.aggregates) ? data.aggregates : {answers:0,correct:0,currentStreak:0,bestStreak:0};
+        return {
+          ...data,
+          schemaVersion:10,
+          meta:{...(data?.meta||{}),updatedAt:now,migratedFrom:data?.meta?.migratedFrom ?? 9,migratedAt:data?.meta?.migratedAt ?? now},
+          aggregatesByTrack:{
+            challenge:{answers:Number(aggregate.answers)||0,correct:Number(aggregate.correct)||0,currentStreak:Number(aggregate.currentStreak)||0,bestStreak:Number(aggregate.bestStreak)||0},
+            bridge:{answers:0,correct:0,currentStreak:0,bestStreak:0}
+          },
+          settings:{...(data?.settings||{}),vocabularyTrack:VocabularyTrackModel.normalize(data?.settings?.vocabularyTrack)}
+        };
       }
     },
     migrate(data,fromVersion){
@@ -4556,11 +4806,16 @@
       }
       return this.summarize(this.wordEvents(wordId));
     },
-    globalSummary(){
-      return this.summarize(this.events());
+    eventsForWords(words=null){
+      if(!Array.isArray(words)) return this.events();
+      const ids=new Set(words.map(word=>word.id));
+      return this.events().filter(event=>ids.has(event.wordId));
     },
-    speedProfile(){
-      const correct=this.events().filter(event=>event.correct);
+    globalSummary(words=null){
+      return this.summarize(this.eventsForWords(words));
+    },
+    speedProfile(words=null){
+      const correct=this.eventsForWords(words).filter(event=>event.correct);
       const counts={Automatic:0,Strong:0,Hesitant:0,Slow:0};
       correct.forEach(event=>{
         const category=this.classify(event.responseTimeMs);
@@ -4575,25 +4830,25 @@
     MIN_TOTAL_SAMPLE:30,
     MIN_ROW_SAMPLE:10,
     MIN_DIRECTION_ERRORS:3,
-    trackedWords(){
-      return VOCAB.map(word=>({word,ws:LearningModel.getWordState(word.id)}));
+    trackedWords(words=VOCAB){
+      return words.map(word=>({word,ws:LearningModel.getWordState(word.id)}));
     },
-    choiceTotals(){
+    choiceTotals(words=VOCAB){
       const counts={der:0,die:0,das:0};
-      for(const {ws} of this.trackedWords()){
+      for(const {ws} of this.trackedWords(words)){
         const map=ws.articleChoiceCounts||{};
         for(const article of this.articles) counts[article]+=Number(map[article])||0;
       }
       const total=counts.der+counts.die+counts.das;
       return {counts,total};
     },
-    confusionMatrix(){
+    confusionMatrix(words=VOCAB){
       const rows={
         der:{der:0,die:0,das:0,total:0},
         die:{der:0,die:0,das:0,total:0},
         das:{der:0,die:0,das:0,total:0}
       };
-      for(const {word,ws} of this.trackedWords()){
+      for(const {word,ws} of this.trackedWords(words)){
         if(MeaningGenderModel.isMeaningDependent(word)){
           for(const sense of word.meanings){
             const correct=sense.articles[0];
@@ -4646,16 +4901,16 @@
       const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
       return {counts,total};
     },
-    topErrorDirections(){
-      const matrix=this.confusionMatrix();
+    topErrorDirections(words=VOCAB){
+      const matrix=this.confusionMatrix(words);
       const {counts,total}=this.errorDirections(matrix);
       return {
         total,
         entries:Object.entries(counts).filter(([,count])=>count>0).sort((a,b)=>b[1]-a[1])
       };
     },
-    interpretation(){
-      const matrix=this.confusionMatrix();
+    interpretation(words=VOCAB){
+      const matrix=this.confusionMatrix(words);
       if(matrix.total < this.MIN_TOTAL_SAMPLE){
         return {
           ready:false,matrix,
@@ -5022,8 +5277,9 @@
     selectedDifficulty(){
       return DOM.$("#difficultySelect")?.value||"all";
     },
-    eligibleWords({difficulty=this.selectedDifficulty()}={}){
-      return VOCAB.filter(word=>{
+    selectedTrack(){ return VocabularyTrackModel.selected(); },
+    eligibleWords({difficulty=this.selectedDifficulty(),track=this.selectedTrack()}={}){
+      return VocabularyTrackModel.words(track).filter(word=>{
         const ws=LearningModel.getWordState(word.id);
         if(ws.vocabularyStatus!=="normal") return false;
         return difficulty==="all" || String(word.level)===String(difficulty);
@@ -5077,8 +5333,8 @@
       }
       return a.id.localeCompare(b.id);
     },
-    build({limit=20,now=Date.now(),difficulty=this.selectedDifficulty()}={}){
-      const candidates=this.eligibleWords({difficulty})
+    build({limit=20,now=Date.now(),difficulty=this.selectedDifficulty(),track=this.selectedTrack()}={}){
+      const candidates=this.eligibleWords({difficulty,track})
         .filter(word=>this.priority(word,now)<99)
         .sort((a,b)=>this.compare(a,b,now));
       const numericLimit=Number.isFinite(limit)?Math.max(0,Math.trunc(limit)):candidates.length;
@@ -5100,6 +5356,7 @@
         totalAvailable:candidates.length,
         composition,
         difficulty,
+        track,
         builtAt:now
       };
     },
@@ -5108,7 +5365,7 @@
       return value==="endless"?Infinity:Math.max(1,Number(value)||20);
     },
     preview(now=Date.now()){
-      return this.build({limit:this.selectedLimit(),now,difficulty:this.selectedDifficulty()});
+      return this.build({limit:this.selectedLimit(),now,difficulty:this.selectedDifficulty(),track:this.selectedTrack()});
     }
   };
 
@@ -5306,7 +5563,8 @@
     filteredPool(){
       const mode = Runtime.session?.mode || DOM.$("#modeSelect").value;
       const difficulty = DOM.$("#difficultySelect").value;
-      let pool = VOCAB.filter(w => difficulty === "all" || String(w.level) === difficulty);
+      const track=Runtime.session?.track||VocabularyTrackModel.selected();
+      let pool = VocabularyTrackModel.words(track).filter(w => difficulty === "all" || String(w.level) === difficulty);
       if(mode==="unknownWords"){
         pool=pool.filter(w=>LearningModel.getWordState(w.id).vocabularyStatus==="unfamiliar");
       }else{
@@ -5761,11 +6019,14 @@
         }
       }
       DOM.$("#sessionScore").textContent = `${Runtime.session.correct}/${Runtime.session.answers}`;
-      DOM.$("#streakDisplay").textContent = Runtime.state.aggregates.currentStreak;
+      DOM.$("#streakDisplay").textContent = VocabularyTrackModel.aggregateForScope(Runtime.session?.track||"current").currentStreak;
     }
   };
 
   const StatisticsView = {
+    scope(){ return DOM.$("#progressTrackSelect")?.value||"current"; },
+    words(){ return VocabularyTrackModel.wordsForScope(this.scope()); },
+    aggregate(){ return VocabularyTrackModel.aggregateForScope(this.scope()); },
     relativeTime(timestamp,now=Date.now()){
       const value=Number(timestamp)||0;
       if(!value) return "—";
@@ -5776,9 +6037,9 @@
       if(delta<30*86400000) return `${Math.max(1,Math.floor(delta/86400000))}d ago`;
       return new Date(value).toLocaleDateString(undefined,{month:"short",day:"numeric",year:new Date(value).getFullYear()!==new Date(now).getFullYear()?"numeric":undefined});
     },
-    confidenceSummary(){
+    confidenceSummary(words=this.words()){
       const levels={guess:{count:0,correct:0},unsure:{count:0,correct:0},sure:{count:0,correct:0}};
-      for(const word of VOCAB){
+      for(const word of words){
         const history=LearningModel.getWordState(word.id).confidenceHistory||[];
         for(const item of history){
           if(!levels[item?.level] || typeof item.correct!=="boolean") continue;
@@ -5789,8 +6050,10 @@
       return levels;
     },
     snapshot(now=Date.now()){
-      const rows=VOCAB.map(w=>({w,s:LearningModel.getWordState(w.id)}));
-      const total=Runtime.state.aggregates.answers;
+      const words=this.words();
+      const rows=words.map(w=>({w,s:LearningModel.getWordState(w.id)}));
+      const aggregate=this.aggregate();
+      const total=aggregate.answers;
       const mastered=rows.filter(x=>LearningModel.mastery(x.s)==="Mastered").length;
       const leeches=rows.filter(x=>LeechModel.isLeech(x.s));
       const relearning=rows.filter(x=>x.s.srsState==="relearning").length;
@@ -5805,7 +6068,7 @@
         seven:reviewed.filter(x=>x.s.lastReviewed>=now-7*day).length,
         thirty:reviewed.filter(x=>x.s.lastReviewed>=now-30*day).length
       };
-      return {rows,total,accuracy:total?Math.round(Runtime.state.aggregates.correct/total*100):null,mastered,leeches,relearning,weak,seen,due,activity};
+      return {words,rows,aggregate,total,accuracy:total?Math.round(aggregate.correct/total*100):null,mastered,leeches,relearning,weak,seen,due,activity};
     },
     render(){
       const now=Date.now();
@@ -5818,8 +6081,10 @@
       DOM.$("#statMastered").textContent=summary.mastered;
       DOM.$("#statLeeches").textContent=summary.leeches.length;
       DOM.$("#statRelearning").textContent=summary.relearning;
-      DOM.$("#statBestStreak").textContent=Runtime.state.aggregates.bestStreak;
-      DOM.$("#statMedianTime").textContent=TimingAnalytics.format(TimingAnalytics.globalSummary().median);
+      DOM.$("#statBestStreak").textContent=summary.aggregate.bestStreak;
+      DOM.$("#statMedianTime").textContent=TimingAnalytics.format(TimingAnalytics.globalSummary(summary.words).median);
+      const progressMeta=DOM.$("#progressTrackMeta");
+      if(progressMeta) progressMeta.textContent=`${VocabularyTrackModel.scopeLabel(this.scope())} · ${summary.words.length.toLocaleString()} installed nouns`;
 
       DOM.$("#activityToday").textContent=summary.activity.today;
       DOM.$("#activity7d").textContent=summary.activity.seven;
@@ -5836,7 +6101,7 @@
 
       const articleStats=article=>{
         let attempts=0,correct=0;
-        for(const w of VOCAB){
+        for(const w of summary.words){
           const ws=LearningModel.getWordState(w.id);
           if(MeaningGenderModel.isMeaningDependent(w)){
             for(const sense of w.meanings.filter(s=>s.articles.includes(article))){
@@ -5852,9 +6117,9 @@
         ["der",articleStats("der")],
         ["die",articleStats("die")],
         ["das",articleStats("das")],
-        ["Level 1",VOCAB.filter(w=>w.level===1)],
-        ["Level 2",VOCAB.filter(w=>w.level===2)],
-        ["Level 3",VOCAB.filter(w=>w.level===3)]
+        [VocabularyTrackModel.levelLabelForScope(this.scope(),1),summary.words.filter(w=>w.level===1)],
+        [VocabularyTrackModel.levelLabelForScope(this.scope(),2),summary.words.filter(w=>w.level===2)],
+        [VocabularyTrackModel.levelLabelForScope(this.scope(),3),summary.words.filter(w=>w.level===3)]
       ];
       DOM.$("#accuracyBars").innerHTML=breakdowns.map(([label,value])=>{
         let attempts=0,correct=0;
@@ -5872,11 +6137,11 @@
       const counts={New:0,Learning:0,Fragile:0,Familiar:0,Reliable:0,Automatic:0,Mastered:0,Relearning:0};
       summary.rows.forEach(x=>counts[LearningModel.mastery(x.s)]++);
       DOM.$("#learningStatus").innerHTML=Object.entries(counts).map(([label,count])=>{
-        const pct=Math.round(count/VOCAB.length*100);
+        const pct=Math.round(count/Math.max(1,summary.words.length)*100);
         return `<div class="bar-row"><strong>${label}</strong><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span>${count}</span></div>`;
       }).join("");
 
-      const confidence=this.confidenceSummary();
+      const confidence=this.confidenceSummary(summary.words);
       const confidenceLabels={guess:"Guess",unsure:"Unsure",sure:"Sure"};
       DOM.$("#confidenceCalibration").innerHTML=Object.entries(confidence).map(([key,data])=>{
         const pct=data.count?Math.round(data.correct/data.count*100):0;
@@ -5893,13 +6158,13 @@
       }
       DOM.$("#confidenceInsight").innerHTML=`<div class="insight-item">${DOM.escapeHtml(confidenceMessage)}${confidenceTotal?` <span class="muted">(${confidenceTotal} tagged answers)</span>`:""}</div>`;
 
-      const speed=TimingAnalytics.speedProfile();
+      const speed=TimingAnalytics.speedProfile(summary.words);
       DOM.$("#speedProfile").innerHTML=Object.entries(speed.counts).map(([label,count])=>{
         const pct=speed.total?Math.round(count/speed.total*100):0;
         return `<div class="bar-row"><strong>${label}</strong><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span>${speed.total?pct+"%":"—"}</span></div>`;
       }).join("");
 
-      const confusion=ErrorAnalytics.confusionMatrix();
+      const confusion=ErrorAnalytics.confusionMatrix(summary.words);
       DOM.$("#confusionMatrixBody").innerHTML=ErrorAnalytics.articles.map(correct=>{
         const row=confusion.rows[correct];
         const cells=ErrorAnalytics.articles.map(chosen=>{
@@ -5911,7 +6176,7 @@
         const sample=row.total>=ErrorAnalytics.MIN_ROW_SAMPLE?`n=${row.total}`:`n=${row.total} · low sample`;
         return `<tr><th scope="row">${correct}</th>${cells}<td><span class="confusion-sample">${sample}</span></td></tr>`;
       }).join("");
-      const diagnosis=ErrorAnalytics.interpretation();
+      const diagnosis=ErrorAnalytics.interpretation(summary.words);
       DOM.$("#confusionInsights").innerHTML=diagnosis.messages.map(message=>`<div class="insight-item">${DOM.escapeHtml(message)}</div>`).join("");
 
       const stubborn=summary.leeches.map(x=>({...x,a:LeechModel.analysis(x.s)})).sort((a,b)=>b.a.severity-a.a.severity || a.a.accuracy-b.a.accuracy || b.a.lapses-a.a.lapses).slice(0,12);
@@ -5922,6 +6187,17 @@
       DataControls.refreshStatus();
     }
   };
+
+  // Track availability is derived from installed vocabulary, not from initial markup.
+  // Re-assert it after Progress renders so V2-2 can enable Bridge automatically.
+  const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);
+  StatisticsView.render = function(...args){
+    const result=V21StatisticsRender(...args);
+    VocabularyTrackModel.syncAvailability();
+    VocabularyTrackModel.syncSurfaceCopy();
+    return result;
+  };
+
 
   const DataControls = {
     exportEnvelope(){
@@ -6065,7 +6341,7 @@
     filterValues(){
       const value=id=>DOM.$("#"+id)?.value||"all";
       return {
-        q:this.normalizeSearch(DOM.$("#librarySearch")?.value||""),article:value("articleFilter"),level:value("levelFilter"),
+        q:this.normalizeSearch(DOM.$("#librarySearch")?.value||""),track:value("libraryTrackSelect"),article:value("articleFilter"),level:value("levelFilter"),
         vocabularyStatus:value("vocabularyStatusFilter"),mastery:value("masteryFilter"),variantGender:value("variantGenderFilter"),
         frequency:value("frequencyFilter"),register:value("registerFilter"),morphology:value("morphologyFilter"),reliability:value("reliabilityFilter"),
         contrast:value("contrastFilter"),wordFamily:value("wordFamilyFilter"),collocation:value("collocationFilter"),inflection:value("inflectionFilter"),
@@ -6091,7 +6367,8 @@
     render(){
       const f=this.filterValues();
       this.syncPrimaryFilterUI();
-      let rows = VOCAB.filter(w=>{
+      const scopedWords=VocabularyTrackModel.wordsForScope(f.track);
+      let rows = scopedWords.filter(w=>{
         const ws=LearningModel.getWordState(w.id);
         const mastery=LearningModel.mastery(ws);
         if(!this.matchesSearch(w,f.q)) return false;
@@ -6117,7 +6394,9 @@
       });
       rows.sort((a,b)=>a.noun.localeCompare(b.noun,"de"));
       const fullDepth=rows.filter(w=>w.metadataCoverage==="full-depth").length;
-      DOM.$("#libraryMeta").textContent=`${rows.length} of ${VOCAB.length} nouns · ${fullDepth} full-detail · ${rows.length-fullDepth} core-detail`;
+      DOM.$("#libraryMeta").textContent=`${rows.length} of ${scopedWords.length} nouns · ${VocabularyTrackModel.scopeLabel(f.track)} · ${fullDepth} full-detail · ${rows.length-fullDepth} core-detail`;
+      const intro=DOM.$("#libraryIntro");
+      if(intro) intro.textContent=`${scopedWords.length.toLocaleString()} installed nouns in ${VocabularyTrackModel.scopeLabel(f.track)}, with English meanings, examples, grammar notes, and learning status.`;
       DOM.$("#libraryBody").innerHTML=rows.map(w=>{
         const ws=LearningModel.getWordState(w.id);
         const mastery=LearningModel.mastery(ws);
@@ -6129,7 +6408,7 @@
         return `<tr data-word-id="${DOM.escapeHtml(w.id)}">
           <td><span class="article-chip">${DOM.escapeHtml(articleLabel)}</span></td>
           <td><button type="button" class="word-open-btn" lang="de" data-word-id="${DOM.escapeHtml(w.id)}">${DOM.escapeHtml(w.noun)}</button><span class="word-subline">${DOM.escapeHtml(genderNote)} · ${DOM.escapeHtml(this.coverageLabel(w))}</span></td>
-          <td>Level ${w.level}</td>
+          <td>${DOM.escapeHtml(VocabularyTrackModel.meta(w.track).label)} · Level ${w.level}</td>
           <td>${DOM.escapeHtml(FrequencyModel.label(w))}</td>
           <td><span class="status-chip ${DOM.escapeHtml(status)}">${DOM.escapeHtml(this.vocabularyStatusLabel(status))}</span></td>
           <td><span class="mastery-chip">${DOM.escapeHtml(mastery)} · ${ws.masteryScore}</span>${leech.active?`<span class="leech-chip">Stubborn ${leech.severity}</span>`:""}</td>
@@ -6197,6 +6476,7 @@
         ${this.sensesHtml(word,ws)}
         <div class="word-detail-section"><h3>Article & usage</h3>
           <div class="detail-grid">
+            <div class="detail-field"><strong>Set</strong><span>${DOM.escapeHtml(VocabularyTrackModel.meta(word.track).label)} · ${DOM.escapeHtml(VocabularyTrackModel.meta(word.track).band)} · Level ${word.level}</span></div>
             <div class="detail-field"><strong>Article</strong><span>${DOM.escapeHtml(articleLabel)} ${DOM.escapeHtml(word.noun)}</span></div>
             <div class="detail-field"><strong>English</strong><span>${DOM.escapeHtml(englishGloss)}</span></div>
             <div class="detail-field"><strong>Content</strong><span>${contentCertification?.reviewStatus==="release-reviewed"?"Reviewed":"Uncertified"}${contentCertification?.sourceKind?` · ${DOM.escapeHtml(contentCertification.sourceKind)}`:""}</span></div>
@@ -6278,10 +6558,19 @@
     }
   };
 
+  // Vocabulary is declared later than Progress, so its availability guard belongs here.
+  const V21VocabularyRender = VocabularyView.render.bind(VocabularyView);
+  VocabularyView.render = function(...args){
+    const result=V21VocabularyRender(...args);
+    VocabularyTrackModel.syncAvailability();
+    return result;
+  };
+
+
   const CoreTrainingModel = {
-    unknownItems({difficulty=DOM.$("#difficultySelect")?.value||"all"}={}){
+    unknownItems({difficulty=DOM.$("#difficultySelect")?.value||"all",track=Runtime.session?.track||VocabularyTrackModel.selected()}={}){
       const items=[];
-      for(const word of VOCAB){
+      for(const word of VocabularyTrackModel.words(track)){
         if(difficulty!=="all" && String(word.level)!==String(difficulty)) continue;
         const ws=LearningModel.getWordState(word.id);
         if(ws.vocabularyStatus!=="unfamiliar") continue;
@@ -6391,8 +6680,9 @@
       DOM.$("#sessionControl").hidden=timed;
       DOM.$("#newSessionBtn").textContent=timed?"Restart 60s challenge":"New session";
     },
-    start({mode=null,reviewIds=null,orderedQueue=null,targetOverride=null} = {}){
+    start({mode=null,reviewIds=null,orderedQueue=null,targetOverride=null,track=null} = {}){
       this.clearTimer();
+      if(track) VocabularyTrackModel.select(track,{persist:true,announce:false});
       if(mode) DOM.$("#modeSelect").value = mode;
       const selectedMode = DOM.$("#modeSelect").value;
       this.syncControls(selectedMode);
@@ -6409,7 +6699,7 @@
       const defaultTarget=selectedMode==="unknownWords"?unknownQueue.length:requestedTarget;
       const target = targetOverride!=null ? targetOverride : defaultTarget;
       Runtime.session = {
-        mode:selectedMode,format:selectedFormat,target,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+        track:VocabularyTrackModel.selected(),mode:selectedMode,format:selectedFormat,target,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
         recentIds:[],seen:new Set(),lastId:null,lastGroup:null,reviewIds,contextCursors:new Map(),
         unknownQueue,unknownQueueCursor:0,
         orderedQueue:orderedQueue?[...orderedQueue]:null,queueCursor:0,
@@ -6443,7 +6733,7 @@
       if(!built.ids.length){
         this.clearTimer();
         Runtime.session={
-          mode:"review",format:DOM.$("#formatSelect").value,target:0,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
+          track:built.track||VocabularyTrackModel.selected(),mode:"review",format:DOM.$("#formatSelect").value,target:0,index:0,correct:0,answers:0,completed:0,unknownCount:0,mistakes:new Map(),shortRetries:new Map(),
           recentIds:[],seen:new Set(),lastId:null,lastGroup:null,reviewIds:null,contextCursors:new Map(),
           unknownQueue:null,unknownQueueCursor:0,orderedQueue:[],queueCursor:0,nextQuestionKind:"normal",forceShortRetry:false,
           finalCheckQueue:null,finalCheckCursor:0,reinforcement:{shortCorrect:0,shortWrong:0,finalCorrect:0,finalWrong:0},
@@ -6458,7 +6748,7 @@
         QuizView.showEmpty();
         return;
       }
-      return this.start({mode:"review",orderedQueue:built.ids,targetOverride:built.ids.length});
+      return this.start({mode:"review",orderedQueue:built.ids,targetOverride:built.ids.length,track:built.track});
     },
     clearTimer(){
       if(Runtime.timerHandle) clearInterval(Runtime.timerHandle);
@@ -6618,16 +6908,22 @@
       const {correct} = LearningModel.applyAnswer(Runtime.current,article,timingSummary,responseTimeMs,{sense:Runtime.currentSense,confidence});
 
       Runtime.state.aggregates.answers++;
+      const trackAggregate=VocabularyTrackModel.ensureAggregate(Runtime.current.track||Runtime.session?.track||VocabularyTrackModel.selected());
+      trackAggregate.answers++;
       Runtime.session.answers++;
       Runtime.session.completed++;
       Runtime.pendingConfidence=null;
       if(correct){
         Runtime.state.aggregates.correct++;
+        trackAggregate.correct++;
         Runtime.session.correct++;
         Runtime.state.aggregates.currentStreak++;
         Runtime.state.aggregates.bestStreak = Math.max(Runtime.state.aggregates.bestStreak,Runtime.state.aggregates.currentStreak);
+        trackAggregate.currentStreak++;
+        trackAggregate.bestStreak=Math.max(trackAggregate.bestStreak,trackAggregate.currentStreak);
       }else{
         Runtime.state.aggregates.currentStreak = 0;
+        trackAggregate.currentStreak = 0;
         Runtime.session.mistakes.set(Runtime.current.id,(Runtime.session.mistakes.get(Runtime.current.id)||0)+1);
         if(MeaningGenderModel.isMeaningDependent(Runtime.current) && Runtime.currentSense){
           const senseKey=`${Runtime.current.id}::${Runtime.currentSense.id}`;
@@ -6661,7 +6957,7 @@
       this.clearTimer();
       const hasScoredAnswers=Runtime.session.answers>0;
       const acc = hasScoredAnswers ? Math.round(Runtime.session.correct/Runtime.session.answers*100) : null;
-      const key = `${Runtime.session.mode}:${Runtime.session.format||"standard"}:${Number.isFinite(Runtime.session.target)?Runtime.session.target:"endless"}`;
+      const key = `${Runtime.session.track||VocabularyTrackModel.selected()}:${Runtime.session.mode}:${Runtime.session.format||"standard"}:${Number.isFinite(Runtime.session.target)?Runtime.session.target:"endless"}`;
       const prev = hasScoredAnswers ? Runtime.state.sessions.summaries[key]?.lastAccuracy : null;
       if(hasScoredAnswers) Runtime.state.sessions.summaries[key] = {lastAccuracy:acc,lastAt:Date.now()};
       ProgressStore.save();
@@ -6741,7 +7037,8 @@
       this.setBackgroundInert(false);
       if(restoreFocus){
         const target=this.returnFocus?.isConnected?this.returnFocus:DOM.$("#openPracticeBtn");
-        requestAnimationFrame(()=>target?.focus?.({preventScroll:true}));
+        target?.focus?.({preventScroll:true});
+        requestAnimationFrame(()=>{ if(document.activeElement!==target) target?.focus?.({preventScroll:true}); });
       }
       this.returnFocus=null;
     },
@@ -6749,6 +7046,9 @@
       const subtitle=DOM.$("#practiceScreenSubtitle");
       if(!subtitle) return;
       const mode=Runtime.session?.mode||DOM.$("#modeSelect")?.value||"practice";
+      const track=Runtime.session?.track||VocabularyTrackModel.selected();
+      const title=DOM.$("#practiceScreenTitle");
+      if(title) title.textContent=`${VocabularyTrackModel.meta(track).label} practice`;
       const format=QuestionFormatModel.sessionFormat(Runtime.session);
       subtitle.textContent=mode==="unknownWords"
         ? "Review the meaning, then mark the word known or keep learning"
@@ -6842,6 +7142,18 @@
     }
   };
 
+  const V21ReviewQueueRender = ReviewQueueView.render.bind(ReviewQueueView);
+  ReviewQueueView.render = function(now=Date.now()){
+    V21ReviewQueueRender(now);
+    const summary=DOM.$("#reviewQueueSummary");
+    if(summary){
+      const track=VocabularyTrackModel.selected();
+      summary.textContent=`${VocabularyTrackModel.meta(track).label} · ${summary.textContent}`;
+    }
+    VocabularyTrackModel.syncSurfaceCopy();
+  };
+
+
   const ThemeManager = {
     syncButton(){
       const button=DOM.$("#themeBtn");
@@ -6921,6 +7233,19 @@
         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
         else if(!["unknownWords","timed"].includes(DOM.$("#modeSelect").value)) SessionEngine.start();
       });
+      DOM.$("#vocabularyTrackSelect").addEventListener("change",()=>{
+        const requested=DOM.$("#vocabularyTrackSelect").value;
+        if(!VocabularyTrackModel.select(requested,{persist:true})) DOM.$("#vocabularyTrackSelect").value=VocabularyTrackModel.selected();
+        ReviewQueueView.render();
+        SessionEngine.start();
+      });
+      DOM.$("#bridgeTrackBtn").addEventListener("click",()=>{
+        if(!VocabularyTrackModel.select("bridge",{persist:true})) return;
+        SessionEngine.start({track:"bridge"});
+        PracticeScreen.open();
+      });
+      DOM.$("#progressTrackSelect").addEventListener("change",()=>{ VocabularyTrackModel.syncSurfaceCopy(); StatisticsView.render(); });
+      DOM.$("#libraryTrackSelect").addEventListener("change",()=>{ VocabularyTrackModel.syncLibraryLevelOptions(); VocabularyTrackModel.syncSurfaceCopy(); VocabularyView.render(); });
       DOM.$("#difficultySelect").addEventListener("change",()=>{
         ReviewQueueView.render();
         if(DOM.$("#modeSelect").value==="review") SessionEngine.startTodayReview();
@@ -6975,7 +7300,7 @@
       DOM.$("#retryMistakesBtn").addEventListener("click",()=>{
         const ids = DOM.$("#retryMistakesBtn").dataset.ids.split(",").filter(Boolean);
         AccessibilityManager.closeModal(DOM.$("#summaryModal"));
-        if(ids.length){ SessionEngine.start({mode:"adaptive",reviewIds:ids}); PracticeScreen.open(); }
+        if(ids.length){ SessionEngine.start({mode:"adaptive",reviewIds:ids,track:Runtime.session?.track||VocabularyTrackModel.selected()}); PracticeScreen.open(); }
       });
       DOM.$("#summaryModal").addEventListener("click",e=>{
         if(e.target===DOM.$("#summaryModal")) AccessibilityManager.closeModal(DOM.$("#summaryModal"));
@@ -7011,6 +7336,7 @@
     init(){
       Runtime.state = ProgressStore.load();
       ThemeManager.init();
+      VocabularyTrackModel.init();
       AppUI.bindEvents();
       if(window.innerWidth<=720){ const diagnostics=DOM.$("#progressDiagnostics"); if(diagnostics) diagnostics.open=false; }
       ReviewQueueView.render();

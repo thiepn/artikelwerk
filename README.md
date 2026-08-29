@@ -1,6 +1,15 @@
 # Artikelwerk
 
-Artikelwerk is a C1/C2 German noun-gender trainer with adaptive review, contextual and productive recall, local English glosses, vocabulary management, and a dedicated no-scroll practice screen.
+Artikelwerk is a German noun-gender trainer with adaptive review, contextual and productive recall, local English glosses, vocabulary management, and a dedicated no-scroll practice screen.
+
+## Vocabulary tracks
+
+- **Challenge · C1–C2** — the original 1,000 difficult nouns. Challenge remains the default practice experience.
+- **Bridge · B2–C1** — the optional intermediate/upper-intermediate track. V2-1 provides its complete Practice/Progress/Vocabulary architecture, but the track remains unavailable until the 1,000-word Bridge corpus is installed in V2-2.
+- Existing progress is preserved as Challenge progress. Global totals remain available through the All-vocabulary Progress scope.
+- No easier placeholder nouns or duplicated Challenge nouns are used to simulate Bridge availability.
+
+See `docs/v2-1-vocabulary-tracks.md` for the architecture and persistence contract.
 
 ## Canonical source
 
@@ -42,6 +51,7 @@ scripts/verify-source.mjs          source, vocabulary, and translation checks
 scripts/build.mjs                  deterministic static build
 scripts/verify-dist.mjs            artifact round-trip verification
 tests/practice-screen.mjs          responsive native practice-flow test
+tests/vocabulary-tracks.mjs        Challenge/Bridge architecture and migration test
 .github/workflows/ci.yml           read-only certification workflow
 dist/                              generated artifact; never committed
 ```
@@ -49,7 +59,7 @@ dist/                              generated artifact; never committed
 ## Release rules
 
 - Edit `index.html`; do not restore a second editable HTML copy.
-- Keep all 1,000 vocabulary IDs synchronized with `translations.js`.
+- Keep all installed vocabulary IDs synchronized with `translations.js`.
 - Run `npm run ci:static` before opening a pull request.
 - CI uses read-only repository permissions and uploads artifacts instead of creating commits.
 - The root application remains directly deployable by GitHub Pages while a later deployment migration can publish the certified `dist/` artifact.
@@ -61,7 +71,7 @@ See `THIRD_PARTY_NOTICES.md` and `LICENSES/GPL-3.0.txt` for the FreeDict-derived
 ## Content certification
 
 - `translations.js` is the runtime-certified local gloss asset.
-- `content/provenance.json` records source kind and review state for all 1,000 nouns.
+- `content/provenance.json` records source kind and review state for all currently installed nouns.
 - `content/ambiguous-gender-review.json` records externally verified variant and meaning-dependent gender decisions.
 - `scripts/certify-content.mjs` exhaustively validates translation, provenance, example, ambiguity, and targeted inflection invariants.
 - `tests/content-runtime.mjs` verifies the certified content surface across mobile, landscape, tablet, and desktop browser profiles.
@@ -71,7 +81,6 @@ Physical-device acceptance remains a manual final-release gate; see `docs/real-d
 ## Visual identity
 
 UI1 establishes Artikelwerk's original visual foundation: warm editorial neutrals, a single deep-teal accent, restrained borders/radii/elevation, a geometric `A` brand mark, full favicon/platform icon coverage, and light/dark theme tokens. See `docs/ui1-visual-identity.md`.
-
 
 ## UI2 application shell
 
@@ -106,3 +115,7 @@ UI5 supersedes the teal/card-based treatment with a typography-first editorial i
 ## UI5.1 visual acceptance fixes
 
 UI5.1 keeps the editorial UI5 direction while fixing the release-gate defects found in rendered acceptance review: dynamic fitting for long German compounds, mobile bottom-navigation clearance, compact mobile Vocabulary filters, a calmer mobile Progress hierarchy, and tighter desktop Practice spacing. See `docs/ui5-1-visual-acceptance.md`.
+
+## V2-1 vocabulary track architecture
+
+V2-1 introduces one shared learning engine with two vocabulary scopes rather than six global difficulty levels. Challenge stays primary and default; Bridge is opt-in and automatically becomes available when V2-2 installs Bridge-tagged rows. Practice pools, review queues, Progress analytics, Vocabulary reference views, and persistence are track-aware. Persistence schema v10 migrates all pre-V2 history into Challenge and starts Bridge at zero. `tests/vocabulary-tracks.mjs` certifies isolation, migration, responsive UX, and forward compatibility.
