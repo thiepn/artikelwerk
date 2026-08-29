@@ -5,7 +5,7 @@ wordhoard's German B2/C1 values are rank-calibrated estimates. This layer preven
 rare-but-basic subtitle nouns from becoming Artikelwerk's "Advanced" vocabulary.
 It keeps source verification/gender/translation filtering in generate_bridge_corpus.py
 and adds a learner-facing usefulness/basicness screen plus a formal lexical-evidence
-gate for the C1-derived Level 3.
+gate for the upper C1-derived Level 3.
 """
 from __future__ import annotations
 
@@ -32,17 +32,13 @@ TOO_BASIC_GLOSS_FRAGMENTS = {
     "motorcycle", "bicycle", "bike", "taxi", "van", "delivery van", "bus stop", "airport",
 }
 
-# Exact source-frequency artefacts / low-value subtitle items found in rendered audits.
 NOISY_NOUNS = {
     "Samurai", "Satan", "Dinosaurier", "Valentinstag", "Geburtstagsparty", "Telefonbuch",
     "Grundschule", "Handtasche", "Taschenlampe", "Fahrstuhl", "Hummer", "Hippie",
     "Weltkrieg", "Pirat", "Kater", "März", "Jackett", "Glatze", "Schlaftablette",
-    "Orgasmus", "Araber", "Muffin",
+    "Orgasmus", "Araber", "Muffin", "Made",
 }
 
-# These suffixes are strong evidence of genuinely abstract/formal lexical formation.
-# Deliberately omitted: generic -ur/-ie/-ik/-ment, because concrete compounds and
-# everyday loans can accidentally end that way (e.g. Spritztour).
 STRONG_ADVANCED_SUFFIXES = (
     "ung", "heit", "keit", "schaft", "tion", "sion", "tät", "ität", "ismus", "nis",
     "tum", "anz", "enz", "logie", "graphie", "nahme", "wesen", "igkeit", "barkeit", "lichkeit",
@@ -65,6 +61,7 @@ ROLE_GLOSS_TERMS = {
     "pastor", "prophet", "dean", "communist", "priest", "bishop", "king", "queen", "soldier",
     "officer", "captain", "detective", "gangster", "criminal", "prisoner", "detainee",
 }
+ADVANCED_MIN_FREQUENCY_RANK = 10500
 
 
 def basic_or_noise(item) -> str | None:
@@ -103,8 +100,6 @@ def complexity_score(item) -> int:
     return score
 
 
-# Keep only the strongest two Wiktionary glosses. This removes obscure third senses
-# and old extraction noise without inventing translations.
 _original_select_glosses = base.select_glosses
 base.select_glosses = lambda raw: _original_select_glosses(raw)[:2]
 _original_build_candidates = base.build_candidates
@@ -130,10 +125,12 @@ def curated_assign_levels(candidates):
 
     advanced = [
         c for c in c1
-        if formal_advanced_evidence(c) and c["complexityScore"] >= 3
+        if c["frequencyRank"] >= ADVANCED_MIN_FREQUENCY_RANK
+        and formal_advanced_evidence(c)
+        and c["complexityScore"] >= 3
     ]
     if len(advanced) < 250:
-        base.die(f"Need at least 250 formally advanced C1 nouns; found {len(advanced)}")
+        base.die(f"Need at least 250 upper-C1 formally advanced nouns; found {len(advanced)}")
 
     selected = [{**item, "level": 1} for item in b2[:400]]
     selected += [{**item, "level": 2} for item in b2[400:750]]
@@ -142,6 +139,7 @@ def curated_assign_levels(candidates):
         "eligibleB2": len(b2),
         "eligibleC1": len(c1),
         "eligibleAdvancedC1": len(advanced),
+        "advancedMinFrequencyRank": ADVANCED_MIN_FREQUENCY_RANK,
     }
 
 
@@ -149,7 +147,6 @@ base.build_candidates = curated_candidates
 base.assign_levels = curated_assign_levels
 base.main()
 
-# Clarify the second-stage editorial gate in the generated methodology report.
 report_path = Path(base.ROOT) / "docs" / "v2-2-bridge-corpus.md"
 report = report_path.read_text(encoding="utf-8")
 report = report.replace(
@@ -158,7 +155,7 @@ report = report.replace(
     "7. Assign the first 400 B2 nouns to Intermediate, the next 350 B2 nouns to Upper Intermediate, and the 250 C1 nouns to Advanced.",
     "5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise/basic-concept categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.\n"
     "6. Keep the B2 pool frequency-led for Intermediate/Upper Intermediate. Limit every gloss to the two strongest clean source translations.\n"
-    "7. For Advanced, require a C1 source estimate **plus formal lexical evidence**: strong abstract/derivational morphology or an abstract/formal semantic signal. Rarity, word length, and polysemy alone cannot qualify a noun as Advanced.\n"
-    "8. Assign the first 400 curated B2 nouns to Intermediate, the next 350 to Upper Intermediate, and the first 250 formally qualified C1 nouns to Advanced."
+    f"7. For Advanced, require a C1 source estimate, frequency rank at least {ADVANCED_MIN_FREQUENCY_RANK:,}, and **formal lexical evidence**: strong abstract/derivational morphology or an abstract/formal semantic signal. Rarity, word length, and polysemy alone cannot qualify a noun as Advanced.\n"
+    "8. Assign the first 400 curated B2 nouns to Intermediate, the next 350 to Upper Intermediate, and the first 250 upper-C1 formally qualified nouns to Advanced."
 )
 report_path.write_text(report, encoding="utf-8")
