@@ -52,7 +52,16 @@ try{
 
     await page.locator('#tabStats').click();
     assert.equal(await page.locator('#progressTrackSelect').inputValue(),'current',`${profile.name}: Progress should follow current track by default`);
-    assert.equal(await page.locator('#progressTrackSelect option[value="bridge"]').isDisabled(),true,`${profile.name}: empty Bridge Progress scope should be disabled`);
+    const progressBridge=await page.locator('#progressTrackSelect option[value="bridge"]').evaluate(option=>({
+      disabled:option.disabled,
+      disabledAttr:option.getAttribute('disabled'),
+      text:option.textContent,
+      selected:option.selected,
+      selectValue:option.parentElement?.value,
+      options:[...option.parentElement.options].map(item=>({value:item.value,disabled:item.disabled,text:item.textContent,selected:item.selected}))
+    }));
+    const progressBridgePlaywright=await page.locator('#progressTrackSelect option[value="bridge"]').isDisabled();
+    assert.equal(progressBridgePlaywright,true,`${profile.name}: empty Bridge Progress scope should be disabled; DOM=${JSON.stringify(progressBridge)}`);
     assert.match((await page.locator('#progressTrackMeta').textContent())||'',/Challenge.*1,000/i,`${profile.name}: Progress scope metadata is wrong`);
     assert.equal(((await page.locator('#statTotal').textContent())||'').trim(),'1',`${profile.name}: Challenge total answers did not remain isolated`);
     await page.locator('#progressTrackSelect').selectOption('all');
