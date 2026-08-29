@@ -7,8 +7,8 @@
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
 - Source CEFR estimates: **750 B2 / 250 C1**
-- Articles: **der 418 / die 408 / das 174**
-- Eligible source-corroborated pool before final rank cut: **3,195** nouns (1,036 B2, 2,159 C1)
+- Articles: **der 377 / die 465 / das 158**
+- Eligible source-corroborated pool before final rank cut: **3,092** nouns (999 B2, 2,093 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -33,24 +33,24 @@
 
 ## Frequency-rank ranges
 
-- Level 1: 4,624–6,614
-- Level 2: 6,616–8,039
-- Level 3: 9,245–10,222
+- Level 1: 4,624–6,700
+- Level 2: 6,716–8,163
+- Level 3: 9,276–12,575
 
 ## Largest semantic groups
 
-- bridge-general: 963
-- technology: 5
-- process: 5
-- politics: 4
-- economy: 4
-- education: 4
-- structure: 3
-- legal: 3
+- bridge-general: 955
+- technology: 6
+- politics: 6
+- process: 6
+- economy: 6
+- structure: 4
+- health: 4
+- society: 3
+- education: 3
 - emotion: 2
-- environment: 2
-- society: 2
-- health: 2
+- communication: 2
+- environment: 1
 
 ## Rejection audit
 
@@ -59,7 +59,9 @@
 - gender_not_single_source_corroborated: 250
 - challenge_overlap: 171
 - missing_or_invalid_gender: 89
+- learner_suitability_too_basic: 84
 - special_name_only: 56
+- learner_suitability_explicit_noise: 19
 - candidate_duplicate: 11
 - invalid_orthography: 2
 
@@ -67,66 +69,66 @@
 
 ### Level 1 — Intermediate
 - **der Eid** — oath (source estimate B2, frequency rank 4,624)
-- **das Funkgerät** — radio (source estimate B2, frequency rank 4,625)
 - **die Bude** — shack (source estimate B2, frequency rank 4,630)
 - **der Häftling** — detainee; prisoner (source estimate B2, frequency rank 4,636)
 - **die Zeitverschwendung** — waste of time (source estimate B2, frequency rank 4,638)
 - **die Gnade** — mercy (source estimate B2, frequency rank 4,651)
-- **der Weltkrieg** — world war (source estimate B2, frequency rank 4,653)
-- **der Pirat** — pirate (source estimate B2, frequency rank 4,656)
 - **der Rückzug** — retreat (source estimate B2, frequency rank 4,659)
 - **die Geste** — gesture; act of friendship (source estimate B2, frequency rank 4,660)
 - **die Genehmigung** — approval (source estimate B2, frequency rank 4,668)
 - **der Orden** — order; medal; decoration (source estimate B2, frequency rank 4,674)
-- **die Statue** — statue (source estimate B2, frequency rank 4,681)
 - **der Satellit** — satellite (source estimate B2, frequency rank 4,684)
-- **der Kater** — cat; tomcat; tom (source estimate B2, frequency rank 4,692)
 - **der Prophet** — prophet (source estimate B2, frequency rank 4,700)
 - **die Division** — division (source estimate B2, frequency rank 4,703)
 - **der Pastor** — pastor (source estimate B2, frequency rank 4,705)
 - **die Datenbank** — data bank; data base; databank (source estimate B2, frequency rank 4,706)
 - **der Stab** — staff; rod; bar (source estimate B2, frequency rank 4,719)
+- **die Ablenkung** — deflection (source estimate B2, frequency rank 4,751)
+- **der Krach** — crash; noise; quarrel (source estimate B2, frequency rank 4,753)
+- **die Autopsie** — autopsy (source estimate B2, frequency rank 4,780)
+- **die Republik** — republic (source estimate B2, frequency rank 4,782)
+- **die Bestellung** — order (source estimate B2, frequency rank 4,802)
 
 ### Level 2 — Upper Intermediate
-- **der Dinosaurier** — dinosaur; dino; dinosaurus (source estimate B2, frequency rank 6,616)
-- **der Dekan** — dean (source estimate B2, frequency rank 6,618)
-- **die Kuppel** — dome (source estimate B2, frequency rank 6,626)
-- **die Provinz** — province (source estimate B2, frequency rank 6,627)
-- **die Bindung** — relationship; tie; attachment (source estimate B2, frequency rank 6,628)
-- **der Krüppel** — cripple (source estimate B2, frequency rank 6,632)
-- **der Treibstoff** — fuel (source estimate B2, frequency rank 6,635)
-- **die Quarantäne** — quarantine (source estimate B2, frequency rank 6,646)
-- **der Kommunist** — communist (source estimate B2, frequency rank 6,647)
-- **der Gemahl** — spouse; husband (source estimate B2, frequency rank 6,650)
-- **der Sturz** — fall; collapse; drop (source estimate B2, frequency rank 6,652)
-- **das Gewebe** — fabric; tissue (source estimate B2, frequency rank 6,653)
-- **die Nachforschung** — inquiry (source estimate B2, frequency rank 6,654)
-- **das Portal** — portal; gantry (source estimate B2, frequency rank 6,655)
-- **der Hummer** — lobster (source estimate B2, frequency rank 6,659)
-- **die Wanne** — tub (source estimate B2, frequency rank 6,671)
-- **die Taschenlampe** — flashlight; torch (source estimate B2, frequency rank 6,672)
-- **der Lieferwagen** — van; box van; delivery van (source estimate B2, frequency rank 6,678)
-- **der Kragen** — collar (source estimate B2, frequency rank 6,686)
-- **der Valentinstag** — Valentine's Day; Saint Valentine's Day (source estimate B2, frequency rank 6,690)
+- **die Bemühung** — effort; endeavour (source estimate B2, frequency rank 6,716)
+- **der Attentäter** — assassin (source estimate B2, frequency rank 6,717)
+- **der Schöpfer** — creator; Maker; dipper (source estimate B2, frequency rank 6,732)
+- **das Weltall** — universe (source estimate B2, frequency rank 6,737)
+- **die Hypothek** — mortgage (source estimate B2, frequency rank 6,738)
+- **die Lobby** — lobby (source estimate B2, frequency rank 6,741)
+- **der Orgasmus** — climax (source estimate B2, frequency rank 6,744)
+- **der Campus** — campus (source estimate B2, frequency rank 6,748)
+- **die Premiere** — première (source estimate B2, frequency rank 6,758)
+- **das Tageslicht** — daylight (source estimate B2, frequency rank 6,764)
+- **die Massage** — massage (source estimate B2, frequency rank 6,777)
+- **die Wahrscheinlichkeit** — probability; chance (source estimate B2, frequency rank 6,785)
+- **das Zeitalter** — age; era; epoc (source estimate B2, frequency rank 6,787)
+- **der Antrieb** — drive; impetus (source estimate B2, frequency rank 6,789)
+- **die Armut** — poverty; lack (source estimate B2, frequency rank 6,791)
+- **die Rüstung** — armour; arms; weapons (source estimate B2, frequency rank 6,794)
+- **die Eminenz** — eminence (source estimate B2, frequency rank 6,797)
+- **der Araber** — Arab; Arabian horse (source estimate B2, frequency rank 6,800)
+- **der Muffin** — muffin (source estimate B2, frequency rank 6,807)
+- **der Drang** — urge (source estimate B2, frequency rank 6,808)
 
 ### Level 3 — Advanced
-- **die Zeitreise** — time travel (source estimate C1, frequency rank 9,245)
-- **das Abzeichen** — badge (source estimate C1, frequency rank 9,251)
-- **die Schlaftablette** — sleeping pill (source estimate C1, frequency rank 9,252)
-- **das Lenkrad** — steering wheel (source estimate C1, frequency rank 9,258)
-- **das Frühjahr** — spring (source estimate C1, frequency rank 9,263)
-- **die Grundschule** — elementary school; grade school; primary school (source estimate C1, frequency rank 9,265)
-- **die Glatze** — bald head; skinhead (source estimate C1, frequency rank 9,266)
-- **der Elternteil** — parent (source estimate C1, frequency rank 9,267)
-- **die Geburtstagsparty** — birthday party (source estimate C1, frequency rank 9,274)
-- **das Telefonbuch** — directory; phone book; telephone directory (source estimate C1, frequency rank 9,275)
 - **die Strömung** — tide (source estimate C1, frequency rank 9,276)
 - **die Schwachstelle** — trouble spot; weak point (source estimate C1, frequency rank 9,277)
-- **der Hippie** — hippie (source estimate C1, frequency rank 9,278)
 - **die Atmung** — respiration (source estimate C1, frequency rank 9,279)
-- **die Periode** — tide; period (source estimate C1, frequency rank 9,291)
 - **die Kleinstadt** — town; township; townikin (source estimate C1, frequency rank 9,297)
 - **das Verteidigungsministerium** — Ministry of Defence (source estimate C1, frequency rank 9,298)
-- **der Beschuss** — fire; shelling; bombardment (source estimate C1, frequency rank 9,308)
-- **das Jackett** — jacket (source estimate C1, frequency rank 9,309)
-- **die Traube** — grape; raceme (source estimate C1, frequency rank 9,310)
+- **die Auseinandersetzung** — argument; dispute (source estimate C1, frequency rank 9,311)
+- **die Neigung** — inclination; propensity (source estimate C1, frequency rank 9,322)
+- **die Skulptur** — sculpture (source estimate C1, frequency rank 9,350)
+- **die Freundlichkeit** — affability; attention; cheerfulness (source estimate C1, frequency rank 9,352)
+- **die Spritztour** — joyride (source estimate C1, frequency rank 9,419)
+- **der Schiedsrichter** — referee; umpire; jury (source estimate C1, frequency rank 9,433)
+- **die Chirurgie** — surgery (source estimate C1, frequency rank 9,434)
+- **der Heiratsantrag** — marriage proposal (source estimate C1, frequency rank 9,450)
+- **die Besorgnis** — concern; worriedness; anxiety (source estimate C1, frequency rank 9,469)
+- **die Intuition** — intuition (source estimate C1, frequency rank 9,485)
+- **der Terrorismus** — terrorism (source estimate C1, frequency rank 9,486)
+- **die Sequenz** — sequence (source estimate C1, frequency rank 9,489)
+- **der Staubsauger** — vacuum cleaner; hoover (source estimate C1, frequency rank 9,508)
+- **die Offenbarung** — revelation; Revelations; Apocalypse (source estimate C1, frequency rank 9,519)
+- **das Abendbrot** — dinner; evening meal; supper (source estimate C1, frequency rank 9,529)
