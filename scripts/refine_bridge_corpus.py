@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
-"""Learner-value curation layer for the deterministic V2-2 source generator.
+"""Learner-value curation layer for Artikelwerk V2-2.
 
-Source eligibility (CEFR proxy, frequency, gender corroboration, clean Wiktionary
-translation availability, and Challenge de-duplication) comes from
-`generate_bridge_corpus.py`. This layer ranks that eligible pool for actual learner
-value and separates usefulness from difficulty so subtitle rarity cannot masquerade
-as advanced vocabulary.
+The base generator supplies reproducible source acquisition, B2/C1 frequency
+estimates, single-gender corroboration, clean Wiktionary translation availability,
+and Challenge de-duplication. This layer ranks the eligible pool for learner value
+and separates usefulness from difficulty so subtitle rarity cannot masquerade as
+advanced vocabulary.
+
+Final composition:
+- Level 1: 400 B2 nouns
+- Level 2: 200 stronger B2 + 150 accessible C1 nouns
+- Level 3: 250 upper-C1 nouns with formal/abstract lexical evidence
+- total: 600 B2 + 400 C1
 """
 from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 import generate_bridge_corpus as base
 
 ROOT = Path(__file__).resolve().parents[1]
+ADVANCED_MIN_FREQUENCY_RANK = 10500
+TRANSITION_MAX_FREQUENCY_RANK = 11500
 
 TOO_BASIC_GLOSS_FRAGMENTS = {
     "birthday party", "valentine's day", "saint valentine", "phone book", "telephone directory",
@@ -34,6 +43,7 @@ TOO_BASIC_GLOSS_FRAGMENTS = {
     "rabbit", "lion", "tiger", "elephant", "monkey", "motorcycle", "bicycle", "bike",
     "taxi", "delivery van", "bus stop", "airport", "vacuum cleaner", "hoover", "evening meal",
     "pancake", "popcorn", "muffin", "doughnut", "donut", "lipstick", "mattress", "earring",
+    "garlic", "hazelnut", "sparrow", "north", "fur", "pelt", "gin", "jet", "outfit",
 }
 EXPLICIT_LOW_VALUE_NOUNS = {
     "Samurai", "Satan", "Dinosaurier", "Valentinstag", "Geburtstagsparty", "Telefonbuch",
@@ -45,6 +55,7 @@ EXPLICIT_LOW_VALUE_NOUNS = {
     "Araber", "Lesbe", "Blondine", "Irrer", "Junkie", "Psychopath", "Fee", "Werwolf",
     "Gespenst", "Greif", "Zauberei", "Magier", "Gorilla", "Pinguin", "Truthahn", "Welpe",
     "Schildkröte", "Fledermaus", "Ameise", "Maulwurf", "Falke", "Geier", "Gans", "Schnecke",
+    "Pisse", "Drive", "Gin", "Jet", "Outfit", "Nord", "Spatz", "Nuss", "Brei",
 }
 BLOCKED_GLOSS_TERMS = {
     "bimbo", "dyke", "sissy", "wimp", "shit", "crap", "piss", "whore", "junkie", "klingon",
@@ -92,6 +103,7 @@ CONCRETE_GLOSS_TERMS = {
     "bomb", "torpedo", "food", "bread", "cheese", "meat", "fruit", "vegetable", "dessert",
     "wrist", "ankle", "neck", "chin", "cheek", "finger", "nail", "sleeve", "moustache",
     "puppy", "goose", "turtle", "beetle", "mole", "falcon", "vulture", "snail", "frog",
+    "thread", "thorn", "rock", "cave", "silk", "tobacco", "airfield", "backbone", "spine",
 }
 PERSON_GLOSS_TERMS = {
     "actor", "actress", "attacker", "assassin", "bartender", "bishop", "blonde", "butler",
@@ -99,10 +111,11 @@ PERSON_GLOSS_TERMS = {
     "executioner", "farmer", "gangster", "host", "investigator", "italian", "lawyer", "mexican",
     "murderer", "officer", "pastor", "patriot", "priest", "prisoner", "prophet", "rescuer",
     "sailor", "soldier", "spaniard", "speaker", "technician", "veterinarian", "woman", "man",
+    "rector", "principal", "supervisor", "observer", "boxer", "sultan", "sheik", "sheikh",
 }
 ENTERTAINMENT_GLOSS_TERMS = {
     "ghost", "werewolf", "witchcraft", "wizardry", "magic", "superhero", "vampire", "zombie",
-    "movie", "film star", "tournament", "parade", "cocktail", "bingo", "autograph",
+    "movie", "film star", "tournament", "parade", "cocktail", "bingo", "autograph", "video game",
 }
 
 
@@ -148,8 +161,8 @@ def learner_value(item) -> int:
     score += 5 if s["institutional"] else 0
     score += 3 if item["group"] != "bridge-general" else 0
     score += 1 if 7 <= len(item["noun"]) <= 20 else 0
-    score -= 6 if s["concrete"] else 0
-    score -= 7 if s["person"] else 0
+    score -= 8 if s["concrete"] else 0
+    score -= 8 if s["person"] else 0
     score -= 8 if s["entertainment"] else 0
     score -= 3 if item["noun"].casefold().endswith(("er", "erin")) and s["person"] else 0
     first_gloss = re.sub(r"[^a-z]", "", item["glosses"][0].casefold())
@@ -171,9 +184,7 @@ def difficulty_score(item) -> float:
     )
 
 
-def advanced_qualified(item) -> bool:
-    if item["cefrEstimate"] != "C1" or item["frequencyRank"] < 10500:
-        return False
+def formal_advanced_evidence(item) -> bool:
     s = signals(item)
     return bool(s["abstract_suffix"] or s["formal_compound"] or s["abstract"] or s["institutional"])
 
@@ -187,6 +198,7 @@ def choose(pool, count: int):
 
 _original_build = base.build_candidates
 _original_report = base.write_report
+_original_corpus_writer = base.write_corpus
 _original_glosses = base.select_glosses
 
 
@@ -209,32 +221,92 @@ def curated_candidates(wordhoard, translations, challenge_nouns, challenge_ids):
 def curated_assign_levels(candidates):
     b2 = [c for c in candidates if c["cefrEstimate"] == "B2"]
     c1 = [c for c in candidates if c["cefrEstimate"] == "C1"]
-    advanced = [c for c in c1 if advanced_qualified(c)]
-    if len(b2) < 750:
-        base.die(f"Need at least 750 curated B2 nouns; found {len(b2)}")
-    if len(advanced) < 250:
-        base.die(f"Need at least 250 formally qualified upper-C1 nouns; found {len(advanced)}")
+    transition = [c for c in c1 if c["frequencyRank"] < TRANSITION_MAX_FREQUENCY_RANK]
+    advanced_pool = [c for c in c1 if c["frequencyRank"] >= ADVANCED_MIN_FREQUENCY_RANK and formal_advanced_evidence(c)]
+    if len(b2) < 600:
+        base.die(f"Need at least 600 curated B2 nouns; found {len(b2)}")
+    if len(transition) < 150:
+        base.die(f"Need at least 150 accessible C1 transition nouns; found {len(transition)}")
 
-    b2_selected = choose(b2, 750)
+    b2_selected = choose(b2, 600)
     b2_selected.sort(key=lambda x: (x["difficultyScore"], -x["learnerValue"], x["frequencyRank"]))
     level1 = [{**x, "level": 1} for x in b2_selected[:400]]
-    level2 = [{**x, "level": 2} for x in b2_selected[400:]]
+    level2_b2 = [{**x, "level": 2} for x in b2_selected[400:]]
 
-    advanced_selected = choose(advanced, 250)
-    advanced_selected.sort(key=lambda x: (-x["learnerValue"], x["frequencyRank"], x["noun"].casefold()))
-    level3 = [{**x, "level": 3} for x in advanced_selected]
-    return level1 + level2 + level3, {
-        "eligibleB2": len(b2), "eligibleC1": len(c1), "eligibleAdvancedC1": len(advanced),
+    transition_selected = choose(transition, 150)
+    transition_ids = {x["id"] for x in transition_selected}
+    advanced = [x for x in advanced_pool if x["id"] not in transition_ids]
+    if len(advanced) < 250:
+        base.die(f"Need at least 250 distinct formally qualified Advanced nouns; found {len(advanced)}")
+    level2_c1 = [{**x, "level": 2} for x in sorted(transition_selected, key=lambda x: (x["difficultyScore"], -x["learnerValue"]))]
+    level3 = [{**x, "level": 3} for x in choose(advanced, 250)]
+
+    return level1 + level2_b2 + level2_c1 + level3, {
+        "eligibleB2": len(b2),
+        "eligibleC1": len(c1),
+        "eligibleTransitionC1": len(transition),
+        "eligibleAdvancedC1": len(advanced_pool),
+        "advancedMinFrequencyRank": ADVANCED_MIN_FREQUENCY_RANK,
+        "transitionMaxFrequencyRank": TRANSITION_MAX_FREQUENCY_RANK,
     }
+
+
+def curated_validate(selected, challenge_nouns, challenge_ids):
+    if len(selected) != 1000:
+        base.die(f"Expected exactly 1000 selected Bridge nouns, found {len(selected)}")
+    ids = [x["id"] for x in selected]
+    nouns = [x["noun"].casefold() for x in selected]
+    if len(set(ids)) != 1000 or len(set(nouns)) != 1000:
+        base.die("Bridge IDs/nouns are not unique")
+    if set(ids) & challenge_ids or set(nouns) & challenge_nouns:
+        base.die("Bridge overlaps Challenge")
+    levels = Counter(x["level"] for x in selected)
+    cefr = Counter(x["cefrEstimate"] for x in selected)
+    if levels != Counter({1: 400, 2: 350, 3: 250}):
+        base.die(f"Unexpected Bridge level distribution: {dict(levels)}")
+    if cefr != Counter({"B2": 600, "C1": 400}):
+        base.die(f"Unexpected Bridge CEFR-estimate distribution: {dict(cefr)}")
+    if any(x["cefrEstimate"] != "B2" for x in selected if x["level"] == 1):
+        base.die("Bridge Level 1 must remain B2-estimated")
+    level2_cefr = Counter(x["cefrEstimate"] for x in selected if x["level"] == 2)
+    if level2_cefr != Counter({"B2": 200, "C1": 150}):
+        base.die(f"Unexpected Level 2 B2/C1 composition: {dict(level2_cefr)}")
+    if any(x["cefrEstimate"] != "C1" or x["frequencyRank"] < ADVANCED_MIN_FREQUENCY_RANK for x in selected if x["level"] == 3):
+        base.die("Bridge Level 3 Advanced source gate failed")
+    articles = Counter(x["article"] for x in selected)
+    if set(articles) != base.VALID_ARTICLES or min(articles.values()) < 100:
+        base.die(f"Article coverage is too narrow after quality selection: {dict(articles)}")
+
+
+def curated_write_corpus(selected):
+    _original_corpus_writer(selected)
+    path = ROOT / "bridge-corpus.js"
+    text = path.read_text(encoding="utf-8")
+    meta = {
+        "schema": 1,
+        "count": 1000,
+        "levelCounts": {"1": 400, "2": 350, "3": 250},
+        "cefrEstimateCounts": dict(Counter(x["cefrEstimate"] for x in selected)),
+        "wordhoardRelease": base.WORDHOARD_RELEASE,
+        "wordhoardSha256": base.WORDHOARD_SHA256,
+        "translationSourceCommit": base.WIKT_PARSER_COMMIT,
+    }
+    text = re.sub(
+        r"window\.ARTIKELWERK_BRIDGE_CORPUS_META=Object\.freeze\([^\n]+\);",
+        f"window.ARTIKELWERK_BRIDGE_CORPUS_META=Object.freeze({base.compact_json(meta)});",
+        text,
+    )
+    path.write_text(text, encoding="utf-8")
 
 
 def curated_report(selected, reject, pool_stats, candidate_count):
     _original_report(selected, reject, pool_stats, candidate_count)
     report_path = ROOT / "docs" / "v2-2-bridge-corpus.md"
     text = report_path.read_text(encoding="utf-8")
+    text = text.replace("- Source CEFR estimates: **750 B2 / 250 C1**", "- Source CEFR estimates: **600 B2 / 400 C1**")
     text = text.replace(
         "6. Sort by wordhoard frequency rank. Select the first 750 eligible B2 nouns and first 250 eligible C1 nouns.\n7. Assign the first 400 B2 nouns to Intermediate, the next 350 B2 nouns to Upper Intermediate, and the 250 C1 nouns to Advanced.",
-        "6. Rank eligible B2 nouns strictly by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.\n7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value."
+        "6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.\n7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence."
     )
     low = sorted(selected, key=lambda x: (x["learnerValue"], -x["frequencyRank"]))[:30]
     text += "\n## Editorial QA\n\n"
@@ -242,7 +314,8 @@ def curated_report(selected, reject, pool_stats, candidate_count):
         items = [x for x in selected if x["level"] == level]
         vals = [x["learnerValue"] for x in items]
         diffs = [x["difficultyScore"] for x in items]
-        text += f"- Level {level}: learner-value {min(vals)}–{max(vals)}; difficulty {min(diffs):.2f}–{max(diffs):.2f}\n"
+        mix = Counter(x["cefrEstimate"] for x in items)
+        text += f"- Level {level}: learner-value {min(vals)}–{max(vals)}; difficulty {min(diffs):.2f}–{max(diffs):.2f}; CEFR proxy {dict(mix)}\n"
     text += "\n### Lowest learner-value selections\n\n"
     for item in low:
         text += f"- **{item['article']} {item['noun']}** — {item['gloss']} (value {item['learnerValue']}, rank {item['frequencyRank']:,}, {item['cefrEstimate']})\n"
@@ -254,6 +327,10 @@ def curated_report(selected, reject, pool_stats, candidate_count):
         str(level): [min(x["learnerValue"] for x in selected if x["level"] == level), max(x["learnerValue"] for x in selected if x["level"] == level)]
         for level in (1, 2, 3)
     }
+    machine["levelCefrMix"] = {
+        str(level): dict(Counter(x["cefrEstimate"] for x in selected if x["level"] == level))
+        for level in (1, 2, 3)
+    }
     machine["lowestLearnerValue"] = [
         {k: x[k] for k in ("id", "noun", "article", "level", "cefrEstimate", "frequencyRank", "gloss", "learnerValue")}
         for x in low
@@ -261,8 +338,10 @@ def curated_report(selected, reject, pool_stats, candidate_count):
     machine_path.write_text(json.dumps(machine, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-base.select_glosses = select_two_glosses
+base.select_glosses = lambda raw: _original_glosses(raw)[:2]
 base.build_candidates = curated_candidates
 base.assign_levels = curated_assign_levels
+base.validate_selected = curated_validate
+base.write_corpus = curated_write_corpus
 base.write_report = curated_report
 base.main()
