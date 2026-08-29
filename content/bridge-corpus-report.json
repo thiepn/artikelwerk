@@ -7,32 +7,35 @@
     "3": 250
   },
   "cefrEstimateCounts": {
-    "B2": 750,
-    "C1": 250
+    "B2": 600,
+    "C1": 400
   },
   "articleCounts": {
-    "der": 289,
-    "die": 571,
-    "das": 140
+    "der": 232,
+    "die": 647,
+    "das": 121
   },
   "rankRanges": {
     "1": [
       4624,
-      7765
+      7978
     ],
     "2": [
       5694,
-      9220
+      11499
     ],
     "3": [
-      10513,
+      11509,
       17831
     ]
   },
   "eligible": {
-    "eligibleB2": 946,
-    "eligibleC1": 2097,
-    "eligibleAdvancedC1": 381
+    "eligibleB2": 935,
+    "eligibleC1": 2093,
+    "eligibleTransitionC1": 532,
+    "eligibleAdvancedC1": 381,
+    "advancedMinFrequencyRank": 10500,
+    "transitionMaxFrequencyRank": 11500
   },
   "rejected": {
     "no_clean_english_gloss": 460,
@@ -43,9 +46,9 @@
     "special_name_only": 56,
     "candidate_duplicate": 11,
     "invalid_orthography": 2,
-    "learner_suitability_too_basic": 79,
-    "learner_suitability_explicit_noise": 70,
-    "learner_suitability_slang_or_noise": 3
+    "learner_suitability_too_basic": 86,
+    "learner_suitability_explicit_noise": 79,
+    "learner_suitability_slang_or_noise": 2
   },
   "sample": [
     {
@@ -187,16 +190,6 @@
       "frequencyRank": 4858,
       "frequencyCount": 1443,
       "gloss": "examination; interrogation"
-    },
-    {
-      "id": "fell",
-      "noun": "Fell",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5068,
-      "frequencyCount": 1363,
-      "gloss": "fur; pelt"
     },
     {
       "id": "klub",
@@ -347,11 +340,21 @@
       "frequencyRank": 5035,
       "frequencyCount": 1374,
       "gloss": "rogue; villain"
+    },
+    {
+      "id": "diagnose",
+      "noun": "Diagnose",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4936,
+      "frequencyCount": 1419,
+      "gloss": "diagnosis; diagnostics"
     }
   ],
   "learnerValueRanges": {
     "1": [
-      1,
+      2,
       23
     ],
     "2": [
@@ -360,309 +363,321 @@
     ],
     "3": [
       8,
-      20
+      18
     ]
+  },
+  "levelCefrMix": {
+    "1": {
+      "B2": 400
+    },
+    "2": {
+      "B2": 200,
+      "C1": 150
+    },
+    "3": {
+      "C1": 250
+    }
   },
   "lowestLearnerValue": [
     {
-      "id": "nuss",
-      "noun": "Nuss",
+      "id": "hypnose",
+      "noun": "Hypnose",
       "article": "die",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8433,
-      "gloss": "nut; hazelnut",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9596,
+      "gloss": "hypnosis",
       "learnerValue": 1
     },
     {
-      "id": "drive",
-      "noun": "Drive",
+      "id": "omelett",
+      "noun": "Omelett",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9581,
+      "gloss": "omelet; omelette",
+      "learnerValue": 1
+    },
+    {
+      "id": "erfinder",
+      "noun": "Erfinder",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8429,
-      "gloss": "tee shot; drive",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9562,
+      "gloss": "inventor",
       "learnerValue": 1
     },
     {
-      "id": "dorn",
-      "noun": "Dorn",
+      "id": "bankier",
+      "noun": "Bankier",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8424,
-      "gloss": "thorn; awl",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9546,
+      "gloss": "banker",
       "learnerValue": 1
     },
     {
-      "id": "faden",
-      "noun": "Faden",
+      "id": "kritiker",
+      "noun": "Kritiker",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8405,
-      "gloss": "thread; fathom",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9533,
+      "gloss": "critic",
       "learnerValue": 1
     },
     {
-      "id": "brei",
-      "noun": "Brei",
+      "id": "verleger",
+      "noun": "Verleger",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8404,
-      "gloss": "pap; pudding",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9509,
+      "gloss": "issuer; publisher",
       "learnerValue": 1
     },
     {
-      "id": "fels",
-      "noun": "Fels",
-      "article": "der",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8365,
-      "gloss": "rock",
-      "learnerValue": 1
-    },
-    {
-      "id": "hoehle",
-      "noun": "Höhle",
+      "id": "brautjungfer",
+      "noun": "Brautjungfer",
       "article": "die",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8298,
-      "gloss": "cave; cavern",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9505,
+      "gloss": "bridesmaid",
       "learnerValue": 1
     },
     {
-      "id": "rektor",
-      "noun": "Rektor",
+      "id": "wikinger",
+      "noun": "Wikinger",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8297,
-      "gloss": "rector; principal",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9502,
+      "gloss": "viking",
       "learnerValue": 1
     },
     {
-      "id": "spatz",
-      "noun": "Spatz",
+      "id": "neuling",
+      "noun": "Neuling",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8290,
-      "gloss": "sparrow",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9490,
+      "gloss": "newcomer; novice",
       "learnerValue": 1
     },
     {
-      "id": "nord",
-      "noun": "Nord",
+      "id": "verschluss",
+      "noun": "Verschluss",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8273,
-      "gloss": "north",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9479,
+      "gloss": "closing",
       "learnerValue": 1
     },
     {
-      "id": "zar",
-      "noun": "Zar",
+      "id": "hochverrat",
+      "noun": "Hochverrat",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8226,
-      "gloss": "tsar; czar",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9441,
+      "gloss": "high treason",
       "learnerValue": 1
     },
     {
-      "id": "pelz",
-      "noun": "Pelz",
+      "id": "verwalter",
+      "noun": "Verwalter",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8107,
-      "gloss": "fur; pelt",
+      "cefrEstimate": "C1",
+      "frequencyRank": 9438,
+      "gloss": "administrator",
       "learnerValue": 1
     },
     {
-      "id": "scanner",
-      "noun": "Scanner",
+      "id": "dorfbewohner",
+      "noun": "Dorfbewohner",
       "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 7159,
-      "gloss": "scanner",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9437,
+      "gloss": "villager",
       "learnerValue": 1
     },
     {
-      "id": "massage",
-      "noun": "Massage",
+      "id": "schiedsrichter",
+      "noun": "Schiedsrichter",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9433,
+      "gloss": "referee; umpire",
+      "learnerValue": 1
+    },
+    {
+      "id": "waschbaer",
+      "noun": "Waschbär",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9410,
+      "gloss": "Common Raccoon; Northern Raccoon",
+      "learnerValue": 1
+    },
+    {
+      "id": "pfirsich",
+      "noun": "Pfirsich",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9399,
+      "gloss": "peach",
+      "learnerValue": 1
+    },
+    {
+      "id": "bataillon",
+      "noun": "Bataillon",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9396,
+      "gloss": "battalion",
+      "learnerValue": 1
+    },
+    {
+      "id": "kopfhoerer",
+      "noun": "Kopfhörer",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9349,
+      "gloss": "headphone",
+      "learnerValue": 1
+    },
+    {
+      "id": "kaiserin",
+      "noun": "Kaiserin",
       "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 6777,
-      "gloss": "massage",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9344,
+      "gloss": "empress",
       "learnerValue": 1
     },
     {
-      "id": "investor",
-      "noun": "Investor",
+      "id": "amulett",
+      "noun": "Amulett",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9340,
+      "gloss": "amulet",
+      "learnerValue": 1
+    },
+    {
+      "id": "raubtier",
+      "noun": "Raubtier",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9324,
+      "gloss": "carnivore; predator",
+      "learnerValue": 1
+    },
+    {
+      "id": "suendenbock",
+      "noun": "Sündenbock",
       "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 6582,
-      "gloss": "investor",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9321,
+      "gloss": "scapegoat",
       "learnerValue": 1
     },
     {
-      "id": "hospital",
-      "noun": "Hospital",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 6501,
-      "gloss": "hospital",
+      "id": "beschuss",
+      "noun": "Beschuss",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9308,
+      "gloss": "fire; shelling",
       "learnerValue": 1
     },
     {
-      "id": "trauma",
-      "noun": "Trauma",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 6077,
-      "gloss": "trauma",
-      "learnerValue": 1
-    },
-    {
-      "id": "suite",
-      "noun": "Suite",
+      "id": "kleinstadt",
+      "noun": "Kleinstadt",
       "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5883,
-      "gloss": "suite",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9297,
+      "gloss": "town; township",
       "learnerValue": 1
     },
     {
-      "id": "sultan",
-      "noun": "Sultan",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5878,
-      "gloss": "sultan",
+      "id": "periode",
+      "noun": "Periode",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9291,
+      "gloss": "tide; period",
       "learnerValue": 1
     },
     {
-      "id": "boxer",
-      "noun": "Boxer",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5760,
-      "gloss": "boxer",
+      "id": "schwachstelle",
+      "noun": "Schwachstelle",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9277,
+      "gloss": "trouble spot; weak point",
       "learnerValue": 1
     },
     {
-      "id": "ego",
-      "noun": "Ego",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5681,
-      "gloss": "ego",
-      "learnerValue": 1
-    },
-    {
-      "id": "gin",
-      "noun": "Gin",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5515,
-      "gloss": "gin",
-      "learnerValue": 1
-    },
-    {
-      "id": "jet",
-      "noun": "Jet",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5480,
-      "gloss": "jet",
-      "learnerValue": 1
-    },
-    {
-      "id": "outfit",
-      "noun": "Outfit",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 5468,
-      "gloss": "outfit",
-      "learnerValue": 1
-    },
-    {
-      "id": "scheich",
-      "noun": "Scheich",
+      "id": "elternteil",
+      "noun": "Elternteil",
       "article": "der",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8984,
-      "gloss": "sheik; sheikh",
-      "learnerValue": 2
+      "cefrEstimate": "C1",
+      "frequencyRank": 9267,
+      "gloss": "parent",
+      "learnerValue": 1
     },
     {
-      "id": "beobachter",
-      "noun": "Beobachter",
-      "article": "der",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8983,
-      "gloss": "observer",
-      "learnerValue": 2
-    },
-    {
-      "id": "aufseher",
-      "noun": "Aufseher",
-      "article": "der",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8967,
-      "gloss": "supervisor; invigilator",
-      "learnerValue": 2
-    },
-    {
-      "id": "flugplatz",
-      "noun": "Flugplatz",
-      "article": "der",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8966,
-      "gloss": "airfield",
-      "learnerValue": 2
-    },
-    {
-      "id": "knoblauch",
-      "noun": "Knoblauch",
-      "article": "der",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8962,
-      "gloss": "garlic",
-      "learnerValue": 2
-    },
-    {
-      "id": "rueckgrat",
-      "noun": "Rückgrat",
+      "id": "fruehjahr",
+      "noun": "Frühjahr",
       "article": "das",
       "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8961,
-      "gloss": "backbone; spine",
-      "learnerValue": 2
+      "cefrEstimate": "C1",
+      "frequencyRank": 9263,
+      "gloss": "spring",
+      "learnerValue": 1
+    },
+    {
+      "id": "abzeichen",
+      "noun": "Abzeichen",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9251,
+      "gloss": "badge",
+      "learnerValue": 1
+    },
+    {
+      "id": "zeitreise",
+      "noun": "Zeitreise",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "C1",
+      "frequencyRank": 9245,
+      "gloss": "time travel",
+      "learnerValue": 1
     }
   ]
 }

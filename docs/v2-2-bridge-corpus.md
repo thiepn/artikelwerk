@@ -6,9 +6,9 @@
 - Level 1 — Intermediate: **400**
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
-- Source CEFR estimates: **750 B2 / 250 C1**
-- Articles: **der 289 / die 571 / das 140**
-- Eligible source-corroborated pool before final rank cut: **3,043** nouns (946 B2, 2,097 C1)
+- Source CEFR estimates: **600 B2 / 400 C1**
+- Articles: **der 232 / die 647 / das 121**
+- Eligible source-corroborated pool before final rank cut: **3,028** nouns (935 B2, 2,093 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -22,8 +22,8 @@
 3. Require a matching common-noun entry in the pinned German Wiktionary extraction and require the old Wiktionary grammar data to corroborate **one single gender**. Ambiguous/multi-gender candidates are excluded from this phase rather than silently reduced to one quiz answer.
 4. Require at least one clean English Wiktionary translation.
 5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
-6. Rank eligible B2 nouns strictly by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.
-7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value.
+6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.
+7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence.
 
 ## Source and licensing
 
@@ -33,23 +33,23 @@
 
 ## Frequency-rank ranges
 
-- Level 1: 4,624–7,765
-- Level 2: 5,694–9,220
-- Level 3: 10,513–17,831
+- Level 1: 4,624–7,978
+- Level 2: 5,694–11,499
+- Level 3: 11,509–17,831
 
 ## Largest semantic groups
 
-- bridge-general: 933
-- legal: 12
-- technology: 10
-- economy: 9
-- process: 7
-- politics: 5
+- bridge-general: 922
+- legal: 13
+- economy: 12
+- technology: 9
+- process: 8
+- politics: 7
 - structure: 5
-- communication: 4
-- health: 4
+- communication: 5
+- health: 5
+- education: 4
 - emotion: 3
-- education: 3
 - society: 3
 
 ## Rejection audit
@@ -59,12 +59,12 @@
 - gender_not_single_source_corroborated: 250
 - challenge_overlap: 171
 - missing_or_invalid_gender: 89
-- learner_suitability_too_basic: 79
-- learner_suitability_explicit_noise: 70
+- learner_suitability_too_basic: 86
+- learner_suitability_explicit_noise: 79
 - special_name_only: 56
 - candidate_duplicate: 11
-- learner_suitability_slang_or_noise: 3
 - invalid_orthography: 2
+- learner_suitability_slang_or_noise: 2
 
 ## Corpus sample
 
@@ -83,39 +83,37 @@
 - **die Masse** — mass; bulk (source estimate B2, frequency rank 4,868)
 - **der Gauner** — crook; rogue (source estimate B2, frequency rank 4,818)
 - **das Verhör** — examination; interrogation (source estimate B2, frequency rank 4,858)
-- **das Fell** — fur; pelt (source estimate B2, frequency rank 5,068)
 - **der Klub** — club (source estimate B2, frequency rank 5,074)
 - **die Werft** — shipyard; dockyard (source estimate B2, frequency rank 4,976)
 - **der Satellit** — satellite (source estimate B2, frequency rank 4,684)
 - **der Winkel** — angle; corner (source estimate B2, frequency rank 4,903)
 - **die Fahne** — flag (source estimate B2, frequency rank 5,081)
+- **die Datenbank** — data bank; data base (source estimate B2, frequency rank 4,706)
 
 ### Level 2 — Upper Intermediate
-- **die Ähnlichkeit** — resemblance; similarity (source estimate B2, frequency rank 6,049)
-- **die Erlösung** — relief; deliverance (source estimate B2, frequency rank 6,352)
-- **die Seide** — silk; dodder (source estimate B2, frequency rank 7,854)
-- **die Konzentration** — concentration (source estimate B2, frequency rank 5,858)
-- **der Schleier** — veil (source estimate B2, frequency rank 7,567)
-- **der Defekt** — defect; fault (source estimate B2, frequency rank 7,768)
-- **der Aufenthaltsort** — whereabouts (source estimate B2, frequency rank 6,971)
-- **die Chemie** — chemistry; Psychologie: attunement (source estimate B2, frequency rank 6,572)
-- **der Absturz** — fall; crash (source estimate B2, frequency rank 7,673)
-- **die Ermordung** — assassination; murder (source estimate B2, frequency rank 6,282)
-- **das Videospiel** — video game (source estimate B2, frequency rank 7,384)
-- **das Kaliber** — calibre; caliber (source estimate B2, frequency rank 7,685)
-- **die Stiftung** — endowment; foundation (source estimate B2, frequency rank 6,388)
-- **die Hauptrolle** — main role (source estimate B2, frequency rank 6,695)
-- **der Hellseher** — seer; clairvoyant (source estimate B2, frequency rank 7,497)
-- **die Festnahme** — arrest; apprehension (source estimate B2, frequency rank 7,499)
-- **die Philosophie** — philosophy (source estimate B2, frequency rank 6,101)
-- **die Mischung** — mix; mixture (source estimate B2, frequency rank 6,409)
-- **der Tabak** — tobacco (source estimate B2, frequency rank 7,916)
-- **der Kodex** — code; codex (source estimate B2, frequency rank 7,920)
+- **die Titelseite** — cover; front page (source estimate B2, frequency rank 7,678)
+- **die Berührung** — contact; touch (source estimate B2, frequency rank 6,591)
+- **die Staatsanwaltschaft** — prosecution; public prosecutor's office (source estimate B2, frequency rank 5,694)
+- **die Rüstung** — armour; arms (source estimate B2, frequency rank 6,794)
+- **die Apokalypse** — Apocalypse (source estimate B2, frequency rank 7,695)
+- **die Eminenz** — eminence (source estimate B2, frequency rank 6,797)
+- **der Grieche** — Greek (source estimate B2, frequency rank 8,006)
+- **das Manuskript** — manuscript (source estimate B2, frequency rank 7,707)
+- **die Bemühung** — effort; endeavour (source estimate B2, frequency rank 6,716)
+- **die Inspiration** — inspiration (source estimate B2, frequency rank 6,418)
+- **der Beifall** — applause; clapping (source estimate B2, frequency rank 8,024)
+- **die Auszeichnung** — emphasis; distinction (source estimate B2, frequency rank 6,333)
+- **die Bestrafung** — punishment; penalisation (source estimate B2, frequency rank 6,542)
+- **die Auktion** — auction (source estimate B2, frequency rank 6,842)
+- **der Geschäftspartner** — business partner (source estimate B2, frequency rank 7,145)
+- **der Behälter** — bin; container (source estimate B2, frequency rank 7,946)
+- **die Abwesenheit** — absence; abstraction (source estimate B2, frequency rank 5,748)
+- **das Triebwerk** — engine; powerplant (source estimate B2, frequency rank 7,848)
+- **das Logbuch** — logbook (source estimate B2, frequency rank 8,051)
+- **das Arbeitszimmer** — bureau; home office (source estimate B2, frequency rank 7,456)
 
 ### Level 3 — Advanced
-- **die Prozedur** — procedure (source estimate C1, frequency rank 10,768)
 - **die Ablösung** — shift change; removal (source estimate C1, frequency rank 17,831)
-- **das Einverständnis** — consent; agreement (source estimate C1, frequency rank 11,289)
 - **das Anrecht** — claim; entitlement (source estimate C1, frequency rank 16,255)
 - **die Unternehmung** — enterprise; company (source estimate C1, frequency rank 17,263)
 - **die Wichtigkeit** — importance (source estimate C1, frequency rank 11,872)
@@ -133,42 +131,44 @@
 - **die Tagesordnung** — agenda (source estimate C1, frequency rank 12,594)
 - **die Personalabteilung** — human resources; personnel department (source estimate C1, frequency rank 13,108)
 - **die Verordnung** — order; statutory instrument (source estimate C1, frequency rank 14,654)
+- **die Infrastruktur** — infrastructure (source estimate C1, frequency rank 14,819)
+- **die Steuererklärung** — tax declaration (source estimate C1, frequency rank 15,526)
 
 ## Editorial QA
 
-- Level 1: learner-value 1–23; difficulty 4.92–8.35
-- Level 2: learner-value 1–30; difficulty 8.35–11.83
-- Level 3: learner-value 8–20; difficulty 11.84–20.53
+- Level 1: learner-value 2–23; difficulty 4.92–8.68; CEFR proxy {'B2': 400}
+- Level 2: learner-value 1–30; difficulty 8.68–14.59; CEFR proxy {'B2': 200, 'C1': 150}
+- Level 3: learner-value 8–18; difficulty 13.71–20.56; CEFR proxy {'C1': 250}
 
 ### Lowest learner-value selections
 
-- **die Nuss** — nut; hazelnut (value 1, rank 8,433, B2)
-- **der Drive** — tee shot; drive (value 1, rank 8,429, B2)
-- **der Dorn** — thorn; awl (value 1, rank 8,424, B2)
-- **der Faden** — thread; fathom (value 1, rank 8,405, B2)
-- **der Brei** — pap; pudding (value 1, rank 8,404, B2)
-- **der Fels** — rock (value 1, rank 8,365, B2)
-- **die Höhle** — cave; cavern (value 1, rank 8,298, B2)
-- **der Rektor** — rector; principal (value 1, rank 8,297, B2)
-- **der Spatz** — sparrow (value 1, rank 8,290, B2)
-- **der Nord** — north (value 1, rank 8,273, B2)
-- **der Zar** — tsar; czar (value 1, rank 8,226, B2)
-- **der Pelz** — fur; pelt (value 1, rank 8,107, B2)
-- **der Scanner** — scanner (value 1, rank 7,159, B2)
-- **die Massage** — massage (value 1, rank 6,777, B2)
-- **der Investor** — investor (value 1, rank 6,582, B2)
-- **das Hospital** — hospital (value 1, rank 6,501, B2)
-- **das Trauma** — trauma (value 1, rank 6,077, B2)
-- **die Suite** — suite (value 1, rank 5,883, B2)
-- **der Sultan** — sultan (value 1, rank 5,878, B2)
-- **der Boxer** — boxer (value 1, rank 5,760, B2)
-- **das Ego** — ego (value 1, rank 5,681, B2)
-- **der Gin** — gin (value 1, rank 5,515, B2)
-- **der Jet** — jet (value 1, rank 5,480, B2)
-- **das Outfit** — outfit (value 1, rank 5,468, B2)
-- **der Scheich** — sheik; sheikh (value 2, rank 8,984, B2)
-- **der Beobachter** — observer (value 2, rank 8,983, B2)
-- **der Aufseher** — supervisor; invigilator (value 2, rank 8,967, B2)
-- **der Flugplatz** — airfield (value 2, rank 8,966, B2)
-- **der Knoblauch** — garlic (value 2, rank 8,962, B2)
-- **das Rückgrat** — backbone; spine (value 2, rank 8,961, B2)
+- **die Hypnose** — hypnosis (value 1, rank 9,596, C1)
+- **das Omelett** — omelet; omelette (value 1, rank 9,581, C1)
+- **der Erfinder** — inventor (value 1, rank 9,562, C1)
+- **der Bankier** — banker (value 1, rank 9,546, C1)
+- **der Kritiker** — critic (value 1, rank 9,533, C1)
+- **der Verleger** — issuer; publisher (value 1, rank 9,509, C1)
+- **die Brautjungfer** — bridesmaid (value 1, rank 9,505, C1)
+- **der Wikinger** — viking (value 1, rank 9,502, C1)
+- **der Neuling** — newcomer; novice (value 1, rank 9,490, C1)
+- **der Verschluss** — closing (value 1, rank 9,479, C1)
+- **der Hochverrat** — high treason (value 1, rank 9,441, C1)
+- **der Verwalter** — administrator (value 1, rank 9,438, C1)
+- **der Dorfbewohner** — villager (value 1, rank 9,437, C1)
+- **der Schiedsrichter** — referee; umpire (value 1, rank 9,433, C1)
+- **der Waschbär** — Common Raccoon; Northern Raccoon (value 1, rank 9,410, C1)
+- **der Pfirsich** — peach (value 1, rank 9,399, C1)
+- **das Bataillon** — battalion (value 1, rank 9,396, C1)
+- **der Kopfhörer** — headphone (value 1, rank 9,349, C1)
+- **die Kaiserin** — empress (value 1, rank 9,344, C1)
+- **das Amulett** — amulet (value 1, rank 9,340, C1)
+- **das Raubtier** — carnivore; predator (value 1, rank 9,324, C1)
+- **der Sündenbock** — scapegoat (value 1, rank 9,321, C1)
+- **der Beschuss** — fire; shelling (value 1, rank 9,308, C1)
+- **die Kleinstadt** — town; township (value 1, rank 9,297, C1)
+- **die Periode** — tide; period (value 1, rank 9,291, C1)
+- **die Schwachstelle** — trouble spot; weak point (value 1, rank 9,277, C1)
+- **der Elternteil** — parent (value 1, rank 9,267, C1)
+- **das Frühjahr** — spring (value 1, rank 9,263, C1)
+- **das Abzeichen** — badge (value 1, rank 9,251, C1)
+- **die Zeitreise** — time travel (value 1, rank 9,245, C1)
