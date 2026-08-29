@@ -1,0 +1,314 @@
+{
+  "schema": 1,
+  "phase": "V2-3",
+  "status": "in-progress",
+  "policy": {
+    "sourceStatus": "source-certified",
+    "releaseStatus": "release-reviewed",
+    "note": "This ledger records editorial decisions without mutating the pinned V2-2 source extraction. Retained entries are materialized only after sense, example, rule, learner-value, and level review are complete. Replacement decisions remain release blockers until successor nouns are selected and certified."
+  },
+  "entries": {
+    "haftbefehl": {
+      "decision": "retain",
+      "gloss": "arrest warrant",
+      "example": "Der Haftbefehl wurde wegen Fluchtgefahr erlassen.",
+      "reviewedSenseIds": ["v23:haftbefehl:arrest-warrant"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "kongress": {
+      "decision": "retain",
+      "gloss": "congress; conference",
+      "example": "Der Kongress bringt Fachleute aus mehreren Ländern zusammen.",
+      "reviewedSenseIds": ["v23:kongress:conference"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "fluechtling": {
+      "decision": "retain",
+      "gloss": "refugee",
+      "example": "Der Flüchtling stellte einen Antrag auf Schutz.",
+      "reviewedSenseIds": ["v23:fluechtling:refugee"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -ling strongly predicts masculine gender.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "waisenhaus": {
+      "decision": "retain",
+      "gloss": "orphanage",
+      "example": "Das Waisenhaus finanziert sich überwiegend durch Spenden.",
+      "reviewedSenseIds": ["v23:waisenhaus:orphanage"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "begleiter": {
+      "decision": "retain",
+      "gloss": "companion; escort",
+      "example": "Der Begleiter wartete während der Untersuchung vor dem Raum.",
+      "reviewedSenseIds": ["v23:begleiter:companion"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "hinterhalt": {
+      "decision": "retain",
+      "gloss": "ambush",
+      "example": "Der Konvoi geriet auf der Landstraße in einen Hinterhalt.",
+      "reviewedSenseIds": ["v23:hinterhalt:ambush"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "prototyp": {
+      "decision": "retain",
+      "gloss": "prototype",
+      "example": "Der Prototyp wird vor der Serienproduktion ausgiebig getestet.",
+      "reviewedSenseIds": ["v23:prototyp:prototype"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "vergeltung": {
+      "decision": "retain",
+      "gloss": "retaliation; retribution",
+      "example": "Die Regierung verzichtete auf militärische Vergeltung.",
+      "reviewedSenseIds": ["v23:vergeltung:retaliation"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -ung reliably predicts feminine gender.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "herzschlag": {
+      "decision": "retain",
+      "gloss": "heartbeat",
+      "example": "Der Herzschlag beschleunigte sich unter körperlicher Belastung.",
+      "reviewedSenseIds": ["v23:herzschlag:heartbeat"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "police": {
+      "decision": "retain",
+      "gloss": "insurance policy",
+      "example": "Die Police deckt Schäden durch Feuer und Leitungswasser ab.",
+      "reviewedSenseIds": ["v23:police:insurance-policy"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "befoerderung": {
+      "decision": "retain",
+      "gloss": "promotion",
+      "example": "Die Beförderung zur Abteilungsleiterin kam überraschend.",
+      "reviewedSenseIds": ["v23:befoerderung:promotion"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -ung reliably predicts feminine gender.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "untergang": {
+      "decision": "retain",
+      "gloss": "downfall; demise",
+      "example": "Der Untergang des Regimes zeichnete sich bereits Monate zuvor ab.",
+      "reviewedSenseIds": ["v23:untergang:downfall"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "ablenkung": {
+      "decision": "retain",
+      "gloss": "distraction; diversion",
+      "example": "Die ständigen Benachrichtigungen waren eine große Ablenkung.",
+      "reviewedSenseIds": ["v23:ablenkung:distraction"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -ung reliably predicts feminine gender.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "verteidiger": {
+      "decision": "retain",
+      "gloss": "defense lawyer; defender",
+      "example": "Der Verteidiger beantragte am Ende des Prozesses einen Freispruch.",
+      "reviewedSenseIds": ["v23:verteidiger:defense-lawyer"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "ambulanz": {
+      "decision": "retain",
+      "gloss": "outpatient clinic; emergency department",
+      "example": "Die Patientin wurde in der Ambulanz untersucht und noch am selben Tag entlassen.",
+      "reviewedSenseIds": ["v23:ambulanz:outpatient-clinic"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "dichtung": {
+      "decision": "retain",
+      "gloss": "seal; gasket",
+      "example": "Die Dichtung verhindert, dass Wasser aus dem Rohr austritt.",
+      "reviewedSenseIds": ["v23:dichtung:seal"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -ung reliably predicts feminine gender in this deverbal noun; here Dichtung means a seal or gasket.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "kriegsrecht": {
+      "decision": "retain",
+      "gloss": "martial law; law of war",
+      "example": "Das Kriegsrecht wurde nach dem Staatsstreich verhängt.",
+      "reviewedSenseIds": ["v23:kriegsrecht:martial-law"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "schlaflosigkeit": {
+      "decision": "retain",
+      "gloss": "insomnia; sleeplessness",
+      "example": "Die anhaltende Schlaflosigkeit beeinträchtigte ihre Konzentration deutlich.",
+      "reviewedSenseIds": ["v23:schlaflosigkeit:insomnia"],
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "ruleReview": "editorial",
+      "rule": "The ending -keit reliably predicts feminine gender.",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "verbrechen": {
+      "decision": "retain",
+      "rule": "The final letters -chen are part of the lexical stem, not a diminutive suffix; learn the noun as das Verbrechen.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "lebenszeichen": {
+      "decision": "retain",
+      "rule": "The compound is neuter because its head noun is das Zeichen; the final -chen is not a diminutive suffix here.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "richtlinie": {
+      "decision": "retain",
+      "rule": "The compound is feminine because its head noun is die Linie; do not infer the gender from the final letters -ie alone.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "schnur": {
+      "decision": "retain",
+      "rule": "This is a lexical feminine noun; the learned-word -ur pattern does not explain the gender of die Schnur.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "fussspur": {
+      "decision": "retain",
+      "rule": "The compound is feminine because its head noun is die Spur; the learned-word -ur pattern is not the relevant rule.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "nabelschnur": {
+      "decision": "retain",
+      "rule": "The compound is feminine because its head noun is die Schnur; the learned-word -ur pattern is not the relevant rule.",
+      "ruleReview": "editorial",
+      "glossReview": "pending",
+      "exampleReview": "pending",
+      "levelReview": "pending",
+      "reviewStatus": "partial-editorial"
+    },
+    "pfadfinder": {
+      "decision": "replace",
+      "reason": "Low priority for a B2-to-C1 bridge and likely below the intended lexical floor; replace with a higher-utility eligible noun after lower-bound review."
+    },
+    "chemie": {
+      "decision": "replace",
+      "reason": "Core school vocabulary is too basic for the intended B2-to-C1 bridge despite valid gender evidence."
+    },
+    "vollmond": {
+      "decision": "replace",
+      "reason": "Concrete high-transparency vocabulary offers too little bridge value for this slot."
+    },
+    "trophaee": {
+      "decision": "replace",
+      "reason": "Likely below the intended lexical floor and lower value than available institutional, abstract, or professional vocabulary."
+    },
+    "wertsache": {
+      "decision": "replace",
+      "reason": "The noun is useful but does not justify an Advanced C1 slot; replace rather than merely repairing the English gloss."
+    },
+    "schmetterling": {
+      "decision": "replace",
+      "reason": "Basic concrete vocabulary is materially below the intended B2-to-C1 bridge floor."
+    },
+    "dritter": {
+      "decision": "replace",
+      "reason": "The stored headword/article pairing is morphologically malformed for a substantivized ordinal and is unsuitable for a fixed-article noun quiz."
+    },
+    "killer": {
+      "decision": "replace",
+      "reason": "Transparent informal loanword with weak C1 learner value; the current Advanced placement is not defensible."
+    },
+    "finanz": {
+      "decision": "replace",
+      "reason": "Specialized/non-general lexical use is unsuitable for the bridge; prefer a standard high-utility finance noun."
+    },
+    "borg": {
+      "decision": "replace",
+      "reason": "Dubious contemporary learner value and noisy source senses make this an unsuitable bridge headword."
+    },
+    "department": {
+      "decision": "replace",
+      "reason": "Unnecessary transparent loanword with lower general utility than standard German alternatives such as Abteilung or Fachbereich."
+    }
+  }
+}
