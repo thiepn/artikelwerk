@@ -7,8 +7,8 @@
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
 - Source CEFR estimates: **750 B2 / 250 C1**
-- Articles: **der 318 / die 549 / das 133**
-- Eligible source-corroborated pool before final rank cut: **3,095** nouns (996 B2, 2,099 C1)
+- Articles: **der 303 / die 548 / das 149**
+- Eligible source-corroborated pool before final rank cut: **3,044** nouns (947 B2, 2,097 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -21,10 +21,9 @@
 2. Keep common nouns (`NOUN`) whose wordhoard CEFR estimate is B2 or C1 and whose grammatical gender is `der`, `die`, or `das`.
 3. Require a matching common-noun entry in the pinned German Wiktionary extraction and require the old Wiktionary grammar data to corroborate **one single gender**. Ambiguous/multi-gender candidates are excluded from this phase rather than silently reduced to one quiz answer.
 4. Require at least one clean English Wiktionary translation.
-5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise/basic-concept categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
-6. Keep the B2 pool frequency-led for Intermediate/Upper Intermediate. Limit every gloss to the two strongest clean source translations.
-7. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and **formal lexical evidence**: strong abstract/derivational morphology or an abstract/formal semantic signal. Rarity, word length, and polysemy alone cannot qualify a noun as Advanced.
-8. Assign the first 400 curated B2 nouns to Intermediate, the next 350 to Upper Intermediate, and the first 250 upper-C1 formally qualified nouns to Advanced.
+5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
+6. Rank eligible B2 nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article-diversity targets are soft and never override lexical quality.
+7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value.
 
 ## Source and licensing
 
@@ -34,24 +33,24 @@
 
 ## Frequency-rank ranges
 
-- Level 1: 4,624–6,699
-- Level 2: 6,716–8,172
-- Level 3: 10,513–17,372
+- Level 1: 4,624–7,765
+- Level 2: 5,694–9,220
+- Level 3: 10,513–18,309
 
 ## Largest semantic groups
 
-- bridge-general: 962
-- technology: 5
-- process: 5
-- economy: 5
+- bridge-general: 933
+- legal: 12
+- technology: 10
+- economy: 9
+- process: 7
+- politics: 5
+- structure: 5
+- communication: 4
+- health: 4
 - emotion: 3
-- politics: 3
-- structure: 3
-- communication: 3
-- health: 3
-- society: 2
-- education: 2
-- legal: 2
+- education: 3
+- society: 3
 
 ## Rejection audit
 
@@ -60,76 +59,116 @@
 - gender_not_single_source_corroborated: 250
 - challenge_overlap: 171
 - missing_or_invalid_gender: 89
-- learner_suitability_too_basic: 77
+- learner_suitability_too_basic: 79
+- learner_suitability_explicit_noise: 70
 - special_name_only: 56
-- learner_suitability_explicit_noise: 23
 - candidate_duplicate: 11
 - invalid_orthography: 2
+- learner_suitability_slang_or_noise: 2
 
 ## Corpus sample
 
 ### Level 1 — Intermediate
 - **der Eid** — oath (source estimate B2, frequency rank 4,624)
 - **die Bude** — shack (source estimate B2, frequency rank 4,630)
-- **der Häftling** — detainee; prisoner (source estimate B2, frequency rank 4,636)
-- **die Zeitverschwendung** — waste of time (source estimate B2, frequency rank 4,638)
-- **die Gnade** — mercy (source estimate B2, frequency rank 4,651)
-- **der Rückzug** — retreat (source estimate B2, frequency rank 4,659)
-- **die Geste** — gesture; act of friendship (source estimate B2, frequency rank 4,660)
-- **die Genehmigung** — approval (source estimate B2, frequency rank 4,668)
-- **der Orden** — order; medal (source estimate B2, frequency rank 4,674)
-- **der Satellit** — satellite (source estimate B2, frequency rank 4,684)
-- **der Prophet** — prophet (source estimate B2, frequency rank 4,700)
-- **die Division** — division (source estimate B2, frequency rank 4,703)
-- **der Pastor** — pastor (source estimate B2, frequency rank 4,705)
-- **die Datenbank** — data bank; data base (source estimate B2, frequency rank 4,706)
 - **der Stab** — staff; rod (source estimate B2, frequency rank 4,719)
-- **die Ablenkung** — deflection (source estimate B2, frequency rank 4,751)
+- **die Gnade** — mercy (source estimate B2, frequency rank 4,651)
+- **die Geste** — gesture; act of friendship (source estimate B2, frequency rank 4,660)
+- **der Orden** — order; medal (source estimate B2, frequency rank 4,674)
+- **das Moor** — bog; fen (source estimate B2, frequency rank 4,819)
 - **der Krach** — crash; noise (source estimate B2, frequency rank 4,753)
-- **die Autopsie** — autopsy (source estimate B2, frequency rank 4,780)
-- **die Republik** — republic (source estimate B2, frequency rank 4,782)
-- **die Bestellung** — order (source estimate B2, frequency rank 4,802)
+- **der Tumor** — tumor; tumour (source estimate B2, frequency rank 4,811)
+- **die Mafia** — mafia (source estimate B2, frequency rank 4,827)
+- **der Rückzug** — retreat (source estimate B2, frequency rank 4,659)
+- **die Masse** — mass; bulk (source estimate B2, frequency rank 4,868)
+- **der Gauner** — crook; rogue (source estimate B2, frequency rank 4,818)
+- **das Verhör** — examination; interrogation (source estimate B2, frequency rank 4,858)
+- **das Fell** — fur; pelt (source estimate B2, frequency rank 5,068)
+- **der Klub** — club (source estimate B2, frequency rank 5,074)
+- **die Werft** — shipyard; dockyard (source estimate B2, frequency rank 4,976)
+- **der Satellit** — satellite (source estimate B2, frequency rank 4,684)
+- **der Winkel** — angle; corner (source estimate B2, frequency rank 4,903)
+- **die Fahne** — flag (source estimate B2, frequency rank 5,081)
 
 ### Level 2 — Upper Intermediate
-- **die Bemühung** — effort; endeavour (source estimate B2, frequency rank 6,716)
-- **der Attentäter** — assassin (source estimate B2, frequency rank 6,717)
-- **der Schöpfer** — creator; Maker (source estimate B2, frequency rank 6,732)
-- **das Weltall** — universe (source estimate B2, frequency rank 6,737)
-- **die Hypothek** — mortgage (source estimate B2, frequency rank 6,738)
-- **die Lobby** — lobby (source estimate B2, frequency rank 6,741)
-- **der Campus** — campus (source estimate B2, frequency rank 6,748)
-- **die Premiere** — première (source estimate B2, frequency rank 6,758)
-- **das Tageslicht** — daylight (source estimate B2, frequency rank 6,764)
-- **die Massage** — massage (source estimate B2, frequency rank 6,777)
-- **die Wahrscheinlichkeit** — probability; chance (source estimate B2, frequency rank 6,785)
-- **das Zeitalter** — age; era (source estimate B2, frequency rank 6,787)
-- **der Antrieb** — drive; impetus (source estimate B2, frequency rank 6,789)
-- **die Armut** — poverty; lack (source estimate B2, frequency rank 6,791)
-- **die Rüstung** — armour; arms (source estimate B2, frequency rank 6,794)
-- **die Eminenz** — eminence (source estimate B2, frequency rank 6,797)
-- **der Drang** — urge (source estimate B2, frequency rank 6,808)
-- **die Blondine** — blonde (source estimate B2, frequency rank 6,814)
-- **der Zins** — interest (source estimate B2, frequency rank 6,825)
-- **der Zauberspruch** — incantation; spell (source estimate B2, frequency rank 6,826)
+- **die Ähnlichkeit** — resemblance; similarity (source estimate B2, frequency rank 6,049)
+- **die Erlösung** — relief; deliverance (source estimate B2, frequency rank 6,352)
+- **die Seide** — silk; dodder (source estimate B2, frequency rank 7,854)
+- **die Konzentration** — concentration (source estimate B2, frequency rank 5,858)
+- **der Schleier** — veil (source estimate B2, frequency rank 7,567)
+- **der Defekt** — defect; fault (source estimate B2, frequency rank 7,768)
+- **der Aufenthaltsort** — whereabouts (source estimate B2, frequency rank 6,971)
+- **die Chemie** — chemistry; Psychologie: attunement (source estimate B2, frequency rank 6,572)
+- **der Absturz** — fall; crash (source estimate B2, frequency rank 7,673)
+- **die Ermordung** — assassination; murder (source estimate B2, frequency rank 6,282)
+- **das Videospiel** — video game (source estimate B2, frequency rank 7,384)
+- **das Kaliber** — calibre; caliber (source estimate B2, frequency rank 7,685)
+- **die Stiftung** — endowment; foundation (source estimate B2, frequency rank 6,388)
+- **die Hauptrolle** — main role (source estimate B2, frequency rank 6,695)
+- **der Hellseher** — seer; clairvoyant (source estimate B2, frequency rank 7,497)
+- **die Festnahme** — arrest; apprehension (source estimate B2, frequency rank 7,499)
+- **die Philosophie** — philosophy (source estimate B2, frequency rank 6,101)
+- **die Mischung** — mix; mixture (source estimate B2, frequency rank 6,409)
+- **der Tabak** — tobacco (source estimate B2, frequency rank 7,916)
+- **der Kodex** — code; codex (source estimate B2, frequency rank 7,920)
 
 ### Level 3 — Advanced
-- **die Selbstverteidigung** — self-defence (source estimate C1, frequency rank 10,513)
-- **die Lungenentzündung** — pneumonia (source estimate C1, frequency rank 10,551)
-- **die Übernahme** — takeover; appropriation (source estimate C1, frequency rank 10,590)
-- **die Präsenz** — presence (source estimate C1, frequency rank 10,636)
-- **die Sensation** — sensation (source estimate C1, frequency rank 10,686)
 - **die Prozedur** — procedure (source estimate C1, frequency rank 10,768)
-- **die Zündung** — ignition; firing (source estimate C1, frequency rank 10,777)
-- **die Begabung** — gift; flair (source estimate C1, frequency rank 10,784)
-- **die Brandstiftung** — arson (source estimate C1, frequency rank 10,856)
-- **die Kapitulation** — capitulation; surrender (source estimate C1, frequency rank 10,920)
-- **die Prellung** — bruise (source estimate C1, frequency rank 10,924)
-- **die Anspielung** — allusion; insinuation (source estimate C1, frequency rank 10,954)
-- **die Arroganz** — arrogance (source estimate C1, frequency rank 10,957)
-- **die Eroberung** — conquest (source estimate C1, frequency rank 10,968)
-- **die Audienz** — audience (source estimate C1, frequency rank 11,074)
-- **die Zärtlichkeit** — tenderness; caresses (source estimate C1, frequency rank 11,101)
-- **die Bewunderung** — admiration (source estimate C1, frequency rank 11,108)
-- **die Kanalisation** — sewage system (source estimate C1, frequency rank 11,123)
-- **die Barmherzigkeit** — mercy; tenderheartedness (source estimate C1, frequency rank 11,125)
-- **die Verachtung** — contempt (source estimate C1, frequency rank 11,126)
+- **die Ablösung** — shift change; removal (source estimate C1, frequency rank 17,831)
+- **das Einverständnis** — consent; agreement (source estimate C1, frequency rank 11,289)
+- **das Anrecht** — claim; entitlement (source estimate C1, frequency rank 16,255)
+- **die Unternehmung** — enterprise; company (source estimate C1, frequency rank 17,263)
+- **die Wichtigkeit** — importance (source estimate C1, frequency rank 11,872)
+- **die Auffassung** — concept; idea (source estimate C1, frequency rank 12,729)
+- **die Verwandtschaft** — relationship (source estimate C1, frequency rank 13,317)
+- **die Beachtung** — account; attention (source estimate C1, frequency rank 14,020)
+- **die Kondition** — condition (source estimate C1, frequency rank 14,036)
+- **die Einschränkung** — limitation; constraint (source estimate C1, frequency rank 14,130)
+- **die Gleichheit** — equality (source estimate C1, frequency rank 15,768)
+- **die Unstimmigkeit** — difference of opinions (source estimate C1, frequency rank 16,130)
+- **die Annäherung** — approach; convergence (source estimate C1, frequency rank 16,332)
+- **die Ungewissheit** — uncertainty (source estimate C1, frequency rank 16,638)
+- **die Verteilung** — distribution (source estimate C1, frequency rank 17,352)
+- **die Schweigepflicht** — pledge of secrecy; requirement of confidentiality (source estimate C1, frequency rank 12,258)
+- **die Tagesordnung** — agenda (source estimate C1, frequency rank 12,594)
+- **die Personalabteilung** — human resources; personnel department (source estimate C1, frequency rank 13,108)
+- **die Verordnung** — order; statutory instrument (source estimate C1, frequency rank 14,654)
+
+## Editorial QA
+
+- Level 1: learner-value 1–23; difficulty 4.92–8.35
+- Level 2: learner-value 1–30; difficulty 8.35–11.83
+- Level 3: learner-value 4–20; difficulty 11.84–20.58
+
+### Lowest learner-value selections
+
+- **der Drive** — tee shot; drive (value 1, rank 8,429, B2)
+- **der Dorn** — thorn; awl (value 1, rank 8,424, B2)
+- **der Faden** — thread; fathom (value 1, rank 8,405, B2)
+- **der Brei** — pap; pudding (value 1, rank 8,404, B2)
+- **der Fels** — rock (value 1, rank 8,365, B2)
+- **die Höhle** — cave; cavern (value 1, rank 8,298, B2)
+- **der Rektor** — rector; principal (value 1, rank 8,297, B2)
+- **der Spatz** — sparrow (value 1, rank 8,290, B2)
+- **der Nord** — north (value 1, rank 8,273, B2)
+- **die Pisse** — piss (value 1, rank 8,244, B2)
+- **der Zar** — tsar; czar (value 1, rank 8,226, B2)
+- **der Pelz** — fur; pelt (value 1, rank 8,107, B2)
+- **der Scanner** — scanner (value 1, rank 7,159, B2)
+- **die Massage** — massage (value 1, rank 6,777, B2)
+- **der Investor** — investor (value 1, rank 6,582, B2)
+- **das Hospital** — hospital (value 1, rank 6,501, B2)
+- **das Trauma** — trauma (value 1, rank 6,077, B2)
+- **die Suite** — suite (value 1, rank 5,883, B2)
+- **der Sultan** — sultan (value 1, rank 5,878, B2)
+- **der Boxer** — boxer (value 1, rank 5,760, B2)
+- **das Ego** — ego (value 1, rank 5,681, B2)
+- **der Gin** — gin (value 1, rank 5,515, B2)
+- **der Jet** — jet (value 1, rank 5,480, B2)
+- **das Outfit** — outfit (value 1, rank 5,468, B2)
+- **der Scheich** — sheik; sheikh (value 2, rank 8,984, B2)
+- **der Beobachter** — observer (value 2, rank 8,983, B2)
+- **der Aufseher** — supervisor; invigilator (value 2, rank 8,967, B2)
+- **der Flugplatz** — airfield (value 2, rank 8,966, B2)
+- **der Knoblauch** — garlic (value 2, rank 8,962, B2)
+- **das Rückgrat** — backbone; spine (value 2, rank 8,961, B2)

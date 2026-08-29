@@ -11,29 +11,28 @@
     "C1": 250
   },
   "articleCounts": {
-    "der": 318,
-    "die": 549,
-    "das": 133
+    "der": 303,
+    "die": 548,
+    "das": 149
   },
   "rankRanges": {
     "1": [
       4624,
-      6699
+      7765
     ],
     "2": [
-      6716,
-      8172
+      5694,
+      9220
     ],
     "3": [
       10513,
-      17372
+      18309
     ]
   },
   "eligible": {
-    "eligibleB2": 996,
-    "eligibleC1": 2099,
-    "eligibleAdvancedC1": 291,
-    "advancedMinFrequencyRank": 10500
+    "eligibleB2": 947,
+    "eligibleC1": 2097,
+    "eligibleAdvancedC1": 381
   },
   "rejected": {
     "no_clean_english_gloss": 460,
@@ -44,8 +43,9 @@
     "special_name_only": 56,
     "candidate_duplicate": 11,
     "invalid_orthography": 2,
-    "learner_suitability_too_basic": 77,
-    "learner_suitability_explicit_noise": 23
+    "learner_suitability_too_basic": 79,
+    "learner_suitability_explicit_noise": 70,
+    "learner_suitability_slang_or_noise": 2
   },
   "sample": [
     {
@@ -69,24 +69,14 @@
       "gloss": "shack"
     },
     {
-      "id": "haeftling",
-      "noun": "Häftling",
+      "id": "stab",
+      "noun": "Stab",
       "article": "der",
       "level": 1,
       "cefrEstimate": "B2",
-      "frequencyRank": 4636,
-      "frequencyCount": 1540,
-      "gloss": "detainee; prisoner"
-    },
-    {
-      "id": "zeitverschwendung",
-      "noun": "Zeitverschwendung",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4638,
-      "frequencyCount": 1539,
-      "gloss": "waste of time"
+      "frequencyRank": 4719,
+      "frequencyCount": 1502,
+      "gloss": "staff; rod"
     },
     {
       "id": "gnade",
@@ -99,16 +89,6 @@
       "gloss": "mercy"
     },
     {
-      "id": "rueckzug",
-      "noun": "Rückzug",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4659,
-      "frequencyCount": 1528,
-      "gloss": "retreat"
-    },
-    {
       "id": "geste",
       "noun": "Geste",
       "article": "die",
@@ -117,16 +97,6 @@
       "frequencyRank": 4660,
       "frequencyCount": 1527,
       "gloss": "gesture; act of friendship"
-    },
-    {
-      "id": "genehmigung",
-      "noun": "Genehmigung",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4668,
-      "frequencyCount": 1524,
-      "gloss": "approval"
     },
     {
       "id": "orden",
@@ -139,74 +109,14 @@
       "gloss": "order; medal"
     },
     {
-      "id": "satellit",
-      "noun": "Satellit",
-      "article": "der",
+      "id": "moor",
+      "noun": "Moor",
+      "article": "das",
       "level": 1,
       "cefrEstimate": "B2",
-      "frequencyRank": 4684,
-      "frequencyCount": 1518,
-      "gloss": "satellite"
-    },
-    {
-      "id": "prophet",
-      "noun": "Prophet",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4700,
-      "frequencyCount": 1513,
-      "gloss": "prophet"
-    },
-    {
-      "id": "division",
-      "noun": "Division",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4703,
-      "frequencyCount": 1511,
-      "gloss": "division"
-    },
-    {
-      "id": "pastor",
-      "noun": "Pastor",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4705,
-      "frequencyCount": 1509,
-      "gloss": "pastor"
-    },
-    {
-      "id": "datenbank",
-      "noun": "Datenbank",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4706,
-      "frequencyCount": 1509,
-      "gloss": "data bank; data base"
-    },
-    {
-      "id": "stab",
-      "noun": "Stab",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4719,
-      "frequencyCount": 1502,
-      "gloss": "staff; rod"
-    },
-    {
-      "id": "ablenkung",
-      "noun": "Ablenkung",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4751,
-      "frequencyCount": 1488,
-      "gloss": "deflection"
+      "frequencyRank": 4819,
+      "frequencyCount": 1463,
+      "gloss": "bog; fen"
     },
     {
       "id": "krach",
@@ -219,46 +129,6 @@
       "gloss": "crash; noise"
     },
     {
-      "id": "autopsie",
-      "noun": "Autopsie",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4780,
-      "frequencyCount": 1475,
-      "gloss": "autopsy"
-    },
-    {
-      "id": "republik",
-      "noun": "Republik",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4782,
-      "frequencyCount": 1474,
-      "gloss": "republic"
-    },
-    {
-      "id": "bestellung",
-      "noun": "Bestellung",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4802,
-      "frequencyCount": 1469,
-      "gloss": "order"
-    },
-    {
-      "id": "lesbe",
-      "noun": "Lesbe",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4803,
-      "frequencyCount": 1469,
-      "gloss": "lesbian; dyke"
-    },
-    {
       "id": "tumor",
       "noun": "Tumor",
       "article": "der",
@@ -267,46 +137,6 @@
       "frequencyRank": 4811,
       "frequencyCount": 1465,
       "gloss": "tumor; tumour"
-    },
-    {
-      "id": "privatsphaere",
-      "noun": "Privatsphäre",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4817,
-      "frequencyCount": 1463,
-      "gloss": "privacy; private sphere"
-    },
-    {
-      "id": "gauner",
-      "noun": "Gauner",
-      "article": "der",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4818,
-      "frequencyCount": 1463,
-      "gloss": "crook; rogue"
-    },
-    {
-      "id": "moor",
-      "noun": "Moor",
-      "article": "das",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4819,
-      "frequencyCount": 1463,
-      "gloss": "bog; fen"
-    },
-    {
-      "id": "aktie",
-      "noun": "Aktie",
-      "article": "die",
-      "level": 1,
-      "cefrEstimate": "B2",
-      "frequencyRank": 4824,
-      "frequencyCount": 1460,
-      "gloss": "share; stock"
     },
     {
       "id": "mafia",
@@ -319,24 +149,34 @@
       "gloss": "mafia"
     },
     {
-      "id": "begegnung",
-      "noun": "Begegnung",
-      "article": "die",
+      "id": "rueckzug",
+      "noun": "Rückzug",
+      "article": "der",
       "level": 1,
       "cefrEstimate": "B2",
-      "frequencyRank": 4846,
-      "frequencyCount": 1447,
-      "gloss": "meeting; encounter"
+      "frequencyRank": 4659,
+      "frequencyCount": 1528,
+      "gloss": "retreat"
     },
     {
-      "id": "frequenz",
-      "noun": "Frequenz",
+      "id": "masse",
+      "noun": "Masse",
       "article": "die",
       "level": 1,
       "cefrEstimate": "B2",
-      "frequencyRank": 4848,
-      "frequencyCount": 1447,
-      "gloss": "frequency"
+      "frequencyRank": 4868,
+      "frequencyCount": 1440,
+      "gloss": "mass; bulk"
+    },
+    {
+      "id": "gauner",
+      "noun": "Gauner",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4818,
+      "frequencyCount": 1463,
+      "gloss": "crook; rogue"
     },
     {
       "id": "verhoer",
@@ -347,6 +187,482 @@
       "frequencyRank": 4858,
       "frequencyCount": 1443,
       "gloss": "examination; interrogation"
+    },
+    {
+      "id": "fell",
+      "noun": "Fell",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5068,
+      "frequencyCount": 1363,
+      "gloss": "fur; pelt"
+    },
+    {
+      "id": "klub",
+      "noun": "Klub",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5074,
+      "frequencyCount": 1362,
+      "gloss": "club"
+    },
+    {
+      "id": "werft",
+      "noun": "Werft",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4976,
+      "frequencyCount": 1403,
+      "gloss": "shipyard; dockyard"
+    },
+    {
+      "id": "satellit",
+      "noun": "Satellit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4684,
+      "frequencyCount": 1518,
+      "gloss": "satellite"
+    },
+    {
+      "id": "winkel",
+      "noun": "Winkel",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4903,
+      "frequencyCount": 1428,
+      "gloss": "angle; corner"
+    },
+    {
+      "id": "fahne",
+      "noun": "Fahne",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5081,
+      "frequencyCount": 1361,
+      "gloss": "flag"
+    },
+    {
+      "id": "datenbank",
+      "noun": "Datenbank",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4706,
+      "frequencyCount": 1509,
+      "gloss": "data bank; data base"
+    },
+    {
+      "id": "frost",
+      "noun": "Frost",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5117,
+      "frequencyCount": 1346,
+      "gloss": "frost; frostiness"
+    },
+    {
+      "id": "drohne",
+      "noun": "Drohne",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5036,
+      "frequencyCount": 1374,
+      "gloss": "drone"
+    },
+    {
+      "id": "kuerze",
+      "noun": "Kürze",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5163,
+      "frequencyCount": 1331,
+      "gloss": "shortness; brevity"
+    },
+    {
+      "id": "ballon",
+      "noun": "Ballon",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5076,
+      "frequencyCount": 1362,
+      "gloss": "balloon"
+    },
+    {
+      "id": "charme",
+      "noun": "Charme",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5080,
+      "frequencyCount": 1361,
+      "gloss": "charm"
+    },
+    {
+      "id": "profit",
+      "noun": "Profit",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5112,
+      "frequencyCount": 1348,
+      "gloss": "profit"
+    },
+    {
+      "id": "formel",
+      "noun": "Formel",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5118,
+      "frequencyCount": 1346,
+      "gloss": "formula"
+    },
+    {
+      "id": "standort",
+      "noun": "Standort",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 4923,
+      "frequencyCount": 1423,
+      "gloss": "location"
+    },
+    {
+      "id": "schurke",
+      "noun": "Schurke",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5035,
+      "frequencyCount": 1374,
+      "gloss": "rogue; villain"
+    }
+  ],
+  "learnerValueRanges": {
+    "1": [
+      1,
+      23
+    ],
+    "2": [
+      1,
+      30
+    ],
+    "3": [
+      4,
+      20
+    ]
+  },
+  "lowestLearnerValue": [
+    {
+      "id": "drive",
+      "noun": "Drive",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8429,
+      "gloss": "tee shot; drive",
+      "learnerValue": 1
+    },
+    {
+      "id": "dorn",
+      "noun": "Dorn",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8424,
+      "gloss": "thorn; awl",
+      "learnerValue": 1
+    },
+    {
+      "id": "faden",
+      "noun": "Faden",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8405,
+      "gloss": "thread; fathom",
+      "learnerValue": 1
+    },
+    {
+      "id": "brei",
+      "noun": "Brei",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8404,
+      "gloss": "pap; pudding",
+      "learnerValue": 1
+    },
+    {
+      "id": "fels",
+      "noun": "Fels",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8365,
+      "gloss": "rock",
+      "learnerValue": 1
+    },
+    {
+      "id": "hoehle",
+      "noun": "Höhle",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8298,
+      "gloss": "cave; cavern",
+      "learnerValue": 1
+    },
+    {
+      "id": "rektor",
+      "noun": "Rektor",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8297,
+      "gloss": "rector; principal",
+      "learnerValue": 1
+    },
+    {
+      "id": "spatz",
+      "noun": "Spatz",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8290,
+      "gloss": "sparrow",
+      "learnerValue": 1
+    },
+    {
+      "id": "nord",
+      "noun": "Nord",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8273,
+      "gloss": "north",
+      "learnerValue": 1
+    },
+    {
+      "id": "pisse",
+      "noun": "Pisse",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8244,
+      "gloss": "piss",
+      "learnerValue": 1
+    },
+    {
+      "id": "zar",
+      "noun": "Zar",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8226,
+      "gloss": "tsar; czar",
+      "learnerValue": 1
+    },
+    {
+      "id": "pelz",
+      "noun": "Pelz",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8107,
+      "gloss": "fur; pelt",
+      "learnerValue": 1
+    },
+    {
+      "id": "scanner",
+      "noun": "Scanner",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 7159,
+      "gloss": "scanner",
+      "learnerValue": 1
+    },
+    {
+      "id": "massage",
+      "noun": "Massage",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6777,
+      "gloss": "massage",
+      "learnerValue": 1
+    },
+    {
+      "id": "investor",
+      "noun": "Investor",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6582,
+      "gloss": "investor",
+      "learnerValue": 1
+    },
+    {
+      "id": "hospital",
+      "noun": "Hospital",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6501,
+      "gloss": "hospital",
+      "learnerValue": 1
+    },
+    {
+      "id": "trauma",
+      "noun": "Trauma",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 6077,
+      "gloss": "trauma",
+      "learnerValue": 1
+    },
+    {
+      "id": "suite",
+      "noun": "Suite",
+      "article": "die",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5883,
+      "gloss": "suite",
+      "learnerValue": 1
+    },
+    {
+      "id": "sultan",
+      "noun": "Sultan",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5878,
+      "gloss": "sultan",
+      "learnerValue": 1
+    },
+    {
+      "id": "boxer",
+      "noun": "Boxer",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5760,
+      "gloss": "boxer",
+      "learnerValue": 1
+    },
+    {
+      "id": "ego",
+      "noun": "Ego",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5681,
+      "gloss": "ego",
+      "learnerValue": 1
+    },
+    {
+      "id": "gin",
+      "noun": "Gin",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5515,
+      "gloss": "gin",
+      "learnerValue": 1
+    },
+    {
+      "id": "jet",
+      "noun": "Jet",
+      "article": "der",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5480,
+      "gloss": "jet",
+      "learnerValue": 1
+    },
+    {
+      "id": "outfit",
+      "noun": "Outfit",
+      "article": "das",
+      "level": 1,
+      "cefrEstimate": "B2",
+      "frequencyRank": 5468,
+      "gloss": "outfit",
+      "learnerValue": 1
+    },
+    {
+      "id": "scheich",
+      "noun": "Scheich",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8984,
+      "gloss": "sheik; sheikh",
+      "learnerValue": 2
+    },
+    {
+      "id": "beobachter",
+      "noun": "Beobachter",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8983,
+      "gloss": "observer",
+      "learnerValue": 2
+    },
+    {
+      "id": "aufseher",
+      "noun": "Aufseher",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8967,
+      "gloss": "supervisor; invigilator",
+      "learnerValue": 2
+    },
+    {
+      "id": "flugplatz",
+      "noun": "Flugplatz",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8966,
+      "gloss": "airfield",
+      "learnerValue": 2
+    },
+    {
+      "id": "knoblauch",
+      "noun": "Knoblauch",
+      "article": "der",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8962,
+      "gloss": "garlic",
+      "learnerValue": 2
+    },
+    {
+      "id": "rueckgrat",
+      "noun": "Rückgrat",
+      "article": "das",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8961,
+      "gloss": "backbone; spine",
+      "learnerValue": 2
     }
   ]
 }
