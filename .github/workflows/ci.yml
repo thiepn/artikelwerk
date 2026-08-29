@@ -16,9 +16,9 @@ concurrency:
 
 jobs:
   certify:
-    name: Source, certified content, deterministic build, visual acceptance, and vocabulary tracks
+    name: Source, Challenge, staged Bridge corpus, build, and visual acceptance
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
 
     steps:
       - name: Check out repository
@@ -37,16 +37,16 @@ jobs:
       - name: Install pinned browser-test runtime
         run: npm install --no-package-lock --no-audit --no-fund
 
-      - name: Verify Python generator syntax
-        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py
+      - name: Verify content-generator syntax
+        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
 
-      - name: Verify source, content certification, vocabulary tracks, accessibility, and deterministic artifact
+      - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
         run: npm run ci:static
 
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run full browser, editorial, visual-acceptance, and vocabulary-track certification
+      - name: Run full V2-1 browser, editorial, and visual-acceptance certification
         shell: bash
         run: |
           set -euo pipefail
