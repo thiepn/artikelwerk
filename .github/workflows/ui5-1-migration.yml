@@ -85,8 +85,8 @@ jobs:
       - name: Remove staging script
         run: rm -f scripts/ui5-1-migrate.py
 
-      - name: Exclude workflow mutation from bot commit
-        run: git checkout HEAD -- .github/workflows/ui5-1-migration.yml
+      - name: Exclude workflow files from bot commit
+        run: git checkout HEAD -- .github/workflows/ui5-1-migration.yml .github/workflows/ci.yml
 
       - name: Commit certified UI5.1 fixes
         shell: bash
