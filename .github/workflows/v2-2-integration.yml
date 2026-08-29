@@ -1,33 +1,38 @@
-name: Integrate V2-2 Bridge corpus
+name: Certify V2-2 Bridge runtime
 
 on:
   push:
     branches:
       - codex/v2-2-bridge-corpus
     paths:
-      - scripts/v2-2-integrate.py
+      - index.html
+      - bridge-corpus.js
+      - bridge-translations.js
+      - content/bridge-provenance.json
+      - content/bridge-corpus-report.json
       - scripts/certify-bridge.mjs
+      - scripts/verify-source.mjs
+      - scripts/build.mjs
+      - scripts/verify-dist.mjs
       - tests/bridge-corpus.mjs
+      - package.json
       - .github/workflows/v2-2-integration.yml
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: artikelwerk-v2-2-integration
+  group: artikelwerk-v2-2-runtime-certification
   cancel-in-progress: true
 
 jobs:
-  integrate:
-    if: github.actor != 'github-actions[bot]'
+  certify:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,10 +44,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Apply V2-2 runtime integration
-        run: |
-          python -m py_compile scripts/v2-2-integrate.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
-          python scripts/v2-2-integrate.py
+      - name: Verify generator syntax
+        run: python -m py_compile scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py scripts/generate_translations.py scripts/generate_translations_v2.py
 
       - name: Install pinned browser-test runtime
         run: npm install --no-package-lock --no-audit --no-fund
@@ -82,19 +85,3 @@ jobs:
           path: test-artifacts/v2-2/
           if-no-files-found: error
           retention-days: 14
-
-      - name: Remove one-time integration script
-        run: rm -f scripts/v2-2-integrate.py
-
-      - name: Exclude workflow files from bot commit
-        run: git checkout HEAD -- .github/workflows/v2-2-integration.yml .github/workflows/v2-2-corpus-generation.yml .github/workflows/ci.yml
-
-      - name: Commit certified V2-2 runtime
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "feat: install certified 1000-word Bridge corpus"
-          git push origin HEAD:codex/v2-2-bridge-corpus
