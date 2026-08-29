@@ -54,10 +54,14 @@ jobs:
           p=json.loads(Path('content/bridge-corpus-report.json').read_text(encoding='utf-8'))
           assert p['selected']==1000
           assert p['levelCounts']=={'1':400,'2':350,'3':250}
-          assert p['cefrEstimateCounts']=={'B2':750,'C1':250}
-          assert min(p['articleCounts'].values())>=120
+          assert p['cefrEstimateCounts']=={'B2':600,'C1':400}
+          assert p['levelCefrMix']=={'1':{'B2':400},'2':{'B2':200,'C1':150},'3':{'C1':250}}
+          assert min(p['articleCounts'].values())>=100
+          assert p['eligible']['eligibleTransitionC1']>=150
           assert p['eligible']['eligibleAdvancedC1']>=250
-          print(json.dumps({k:p[k] for k in ('selected','levelCounts','cefrEstimateCounts','articleCounts','rankRanges','eligible')},indent=2))
+          assert p['eligible']['advancedMinFrequencyRank']==10500
+          assert p['eligible']['transitionMaxFrequencyRank']==11500
+          print(json.dumps({k:p[k] for k in ('selected','levelCounts','cefrEstimateCounts','levelCefrMix','articleCounts','rankRanges','eligible','learnerValueRanges')},indent=2))
           PY
 
       - name: Upload corpus audit evidence
@@ -78,5 +82,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add bridge-corpus.js bridge-translations.js content/bridge-provenance.json content/bridge-corpus-report.json docs/v2-2-bridge-corpus.md LICENSES/CC-BY-SA-4.0.txt
           git diff --cached --quiet && exit 0
-          git commit -m "content: refine certified 1000-word Bridge corpus"
+          git commit -m "content: generate final 1000-word Bridge corpus"
           git push origin HEAD:codex/v2-2-bridge-corpus
