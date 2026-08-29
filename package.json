@@ -17,7 +17,7 @@
     "certify:bridge": "node scripts/certify-bridge.mjs",
     "audit:bridge-editorial": "node scripts/audit-bridge-editorial.mjs",
     "certify:bridge-release": "node scripts/audit-bridge-editorial.mjs --assert-release",
-    "propose:bridge-replacements": "python scripts/propose_bridge_replacements.py",
+    "propose:bridge-replacements": "python scripts/propose_bridge_replacements_strict.py",
     "test:content-browser": "node tests/content-runtime.mjs",
     "test:shell-browser": "node tests/app-shell.mjs",
     "test:surfaces-browser": "node tests/surface-polish.mjs",
