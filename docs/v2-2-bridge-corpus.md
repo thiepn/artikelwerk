@@ -7,8 +7,8 @@
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
 - Source CEFR estimates: **750 B2 / 250 C1**
-- Articles: **der 303 / die 548 / das 149**
-- Eligible source-corroborated pool before final rank cut: **3,044** nouns (947 B2, 2,097 C1)
+- Articles: **der 289 / die 571 / das 140**
+- Eligible source-corroborated pool before final rank cut: **3,043** nouns (946 B2, 2,097 C1)
 - Challenge overlap: **0**
 
 ## CEFR interpretation
@@ -22,7 +22,7 @@
 3. Require a matching common-noun entry in the pinned German Wiktionary extraction and require the old Wiktionary grammar data to corroborate **one single gender**. Ambiguous/multi-gender candidates are excluded from this phase rather than silently reduced to one quiz answer.
 4. Require at least one clean English Wiktionary translation.
 5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
-6. Rank eligible B2 nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article-diversity targets are soft and never override lexical quality.
+6. Rank eligible B2 nouns strictly by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.
 7. Select the strongest 750 B2 nouns, then split them by a separate difficulty score into 400 Intermediate and 350 Upper Intermediate nouns. For Advanced, require a C1 source estimate, frequency rank at least 10,500, and formal/abstract lexical evidence; select the strongest 250 by learner value.
 
 ## Source and licensing
@@ -35,7 +35,7 @@
 
 - Level 1: 4,624–7,765
 - Level 2: 5,694–9,220
-- Level 3: 10,513–18,309
+- Level 3: 10,513–17,831
 
 ## Largest semantic groups
 
@@ -63,8 +63,8 @@
 - learner_suitability_explicit_noise: 70
 - special_name_only: 56
 - candidate_duplicate: 11
+- learner_suitability_slang_or_noise: 3
 - invalid_orthography: 2
-- learner_suitability_slang_or_noise: 2
 
 ## Corpus sample
 
@@ -138,10 +138,11 @@
 
 - Level 1: learner-value 1–23; difficulty 4.92–8.35
 - Level 2: learner-value 1–30; difficulty 8.35–11.83
-- Level 3: learner-value 4–20; difficulty 11.84–20.58
+- Level 3: learner-value 8–20; difficulty 11.84–20.53
 
 ### Lowest learner-value selections
 
+- **die Nuss** — nut; hazelnut (value 1, rank 8,433, B2)
 - **der Drive** — tee shot; drive (value 1, rank 8,429, B2)
 - **der Dorn** — thorn; awl (value 1, rank 8,424, B2)
 - **der Faden** — thread; fathom (value 1, rank 8,405, B2)
@@ -151,7 +152,6 @@
 - **der Rektor** — rector; principal (value 1, rank 8,297, B2)
 - **der Spatz** — sparrow (value 1, rank 8,290, B2)
 - **der Nord** — north (value 1, rank 8,273, B2)
-- **die Pisse** — piss (value 1, rank 8,244, B2)
 - **der Zar** — tsar; czar (value 1, rank 8,226, B2)
 - **der Pelz** — fur; pelt (value 1, rank 8,107, B2)
 - **der Scanner** — scanner (value 1, rank 7,159, B2)

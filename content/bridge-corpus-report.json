@@ -11,9 +11,9 @@
     "C1": 250
   },
   "articleCounts": {
-    "der": 303,
-    "die": 548,
-    "das": 149
+    "der": 289,
+    "die": 571,
+    "das": 140
   },
   "rankRanges": {
     "1": [
@@ -26,11 +26,11 @@
     ],
     "3": [
       10513,
-      18309
+      17831
     ]
   },
   "eligible": {
-    "eligibleB2": 947,
+    "eligibleB2": 946,
     "eligibleC1": 2097,
     "eligibleAdvancedC1": 381
   },
@@ -45,7 +45,7 @@
     "invalid_orthography": 2,
     "learner_suitability_too_basic": 79,
     "learner_suitability_explicit_noise": 70,
-    "learner_suitability_slang_or_noise": 2
+    "learner_suitability_slang_or_noise": 3
   },
   "sample": [
     {
@@ -359,11 +359,21 @@
       30
     ],
     "3": [
-      4,
+      8,
       20
     ]
   },
   "lowestLearnerValue": [
+    {
+      "id": "nuss",
+      "noun": "Nuss",
+      "article": "die",
+      "level": 2,
+      "cefrEstimate": "B2",
+      "frequencyRank": 8433,
+      "gloss": "nut; hazelnut",
+      "learnerValue": 1
+    },
     {
       "id": "drive",
       "noun": "Drive",
@@ -452,16 +462,6 @@
       "cefrEstimate": "B2",
       "frequencyRank": 8273,
       "gloss": "north",
-      "learnerValue": 1
-    },
-    {
-      "id": "pisse",
-      "noun": "Pisse",
-      "article": "die",
-      "level": 2,
-      "cefrEstimate": "B2",
-      "frequencyRank": 8244,
-      "gloss": "piss",
       "learnerValue": 1
     },
     {
