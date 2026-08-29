@@ -1105,6 +1105,13 @@
     .progress-diagnostics>summary small{display:none}
   }
 
+
+  /* UI5.1 desktop Practice rhythm */
+  @media(min-width:1000px) and (min-height:700px){
+    .ui3-practice #quizContent{grid-template-rows:auto auto auto;align-content:start}
+    .ui3-practice #quizContent>div:last-child{justify-content:flex-start;margin-top:clamp(30px,4vh,44px)}
+  }
+
 </style>
 </head>
 <body>
