@@ -1,0 +1,80 @@
+name: Generate V2-2 Bridge corpus
+
+on:
+  push:
+    branches:
+      - codex/v2-2-bridge-corpus
+    paths:
+      - scripts/generate_bridge_corpus.py
+      - .github/workflows/v2-2-corpus-generation.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: artikelwerk-v2-2-corpus-generation
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate and validate Bridge corpus
+        run: |
+          python -m py_compile scripts/generate_bridge_corpus.py
+          python scripts/generate_bridge_corpus.py
+
+      - name: Verify generated artifact structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s bridge-corpus.js
+          test -s bridge-translations.js
+          test -s content/bridge-provenance.json
+          test -s content/bridge-corpus-report.json
+          test -s docs/v2-2-bridge-corpus.md
+          test -s LICENSES/CC-BY-SA-4.0.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('content/bridge-corpus-report.json').read_text(encoding='utf-8'))
+          assert p['selected']==1000
+          assert p['levelCounts']=={'1':400,'2':350,'3':250}
+          assert p['cefrEstimateCounts']=={'B2':750,'C1':250}
+          assert min(p['articleCounts'].values())>=120
+          print(json.dumps({k:p[k] for k in ('selected','levelCounts','cefrEstimateCounts','articleCounts','rankRanges','eligible')},indent=2))
+          PY
+
+      - name: Upload corpus audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-v2-2-corpus-audit
+          path: |
+            docs/v2-2-bridge-corpus.md
+            content/bridge-corpus-report.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit generated corpus assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bridge-corpus.js bridge-translations.js content/bridge-provenance.json content/bridge-corpus-report.json docs/v2-2-bridge-corpus.md LICENSES/CC-BY-SA-4.0.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "content: generate certified 1000-word Bridge corpus"
+          git push origin HEAD:codex/v2-2-bridge-corpus
