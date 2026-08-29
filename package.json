@@ -18,7 +18,8 @@
     "test:shell-browser": "node tests/app-shell.mjs",
     "test:surfaces-browser": "node tests/surface-polish.mjs",
     "test:a11y-browser": "node tests/accessibility-finish.mjs",
-    "test:editorial-browser": "node tests/editorial-ui.mjs"
+    "test:editorial-browser": "node tests/editorial-ui.mjs",
+    "test:visual-acceptance-browser": "node tests/visual-acceptance.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"
