@@ -5,6 +5,7 @@ import { chromium } from 'playwright';
 const BASE_URL=process.env.ARTIKELWERK_URL||'http://127.0.0.1:4173';
 const artifactDir='test-artifacts/v2-1';
 await fs.mkdir(artifactDir,{recursive:true});
+const optionDisabled=(page,selector)=>page.locator(selector).evaluate(option=>option.disabled===true);
 
 const source=await fs.readFile('index.html','utf8');
 assert.match(source,/const VOCABULARY_TRACKS = Object\.freeze/,'track registry missing');
@@ -27,7 +28,7 @@ try{
     await page.goto(BASE_URL,{waitUntil:'networkidle'});
 
     assert.equal(await page.locator('#vocabularyTrackSelect').inputValue(),'challenge',`${profile.name}: Challenge is not the default track`);
-    assert.equal(await page.locator('#vocabularyTrackSelect option[value="bridge"]').isDisabled(),true,`${profile.name}: empty Bridge option should be disabled`);
+    assert.equal(await optionDisabled(page,'#vocabularyTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge option should be disabled`);
     assert.equal(await page.locator('#bridgeTrackBtn').isDisabled(),true,`${profile.name}: empty Bridge CTA should be disabled`);
     assert.match((await page.locator('#practiceTrackKicker').textContent())||'',/Challenge.*C1.*C2/i,`${profile.name}: Challenge identity missing from Practice`);
     assert.match((await page.locator('#bridgeTrackNote').textContent())||'',/V2-2|corpus/i,`${profile.name}: Bridge readiness note missing`);
@@ -52,16 +53,7 @@ try{
 
     await page.locator('#tabStats').click();
     assert.equal(await page.locator('#progressTrackSelect').inputValue(),'current',`${profile.name}: Progress should follow current track by default`);
-    const progressBridge=await page.locator('#progressTrackSelect option[value="bridge"]').evaluate(option=>({
-      disabled:option.disabled,
-      disabledAttr:option.getAttribute('disabled'),
-      text:option.textContent,
-      selected:option.selected,
-      selectValue:option.parentElement?.value,
-      options:[...option.parentElement.options].map(item=>({value:item.value,disabled:item.disabled,text:item.textContent,selected:item.selected}))
-    }));
-    const progressBridgePlaywright=await page.locator('#progressTrackSelect option[value="bridge"]').isDisabled();
-    assert.equal(progressBridgePlaywright,true,`${profile.name}: empty Bridge Progress scope should be disabled; DOM=${JSON.stringify(progressBridge)}`);
+    assert.equal(await optionDisabled(page,'#progressTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge Progress scope should be disabled`);
     assert.match((await page.locator('#progressTrackMeta').textContent())||'',/Challenge.*1,000/i,`${profile.name}: Progress scope metadata is wrong`);
     assert.equal(((await page.locator('#statTotal').textContent())||'').trim(),'1',`${profile.name}: Challenge total answers did not remain isolated`);
     await page.locator('#progressTrackSelect').selectOption('all');
@@ -69,7 +61,7 @@ try{
 
     await page.locator('#tabLibrary').click();
     assert.equal(await page.locator('#libraryTrackSelect').inputValue(),'current',`${profile.name}: Vocabulary should follow current track by default`);
-    assert.equal(await page.locator('#libraryTrackSelect option[value="bridge"]').isDisabled(),true,`${profile.name}: empty Bridge library scope should be disabled`);
+    assert.equal(await optionDisabled(page,'#libraryTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge library scope should be disabled`);
     assert.match((await page.locator('#libraryMeta').textContent())||'',/1000 of 1000 nouns.*Challenge/i,`${profile.name}: Challenge library count changed`);
     await page.locator('.word-open-btn').first().click();
     await page.locator('#wordDetailModal.show').waitFor({state:'visible'});
