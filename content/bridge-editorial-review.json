@@ -15,9 +15,10 @@
       "reviewedSenseIds": ["v23:haftbefehl:arrest-warrant"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The compound keeps the gender of its head noun Befehl: der Befehl, therefore der Haftbefehl.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "kongress": {
       "decision": "retain",
@@ -26,9 +27,10 @@
       "reviewedSenseIds": ["v23:kongress:conference"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Kongress is a masculine international noun; -gress is not a productive gender cue, so learn der Kongress.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "fluechtling": {
       "decision": "retain",
@@ -39,8 +41,8 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -ling strongly predicts masculine gender.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "waisenhaus": {
       "decision": "retain",
@@ -71,9 +73,10 @@
       "reviewedSenseIds": ["v23:hinterhalt:ambush"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Hinterhalt is masculine like its final element Halt: der Halt, therefore der Hinterhalt.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "prototyp": {
       "decision": "retain",
@@ -82,9 +85,10 @@
       "reviewedSenseIds": ["v23:prototyp:prototype"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The noun keeps the masculine gender of Typ: der Typ, therefore der Prototyp.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "vergeltung": {
       "decision": "retain",
@@ -95,8 +99,8 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -ung reliably predicts feminine gender.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "herzschlag": {
       "decision": "retain",
@@ -116,9 +120,10 @@
       "reviewedSenseIds": ["v23:police:insurance-policy"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Police is a lexical feminine insurance term; its ending is not a reliable productive gender rule, so learn die Police.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "befoerderung": {
       "decision": "retain",
@@ -129,8 +134,8 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -ung reliably predicts feminine gender.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "untergang": {
       "decision": "retain",
@@ -139,9 +144,10 @@
       "reviewedSenseIds": ["v23:untergang:downfall"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The prefixed noun keeps the masculine gender of Gang: der Gang, therefore der Untergang.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "ablenkung": {
       "decision": "retain",
@@ -152,8 +158,8 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -ung reliably predicts feminine gender.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "verteidiger": {
       "decision": "retain",
@@ -162,9 +168,10 @@
       "reviewedSenseIds": ["v23:verteidiger:defense-lawyer"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Masculine person nouns ending in -er are typically masculine; the corresponding feminine form is Verteidigerin.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "ambulanz": {
       "decision": "retain",
@@ -186,8 +193,8 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -ung reliably predicts feminine gender in this deverbal noun; here Dichtung means a seal or gasket.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "kriegsrecht": {
       "decision": "retain",
@@ -196,9 +203,10 @@
       "reviewedSenseIds": ["v23:kriegsrecht:martial-law"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The compound is neuter because its head noun is das Recht: das Recht, therefore das Kriegsrecht.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "schlaflosigkeit": {
       "decision": "retain",
@@ -232,12 +240,15 @@
     },
     "richtlinie": {
       "decision": "retain",
+      "gloss": "guideline; directive",
+      "example": "Die Richtlinie verpflichtet Unternehmen zu strengeren Sicherheitskontrollen.",
+      "reviewedSenseIds": ["v23:richtlinie:guideline"],
       "rule": "The compound is feminine because its head noun is die Linie; do not infer the gender from the final letters -ie alone.",
       "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "schnur": {
       "decision": "retain",
