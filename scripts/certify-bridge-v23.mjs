@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { loadEditorialReview } from './load-bridge-review-ledgers.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const generated = join(root, '.generated-v23');
@@ -55,7 +56,7 @@ const translation = evalTranslations(await readGenerated('bridge-translations.js
 const provenance = JSON.parse(await readGenerated('content', 'bridge-provenance.json'));
 const manifest = JSON.parse(await readGenerated('content', 'bridge-v23-materialization.json'));
 const replacementLedger = JSON.parse(await readRoot('content', 'bridge-replacement-review.json'));
-const editorialLedger = JSON.parse(await readRoot('content', 'bridge-editorial-review.json'));
+const editorialLedger = await loadEditorialReview(root);
 
 const replacements = replacementLedger.entries || {};
 const replacementIds = new Set(Object.keys(replacements));
@@ -63,6 +64,7 @@ const retainedReviews = Object.fromEntries(Object.entries(editorialLedger.entrie
 const retainedReviewIds = new Set(Object.keys(retainedReviews));
 const replacementCount = replacementIds.size;
 const retainedReviewCount = retainedReviewIds.size;
+const retainedBatchCount = editorialLedger.retainedBatches?.length || 0;
 const releaseReviewedCount = Object.values(replacements).filter(replacementReleaseReviewed).length
   + Object.values(retainedReviews).filter(retainedReleaseReviewed).length;
 const releaseReviewed = releaseReviewedCount === source.rows.length;
@@ -73,6 +75,7 @@ if (
   || manifest.materializedFromPhase !== 'V2-2'
   || manifest.replacementCount !== replacementCount
   || manifest.retainedReviewCount !== retainedReviewCount
+  || manifest.retainedBatchCount !== retainedBatchCount
   || manifest.releaseReviewedCount !== releaseReviewedCount
   || manifest.releaseReviewed !== releaseReviewed
 ) {
@@ -163,6 +166,7 @@ if (
   effective.meta.editorialPhase !== 'V2-3'
   || effective.meta.replacementCount !== replacementCount
   || effective.meta.retainedReviewCount !== retainedReviewCount
+  || effective.meta.retainedBatchCount !== retainedBatchCount
   || effective.meta.releaseReviewedCount !== releaseReviewedCount
   || effective.meta.sourceAssetsImmutable !== true
 ) {
@@ -172,6 +176,7 @@ if (
   translation.certification.editorialPhase !== 'V2-3'
   || translation.certification.replacementCount !== replacementCount
   || translation.certification.retainedReviewCount !== retainedReviewCount
+  || translation.certification.retainedBatchCount !== retainedBatchCount
   || translation.certification.releaseReviewedCount !== releaseReviewedCount
   || translation.certification.releaseReviewed !== releaseReviewed
 ) {
@@ -181,6 +186,7 @@ if (
   provenance.phase !== 'V2-3'
   || provenance.replacementCount !== replacementCount
   || provenance.retainedReviewCount !== retainedReviewCount
+  || provenance.retainedBatchCount !== retainedBatchCount
   || provenance.releaseReviewedCount !== releaseReviewedCount
   || provenance.releaseReviewed !== releaseReviewed
   || provenance.sourceAssetsImmutable !== true
@@ -193,6 +199,7 @@ console.log(JSON.stringify({
   effectiveRows: effective.rows.length,
   replacementsMaterialized: replacementCount,
   retainedReviewsMaterialized: retainedReviewCount,
+  retainedBatchCount,
   releaseReviewedCount,
   levelCounts,
   cefrCounts,
