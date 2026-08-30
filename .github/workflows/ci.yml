@@ -81,7 +81,19 @@ jobs:
 
       - name: Certify V2-3 Bridge successor ledger
         if: github.head_ref == 'v2-3-bridge-certification'
-        run: node scripts/audit-bridge-replacements.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/audit-bridge-replacements.mjs 2>&1 | tee content/bridge-successor-audit.log
+
+      - name: Upload V2-3 Bridge successor audit log
+        if: always() && github.head_ref == 'v2-3-bridge-certification'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-bridge-successor-audit-log
+          path: content/bridge-successor-audit.log
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
         run: npm run ci:static
