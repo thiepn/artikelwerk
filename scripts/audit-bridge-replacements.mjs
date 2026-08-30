@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { loadEditorialReview, loadReplacementReview } from './load-bridge-review-ledgers.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (...parts) => readFile(join(root, ...parts), 'utf8');
@@ -14,9 +15,9 @@ const containsHeadword = (example, noun) => new RegExp(
 
 const corpusSource = await read('bridge-corpus.js');
 const html = await read('index.html');
-const editorial = JSON.parse(await read('content', 'bridge-editorial-review.json'));
+const editorial = await loadEditorialReview(root);
 const lowerBound = JSON.parse(await read('content', 'bridge-b1-lower-bound-review.json'));
-const successorLedger = JSON.parse(await read('content', 'bridge-replacement-review.json'));
+const successorLedger = await loadReplacementReview(root);
 
 const corpusContext = { window: {} };
 vm.runInNewContext(corpusSource, corpusContext, { filename: 'bridge-corpus.js' });
@@ -131,6 +132,8 @@ console.log(JSON.stringify({
   phase: 'V2-3',
   replacementSlots: replacementIds.length,
   uniqueSuccessors: successorIds.size,
+  replacementDecisionBatches: editorial.replacementDecisionBatches?.length || 0,
+  replacementReviewBatches: successorLedger.replacementReviewBatches?.length || 0,
   bucketCounts,
   expectedBuckets,
   sourceArticleCounts,
