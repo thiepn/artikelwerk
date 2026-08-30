@@ -1,20 +1,12 @@
-import { readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadEditorialReview, loadRetainedB1Review } from './load-bridge-review-ledgers.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const readJson = async (...parts) => JSON.parse(await readFile(join(root, ...parts), 'utf8'));
 const fail = (message) => { throw new Error(message); };
 
-const editorial = await readJson('content', 'bridge-editorial-review.json');
-const screening = await readJson('content', 'bridge-retained-b1-review.json');
-
-if (editorial.phase !== 'V2-3' || editorial.status !== 'in-progress' || editorial.schema !== 1) {
-  fail('V2-3 editorial ledger metadata is invalid.');
-}
-if (screening.phase !== 'V2-3' || screening.status !== 'in-progress' || screening.schema !== 1) {
-  fail('V2-3 retained B1 screening metadata is invalid.');
-}
+const editorial = await loadEditorialReview(root);
+const screening = await loadRetainedB1Review(root);
 
 const retainedReleaseReviewed = Object.entries(editorial.entries || {})
   .filter(([, review]) => review?.decision === 'retain' && review?.reviewStatus === 'release-reviewed')
@@ -39,6 +31,8 @@ console.log(JSON.stringify({
   phase: 'V2-3',
   retainedReleaseReviewed: retainedReleaseReviewed.length,
   lowerBoundScreened: screenedIds.length,
+  retainedReviewBatches: editorial.retainedBatches?.length || 0,
+  retainedB1Batches: screening.retainedBatches?.length || 0,
   missing: 0,
   extra: 0,
   result: 'no-exact-match',
