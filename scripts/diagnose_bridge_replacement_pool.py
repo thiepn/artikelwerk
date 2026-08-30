@@ -33,6 +33,7 @@ def compact(item: dict, reject_reason: str | None = None) -> dict:
         "article": item["article"],
         "cefrEstimate": item["cefrEstimate"],
         "frequencyRank": item["frequencyRank"],
+        "frequencyCount": item["frequencyCount"],
         "gloss": "; ".join(item["glosses"][:2]),
         "group": item["group"],
         "strictLearnerValue": strict.strict_learner_value(item),
