@@ -2,7 +2,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
-import { loadEditorialReview } from './load-bridge-review-ledgers.mjs';
+import { loadEditorialReview, loadReplacementReview } from './load-bridge-review-ledgers.mjs';
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const rootDir = dirname(scriptsDir);
@@ -13,7 +13,7 @@ const fail = (message) => { throw new Error(message); };
 const corpusSource = await read('bridge-corpus.js');
 const translationSource = await read('bridge-translations.js');
 const sourceProvenance = JSON.parse(await read('content', 'bridge-provenance.json'));
-const replacementLedger = JSON.parse(await read('content', 'bridge-replacement-review.json'));
+const replacementLedger = await loadReplacementReview(rootDir);
 const editorialLedger = await loadEditorialReview(rootDir);
 
 const corpusContext = { window: {} };
@@ -64,7 +64,10 @@ function replacementReleaseReviewed(review) {
 }
 
 const replacementCount = replacementIds.size;
+const replacementDecisionBatchCount = editorialLedger.replacementDecisionBatches?.length || 0;
+const replacementReviewBatchCount = replacementLedger.replacementReviewBatches?.length || 0;
 const retainedReviewCount = retainedReviewIds.size;
+const retainedBatchCount = editorialLedger.retainedBatches?.length || 0;
 const releaseReviewedCount = Object.values(replacements).filter(replacementReleaseReviewed).length
   + Object.values(retainedReviews).filter(retainedReleaseReviewed).length;
 const releaseReviewed = releaseReviewedCount === sourceRows.length;
@@ -201,8 +204,10 @@ const corpusMeta = {
   editorialPhase: 'V2-3',
   materializedFromPhase: sourceMeta.phase || 'V2-2',
   replacementCount,
+  replacementDecisionBatchCount,
+  replacementReviewBatchCount,
   retainedReviewCount,
-  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
+  retainedBatchCount,
   releaseReviewedCount,
   sourceAssetsImmutable: true,
 };
@@ -211,8 +216,10 @@ const contentCertification = {
   editorialPhase: 'V2-3',
   materializedFromPhase: sourceContentCertification.phase || 'V2-2',
   replacementCount,
+  replacementDecisionBatchCount,
+  replacementReviewBatchCount,
   retainedReviewCount,
-  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
+  retainedBatchCount,
   releaseReviewedCount,
   sourceAssetsImmutable: true,
   releaseReviewed,
@@ -222,8 +229,10 @@ const effectiveProvenance = {
   phase: 'V2-3',
   materializedFromPhase: sourceProvenance.phase || 'V2-2',
   replacementCount,
+  replacementDecisionBatchCount,
+  replacementReviewBatchCount,
   retainedReviewCount,
-  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
+  retainedBatchCount,
   releaseReviewedCount,
   releaseReviewed,
   sourceAssetsImmutable: true,
@@ -238,8 +247,10 @@ const materializationManifest = {
   phase: 'V2-3',
   materializedFromPhase: 'V2-2',
   replacementCount,
+  replacementDecisionBatchCount,
+  replacementReviewBatchCount,
   retainedReviewCount,
-  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
+  retainedBatchCount,
   releaseReviewedCount,
   releaseReviewed,
   sourceAssetsImmutable: true,
@@ -254,4 +265,4 @@ await writeFile(join(generatedDir, 'bridge-translations.js'), generatedTranslati
 await writeFile(join(generatedDir, 'content', 'bridge-provenance.json'), `${JSON.stringify(effectiveProvenance, null, 2)}\n`, 'utf8');
 await writeFile(join(generatedDir, 'content', 'bridge-v23-materialization.json'), `${JSON.stringify(materializationManifest, null, 2)}\n`, 'utf8');
 
-console.log(`Materialized V2-3 Bridge runtime: ${effectiveRows.length} rows, ${replacementCount} replacements, ${retainedReviewCount} retained editorial reviews across ${editorialLedger.retainedBatches?.length || 0} retained batches, ${releaseReviewedCount} release-reviewed slots.`);
+console.log(`Materialized V2-3 Bridge runtime: ${effectiveRows.length} rows, ${replacementCount} replacements across ${replacementReviewBatchCount} replacement batches, ${retainedReviewCount} retained editorial reviews across ${retainedBatchCount} retained batches, ${releaseReviewedCount} release-reviewed slots.`);
