@@ -28,14 +28,54 @@ function evalTranslations(source, filename) {
   };
 }
 
+function retainedComponents(review) {
+  return {
+    gloss: review?.glossReview || 'pending',
+    example: review?.exampleReview || 'pending',
+    rule: review?.ruleReview || 'pending',
+    level: review?.levelReview || 'pending',
+  };
+}
+
+function retainedReleaseReviewed(review) {
+  if (review?.reviewStatus !== 'release-reviewed') return false;
+  if (!Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length < 1) return false;
+  return Object.values(retainedComponents(review)).every((status) => status === 'editorial');
+}
+
+function replacementReleaseReviewed(review) {
+  if (!review?.successor || !Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length < 1) return false;
+  if (review.b1LowerBoundCheck !== 'no-exact-match') return false;
+  return ['gloss', 'example', 'rule', 'level'].every((component) => review.componentReview?.[component] === 'editorial');
+}
+
 const source = evalCorpus(await readRoot('bridge-corpus.js'), 'bridge-corpus.js');
 const effective = evalCorpus(await readGenerated('bridge-corpus.js'), '.generated-v23/bridge-corpus.js');
 const translation = evalTranslations(await readGenerated('bridge-translations.js'), '.generated-v23/bridge-translations.js');
 const provenance = JSON.parse(await readGenerated('content', 'bridge-provenance.json'));
 const manifest = JSON.parse(await readGenerated('content', 'bridge-v23-materialization.json'));
-const ledger = JSON.parse(await readRoot('content', 'bridge-replacement-review.json'));
+const replacementLedger = JSON.parse(await readRoot('content', 'bridge-replacement-review.json'));
+const editorialLedger = JSON.parse(await readRoot('content', 'bridge-editorial-review.json'));
 
-if (manifest.schema !== 1 || manifest.phase !== 'V2-3' || manifest.materializedFromPhase !== 'V2-2' || manifest.replacementCount !== 28) {
+const replacements = replacementLedger.entries || {};
+const replacementIds = new Set(Object.keys(replacements));
+const retainedReviews = Object.fromEntries(Object.entries(editorialLedger.entries || {}).filter(([, review]) => review?.decision === 'retain'));
+const retainedReviewIds = new Set(Object.keys(retainedReviews));
+const replacementCount = replacementIds.size;
+const retainedReviewCount = retainedReviewIds.size;
+const releaseReviewedCount = Object.values(replacements).filter(replacementReleaseReviewed).length
+  + Object.values(retainedReviews).filter(retainedReleaseReviewed).length;
+const releaseReviewed = releaseReviewedCount === source.rows.length;
+
+if (
+  manifest.schema !== 2
+  || manifest.phase !== 'V2-3'
+  || manifest.materializedFromPhase !== 'V2-2'
+  || manifest.replacementCount !== replacementCount
+  || manifest.retainedReviewCount !== retainedReviewCount
+  || manifest.releaseReviewedCount !== releaseReviewedCount
+  || manifest.releaseReviewed !== releaseReviewed
+) {
   fail('Invalid V2-3 materialization manifest.');
 }
 if (effective.rows.length !== 1000) fail(`Effective Bridge must contain 1,000 rows; found ${effective.rows.length}.`);
@@ -70,7 +110,7 @@ if (JSON.stringify(cefrCounts) !== JSON.stringify({ B2: 600, C1: 400 })) fail(`C
 if (Object.keys(translation.translations).length !== 1000) fail(`Expected 1,000 effective Bridge translations, found ${Object.keys(translation.translations).length}.`);
 if (Object.keys(provenance.entries || {}).length !== 1000) fail(`Expected 1,000 effective provenance entries, found ${Object.keys(provenance.entries || {}).length}.`);
 
-for (const [oldId, review] of Object.entries(ledger.entries || {})) {
+for (const [oldId, review] of Object.entries(replacements)) {
   const s = review.successor;
   const sourceRow = sourceById.get(oldId);
   if (!sourceRow) fail(`Immutable source no longer contains replacement slot ${oldId}.`);
@@ -84,33 +124,81 @@ for (const [oldId, review] of Object.entries(ledger.entries || {})) {
   if (row[10]?.cefrEstimate !== s.cefrEstimate || row[10]?.frequencyRank !== s.frequencyRank || row[10]?.frequencyCount !== s.frequencyCount) {
     fail(`Materialized evidence does not match successor ledger for ${s.id}.`);
   }
+  if (row[10]?.editorialDecision !== 'replace' || row[10]?.replaces !== oldId) fail(`Missing replacement editorial evidence for ${s.id}.`);
   if (translation.translations[s.id] !== review.gloss) fail(`Materialized gloss mismatch for ${s.id}.`);
   if (translation.translations[oldId]) fail(`Rejected translation still present for ${oldId}.`);
   const p = provenance.entries[s.id];
-  if (p?.v23Editorial?.materializedFrom !== oldId || p?.cefrEstimate !== s.cefrEstimate || p?.frequencyRank !== s.frequencyRank) {
+  if (p?.v23Editorial?.materializedFrom !== oldId || p?.v23Editorial?.decision !== 'replace' || p?.cefrEstimate !== s.cefrEstimate || p?.frequencyRank !== s.frequencyRank) {
     fail(`Materialized provenance mismatch for ${s.id}.`);
   }
 }
 
-if (effective.meta.editorialPhase !== 'V2-3' || effective.meta.replacementCount !== 28 || effective.meta.sourceAssetsImmutable !== true) {
+for (const [id, review] of Object.entries(retainedReviews)) {
+  if (replacementIds.has(id)) fail(`Bridge slot cannot be both retained and replaced: ${id}.`);
+  const sourceRow = sourceById.get(id);
+  const row = effectiveById.get(id);
+  if (!sourceRow || !row) fail(`Retained editorial row missing for ${id}.`);
+  if (row[0] !== sourceRow[0] || row[1] !== sourceRow[1] || row[2] !== sourceRow[2] || row[3] !== sourceRow[3] || row[6] !== sourceRow[6]) {
+    fail(`Retained editorial review changed immutable lexical identity for ${id}.`);
+  }
+  if (row[4] !== (review.rule ?? sourceRow[4]) || row[5] !== (review.example ?? sourceRow[5])) {
+    fail(`Retained editorial row does not match review ledger for ${id}.`);
+  }
+  if (row[10]?.editorialDecision !== 'retain' || row[10]?.editorialPhase !== 'V2-3') fail(`Missing retained editorial evidence for ${id}.`);
+  if (translation.translations[id] !== (review.gloss ?? translation.translations[id])) fail(`Retained editorial gloss mismatch for ${id}.`);
+  const p = provenance.entries[id];
+  if (p?.v23Editorial?.decision !== 'retain' || p?.v23Editorial?.reviewStatus !== (review.reviewStatus || 'partial-editorial')) {
+    fail(`Retained editorial provenance mismatch for ${id}.`);
+  }
+}
+
+for (const sourceRow of source.rows) {
+  const id = sourceRow[0];
+  if (replacementIds.has(id) || retainedReviewIds.has(id)) continue;
+  const row = effectiveById.get(id);
+  if (!row || JSON.stringify(row) !== JSON.stringify(sourceRow)) fail(`Unreviewed source row changed during V2-3 materialization: ${id}.`);
+}
+
+if (
+  effective.meta.editorialPhase !== 'V2-3'
+  || effective.meta.replacementCount !== replacementCount
+  || effective.meta.retainedReviewCount !== retainedReviewCount
+  || effective.meta.releaseReviewedCount !== releaseReviewedCount
+  || effective.meta.sourceAssetsImmutable !== true
+) {
   fail('Effective Bridge corpus metadata does not identify V2-3 materialization.');
 }
-if (translation.certification.editorialPhase !== 'V2-3' || translation.certification.replacementCount !== 28 || translation.certification.releaseReviewed !== false) {
+if (
+  translation.certification.editorialPhase !== 'V2-3'
+  || translation.certification.replacementCount !== replacementCount
+  || translation.certification.retainedReviewCount !== retainedReviewCount
+  || translation.certification.releaseReviewedCount !== releaseReviewedCount
+  || translation.certification.releaseReviewed !== releaseReviewed
+) {
   fail('Effective Bridge translation certification metadata is invalid.');
 }
-if (provenance.phase !== 'V2-3' || provenance.replacementCount !== 28 || provenance.sourceAssetsImmutable !== true) {
+if (
+  provenance.phase !== 'V2-3'
+  || provenance.replacementCount !== replacementCount
+  || provenance.retainedReviewCount !== retainedReviewCount
+  || provenance.releaseReviewedCount !== releaseReviewedCount
+  || provenance.releaseReviewed !== releaseReviewed
+  || provenance.sourceAssetsImmutable !== true
+) {
   fail('Effective Bridge provenance metadata is invalid.');
 }
 
 console.log(JSON.stringify({
   phase: 'V2-3',
   effectiveRows: effective.rows.length,
-  replacementsMaterialized: 28,
+  replacementsMaterialized: replacementCount,
+  retainedReviewsMaterialized: retainedReviewCount,
+  releaseReviewedCount,
   levelCounts,
   cefrCounts,
   translations: Object.keys(translation.translations).length,
   provenanceEntries: Object.keys(provenance.entries || {}).length,
   sourceRowsPreserved: source.rows.length,
-  releaseReviewed: false,
+  releaseReviewed,
 }, null, 2));
 console.log('V2-3 materialized Bridge runtime certification passed.');
