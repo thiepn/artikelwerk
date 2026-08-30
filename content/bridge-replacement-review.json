@@ -3,7 +3,7 @@
   "phase": "V2-3",
   "status": "in-progress",
   "policy": {
-    "purpose": "Resolve the 28 explicit Bridge replacement decisions with pinned-source successor candidates before corpus materialization.",
+    "purpose": "Resolve explicit Bridge replacement decisions with pinned-source successor candidates before corpus materialization.",
     "sourceCandidateStatus": "pinned-source-validated",
     "sourcePins": {
       "wordhoardRelease": "v0.1.0 (2026-07-16)",
@@ -87,6 +87,16 @@
       "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
       "b1LowerBoundCheck": "no-exact-match"
     },
+    "fussspur": {
+      "successor": {"id":"uebernahme","noun":"Übernahme","article":"die","level":3,"cefrEstimate":"C1","frequencyRank":10590,"frequencyCount":467,"group":"bridge-general"},
+      "sourceGloss": "takeover; appropriation",
+      "gloss": "takeover; acquisition",
+      "example": "Die Übernahme des Unternehmens muss noch von den Behörden genehmigt werden.",
+      "rule": "Prefixed nouns ending in -nahme, such as Aufnahme, Einnahme, and Übernahme, are feminine.",
+      "reviewedSenseIds": ["v23:uebernahme:takeover"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
     "gramm": {
       "successor": {"id":"klischee","noun":"Klischee","article":"das","level":1,"cefrEstimate":"B2","frequencyRank":8509,"frequencyCount":652,"group":"bridge-general"},
       "sourceGloss": "block; imitation",
@@ -167,6 +177,16 @@
       "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
       "b1LowerBoundCheck": "no-exact-match"
     },
+    "nabelschnur": {
+      "successor": {"id":"selbstbewusstsein","noun":"Selbstbewusstsein","article":"das","level":3,"cefrEstimate":"C1","frequencyRank":13235,"frequencyCount":329,"group":"bridge-general"},
+      "sourceGloss": "self-confidence; self-consciousness",
+      "gloss": "self-confidence; self-awareness",
+      "example": "Ein gesundes Selbstbewusstsein hilft ihr, Kritik anzunehmen, ohne sich sofort verunsichern zu lassen.",
+      "rule": "The compound is neuter because its head noun is das Bewusstsein; therefore das Selbstbewusstsein.",
+      "reviewedSenseIds": ["v23:selbstbewusstsein:self-confidence"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
     "parlament": {
       "successor": {"id":"justiz","noun":"Justiz","article":"die","level":2,"cefrEstimate":"B2","frequencyRank":7381,"frequencyCount":804,"group":"bridge-general"},
       "sourceGloss": "justice; judiciary",
@@ -234,6 +254,16 @@
       "example": "Der Vorgänger hatte das Amt fast zehn Jahre lang ausgeübt.",
       "rule": "Vorgänger is masculine here as the male person noun; learn the form with der.",
       "reviewedSenseIds": ["v23:vorgaenger:predecessor"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "schnur": {
+      "successor": {"id":"defekt","noun":"Defekt","article":"der","level":2,"cefrEstimate":"B2","frequencyRank":7768,"frequencyCount":747,"group":"bridge-general"},
+      "sourceGloss": "defect; fault",
+      "gloss": "defect; fault",
+      "example": "Der Defekt an der Heizungsanlage führte zu einem mehrstündigen Ausfall.",
+      "rule": "Defekt is a lexical masculine noun; -ekt is not a fully reliable productive gender rule, so learn der Defekt.",
+      "reviewedSenseIds": ["v23:defekt:defect"],
       "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
       "b1LowerBoundCheck": "no-exact-match"
     },
