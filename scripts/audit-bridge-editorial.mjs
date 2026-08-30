@@ -12,8 +12,10 @@ const translationSource = await read('bridge-translations.js');
 const formalProvenance = JSON.parse(await read('content', 'bridge-provenance.json'));
 const editorialReview = JSON.parse(await read('content', 'bridge-editorial-review.json'));
 const lowerBoundReview = JSON.parse(await read('content', 'bridge-b1-lower-bound-review.json'));
+const successorReview = JSON.parse(await read('content', 'bridge-replacement-review.json'));
 const editorialEntries = editorialReview.entries || {};
 const lowerBoundEntries = lowerBoundReview.entries || {};
+const successorEntries = successorReview.entries || {};
 const reviewIds = new Set([...Object.keys(editorialEntries), ...Object.keys(lowerBoundEntries)]);
 
 const corpusContext = { window: {} };
@@ -37,9 +39,15 @@ if (editorialReview.phase !== 'V2-3' || editorialReview.status !== 'in-progress'
 if (lowerBoundReview.phase !== 'V2-3' || lowerBoundReview.status !== 'in-progress') {
   throw new Error('Bridge B1 lower-bound review metadata is invalid.');
 }
+if (successorReview.phase !== 'V2-3' || successorReview.status !== 'in-progress') {
+  throw new Error('Bridge successor review ledger metadata is invalid.');
+}
 const bridgeIds = new Set(rows.map((row) => row[0]));
 for (const id of reviewIds) {
   if (!bridgeIds.has(id)) throw new Error(`Editorial review references unknown Bridge id: ${id}`);
+}
+for (const id of Object.keys(successorEntries)) {
+  if (!bridgeIds.has(id)) throw new Error(`Successor review references unknown Bridge slot: ${id}`);
 }
 
 const GENERIC_EXAMPLE_FRAGMENTS = [
@@ -106,48 +114,81 @@ function isTransparentGloss(noun, gloss) {
   return TRANSPARENT_LOAN_SUFFIXES.some((suffix) => nounKey.endsWith(suffix)) && nounKey === first;
 }
 
+function resolvedSuccessor(review) {
+  const s = review?.successor;
+  if (!s || typeof s !== 'object') return false;
+  if (!Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length < 1) return false;
+  if (review.b1LowerBoundCheck !== 'no-exact-match') return false;
+  return ['gloss', 'example', 'rule', 'level'].every((component) => review.componentReview?.[component] === 'editorial');
+}
+
 const entries = rows.map((row) => {
   const [id, noun, article, level, sourceRule, sourceExample, group, coverage, phase, track, evidence] = row;
   const sourceGloss = translations[id] || '';
   const sourceProvenance = runtimeProvenance[id] || formalProvenance.entries?.[id] || {};
   const review = { ...(editorialEntries[id] || {}), ...(lowerBoundEntries[id] || {}) };
   const decision = review.decision || 'unreviewed';
-  const gloss = review.gloss ?? sourceGloss;
-  const rule = review.rule ?? sourceRule;
-  const example = review.example ?? sourceExample;
-  const lowGloss = gloss.toLocaleLowerCase('en-US');
+  const replacement = decision === 'replace' ? successorEntries[id] : null;
+  const replacementIsResolved = resolvedSuccessor(replacement);
+  const successor = replacement?.successor || null;
+
+  const effectiveId = successor ? successor.id : id;
+  const effectiveNoun = successor ? successor.noun : noun;
+  const effectiveArticle = successor ? successor.article : article;
+  const effectiveLevel = successor ? successor.level : level;
+  const effectiveCefr = successor ? successor.cefrEstimate : evidence?.cefrEstimate;
+  const effectiveFrequencyRank = successor ? successor.frequencyRank : evidence?.frequencyRank;
+  const effectiveGroup = successor ? successor.group : group;
+  const gloss = successor ? replacement.gloss : (review.gloss ?? sourceGloss);
+  const rule = successor ? replacement.rule : (review.rule ?? sourceRule);
+  const example = successor ? replacement.example : (review.example ?? sourceExample);
+  const reviewedSenseIds = successor ? (replacement.reviewedSenseIds || []) : (review.reviewedSenseIds || []);
+  const componentReview = successor ? {
+    gloss: replacement.componentReview?.gloss || 'pending',
+    example: replacement.componentReview?.example || 'pending',
+    rule: replacement.componentReview?.rule || 'pending',
+    level: replacement.componentReview?.level || 'pending',
+  } : {
+    gloss: review.glossReview || 'pending',
+    example: review.exampleReview || 'pending',
+    rule: review.ruleReview || 'pending',
+    level: review.levelReview || 'pending',
+  };
+  const reviewStatus = replacementIsResolved ? 'release-reviewed' : (review.reviewStatus || null);
+  const lowGloss = String(gloss).toLocaleLowerCase('en-US');
   const flags = [];
 
-  if (decision === 'replace') {
-    flags.push('replacement-pending');
-  } else {
-    if (GENERIC_EXAMPLE_FRAGMENTS.some((fragment) => example.includes(fragment))) flags.push('generic-example');
+  if (decision === 'replace' && !replacementIsResolved) flags.push('replacement-pending');
+
+  if (decision !== 'replace' || successor) {
+    if (GENERIC_EXAMPLE_FRAGMENTS.some((fragment) => String(example).includes(fragment))) flags.push('generic-example');
     if (String(rule).startsWith('No reliable productive ending rule is strong enough here')) flags.push('generic-rule');
     if (GARBAGE_GLOSS_TERMS.some((term) => lowGloss.includes(term))) flags.push('garbage-gloss');
     if (SENSE_RISK_TERMS.some((term) => lowGloss.includes(term))) flags.push('sense-register-risk');
-    if (/\b[A-Za-zÄÖÜäöüß]+:\s/.test(gloss)) flags.push('source-annotation-in-gloss');
+    if (/\b[A-Za-zÄÖÜäöüß]+:\s/.test(String(gloss))) flags.push('source-annotation-in-gloss');
     if (glossParts(gloss).length > 2) flags.push('too-many-gloss-senses');
-    if (isTransparentGloss(noun, gloss)) flags.push('transparent-cognate');
-    if (group === 'bridge-general') flags.push('generic-taxonomy');
-    if (!Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length < 1) flags.push('missing-reviewed-sense');
-    if (review.glossReview !== 'editorial') flags.push('missing-gloss-review');
-    if (review.exampleReview !== 'editorial') flags.push('missing-example-review');
-    if (review.ruleReview !== 'editorial') flags.push('missing-rule-review');
-    if (review.levelReview !== 'editorial') flags.push('missing-level-review');
-    if (!String(example).includes(noun)) flags.push('example-missing-headword');
+    if (isTransparentGloss(effectiveNoun, gloss)) flags.push('transparent-cognate');
+    if (effectiveGroup === 'bridge-general') flags.push('generic-taxonomy');
+    if (reviewedSenseIds.length < 1) flags.push('missing-reviewed-sense');
+    if (componentReview.gloss !== 'editorial') flags.push('missing-gloss-review');
+    if (componentReview.example !== 'editorial') flags.push('missing-example-review');
+    if (componentReview.rule !== 'editorial') flags.push('missing-rule-review');
+    if (componentReview.level !== 'editorial') flags.push('missing-level-review');
+    if (!String(example).includes(effectiveNoun)) flags.push('example-missing-headword');
   }
 
-  if (review.reviewStatus !== 'release-reviewed') flags.push('not-release-reviewed');
+  if (reviewStatus !== 'release-reviewed') flags.push('not-release-reviewed');
   if (coverage !== 'core-expanded' || phase !== 'V2-2' || track !== 'bridge') flags.push('tuple-contract');
 
   return {
-    id,
-    noun,
-    article,
-    level,
-    cefrEstimate: evidence?.cefrEstimate,
-    frequencyRank: evidence?.frequencyRank,
-    group,
+    id: effectiveId,
+    sourceSlotId: id,
+    noun: effectiveNoun,
+    article: effectiveArticle,
+    level: effectiveLevel,
+    cefrEstimate: effectiveCefr,
+    frequencyRank: effectiveFrequencyRank,
+    group: effectiveGroup,
     sourceGloss,
     gloss,
     sourceRule,
@@ -159,21 +200,17 @@ const entries = rows.map((row) => {
     decisionReason: review.reason || null,
     lowerBound: review.lowerBound || null,
     lowerBoundEvidenceType: review.evidenceType || null,
-    reviewStatus: review.reviewStatus || null,
-    reviewedSenseIds: review.reviewedSenseIds || [],
-    componentReview: {
-      gloss: review.glossReview || 'pending',
-      example: review.exampleReview || 'pending',
-      rule: review.ruleReview || 'pending',
-      level: review.levelReview || 'pending',
-    },
+    replacementResolved: replacementIsResolved,
+    reviewStatus,
+    reviewedSenseIds,
+    componentReview,
     flags,
   };
 });
 
 const countFlag = (flag) => entries.filter((entry) => entry.flags.includes(flag)).length;
 const countComponent = (component) => entries.filter((entry) => entry.componentReview[component] === 'editorial').length;
-const levelCounts = Object.fromEntries([1, 2, 3].map((level) => [level, entries.filter((entry) => entry.level === level).length]));
+const levelCounts = Object.fromEntries([1, 2, 3].map((entryLevel) => [entryLevel, entries.filter((entry) => entry.level === entryLevel).length]));
 const hardBlockers = Object.fromEntries(HARD_BLOCKING_FLAGS.map((flag) => [flag, countFlag(flag)]));
 const softSignals = Object.fromEntries(SOFT_REVIEW_FLAGS.map((flag) => [flag, countFlag(flag)]));
 const hardBlockerEntries = entries.filter((entry) => entry.flags.some((flag) => HARD_BLOCKING_FLAGS.includes(flag)));
@@ -181,6 +218,7 @@ const reviewDecisions = {
   reviewedLedgerEntries: reviewIds.size,
   editorialLedgerEntries: Object.keys(editorialEntries).length,
   lowerBoundLedgerEntries: Object.keys(lowerBoundEntries).length,
+  resolvedReplacements: entries.filter((entry) => entry.replacementResolved).length,
   retain: entries.filter((entry) => entry.decision === 'retain').length,
   replace: entries.filter((entry) => entry.decision === 'replace').length,
   unreviewed: entries.filter((entry) => entry.decision === 'unreviewed').length,
@@ -193,7 +231,7 @@ const componentProgress = {
   releaseReviewed: entries.filter((entry) => entry.reviewStatus === 'release-reviewed').length,
 };
 const summary = {
-  schema: 4,
+  schema: 5,
   phase: 'V2-3',
   total: entries.length,
   levelCounts,
@@ -222,7 +260,7 @@ const summary = {
   },
 };
 
-console.log(`V2-3 Bridge editorial audit: ${summary.total} entries`);
+console.log(`V2-3 Bridge editorial audit: ${summary.total} effective entries`);
 console.log(JSON.stringify(summary, null, 2));
 
 if (hasFlag('--dump')) {
