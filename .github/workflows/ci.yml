@@ -79,6 +79,10 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Certify V2-3 Bridge successor ledger
+        if: github.head_ref == 'v2-3-bridge-certification'
+        run: node scripts/audit-bridge-replacements.mjs
+
       - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
         run: npm run ci:static
 
