@@ -21,7 +21,9 @@ async function listFiles(directory) {
 }
 
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-if (manifest?.schema !== 1 || manifest?.source !== 'index.html') throw new Error('Invalid deterministic build manifest metadata.');
+if (manifest?.schema !== 1 || manifest?.source !== 'index.html' || manifest?.bridgeMaterialization !== 'V2-3') {
+  throw new Error('Invalid deterministic build manifest metadata.');
+}
 
 const expectedFiles = [...Object.keys(manifest.files), 'build-manifest.json'].sort();
 const actualFiles = await listFiles(distDir);
@@ -30,14 +32,21 @@ if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
 }
 
 for (const [relativePath, metadata] of Object.entries(manifest.files)) {
-  const sourcePath = join(rootDir, relativePath);
+  const declaredSource = metadata.source || relativePath;
+  if (declaredSource.includes('..') || declaredSource.startsWith('/')) throw new Error(`Invalid declared build source for ${relativePath}: ${declaredSource}`);
+  const sourcePath = join(rootDir, declaredSource);
   const outputPath = join(distDir, relativePath);
   const source = await readFile(sourcePath);
   const output = await readFile(outputPath);
-  if (!source.equals(output)) throw new Error(`dist/${relativePath} differs from canonical source.`);
+  if (!source.equals(output)) throw new Error(`dist/${relativePath} differs from declared source ${declaredSource}.`);
   if (metadata.bytes !== source.byteLength) throw new Error(`Manifest byte count mismatch for ${relativePath}.`);
   if (metadata.sha256 !== sha256(source)) throw new Error(`Manifest hash mismatch for ${relativePath}.`);
   if (!(await stat(outputPath)).isFile()) throw new Error(`dist/${relativePath} must be a regular file.`);
 }
 
-console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files.`);
+for (const runtimeAsset of ['bridge-corpus.js', 'bridge-translations.js', 'content/bridge-provenance.json']) {
+  const declared = manifest.files?.[runtimeAsset]?.source;
+  if (!declared?.startsWith('.generated-v23/')) throw new Error(`${runtimeAsset} must come from the V2-3 generated layer.`);
+}
+
+console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with V2-3 generated Bridge sources.`);
