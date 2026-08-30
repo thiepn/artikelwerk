@@ -24,6 +24,23 @@ function mergeUnique(target, incoming, sourceLabel) {
   }
 }
 
+async function mergeDecisionBatches(root, entries, dirName, kind, decision) {
+  const dir = join(root, 'content', dirName);
+  const batches = [];
+  for (const file of await listJsonFiles(dir)) {
+    const batch = await readJson(join(dir, file));
+    if (batch.schema !== 1 || batch.phase !== 'V2-3' || batch.kind !== kind || batch.status !== 'complete') {
+      throw new Error(`Invalid ${kind} metadata: ${file}`);
+    }
+    for (const [id, review] of Object.entries(batch.entries || {})) {
+      if (review?.decision !== decision) throw new Error(`${kind} ${file} contains ${String(review?.decision)} decision for ${id}.`);
+    }
+    mergeUnique(entries, batch.entries, file);
+    batches.push({ file, entries: Object.keys(batch.entries || {}).length });
+  }
+  return batches;
+}
+
 export async function loadEditorialReview(root) {
   const base = await readJson(join(root, 'content', 'bridge-editorial-review.json'));
   if (base.schema !== 1 || base.phase !== 'V2-3' || base.status !== 'in-progress') {
@@ -31,21 +48,43 @@ export async function loadEditorialReview(root) {
   }
 
   const entries = { ...(base.entries || {}) };
-  const batchDir = join(root, 'content', 'bridge-retained-review-batches');
+  const retainedBatches = await mergeDecisionBatches(
+    root,
+    entries,
+    'bridge-retained-review-batches',
+    'retained-review-batch',
+    'retain',
+  );
+  const replacementDecisionBatches = await mergeDecisionBatches(
+    root,
+    entries,
+    'bridge-replacement-decision-batches',
+    'replacement-decision-batch',
+    'replace',
+  );
+
+  return { ...base, entries, retainedBatches, replacementDecisionBatches };
+}
+
+export async function loadReplacementReview(root) {
+  const base = await readJson(join(root, 'content', 'bridge-replacement-review.json'));
+  if (base.schema !== 1 || base.phase !== 'V2-3' || base.status !== 'in-progress') {
+    throw new Error('Bridge replacement review ledger metadata is invalid.');
+  }
+
+  const entries = { ...(base.entries || {}) };
+  const dir = join(root, 'content', 'bridge-replacement-review-batches');
   const batches = [];
-  for (const file of await listJsonFiles(batchDir)) {
-    const batch = await readJson(join(batchDir, file));
-    if (batch.schema !== 1 || batch.phase !== 'V2-3' || batch.kind !== 'retained-review-batch' || batch.status !== 'complete') {
-      throw new Error(`Invalid retained review batch metadata: ${file}`);
-    }
-    for (const [id, review] of Object.entries(batch.entries || {})) {
-      if (review?.decision !== 'retain') throw new Error(`Retained review batch ${file} contains non-retain decision for ${id}.`);
+  for (const file of await listJsonFiles(dir)) {
+    const batch = await readJson(join(dir, file));
+    if (batch.schema !== 1 || batch.phase !== 'V2-3' || batch.kind !== 'replacement-review-batch' || batch.status !== 'complete') {
+      throw new Error(`Invalid replacement review batch metadata: ${file}`);
     }
     mergeUnique(entries, batch.entries, file);
     batches.push({ file, entries: Object.keys(batch.entries || {}).length });
   }
 
-  return { ...base, entries, retainedBatches: batches };
+  return { ...base, entries, replacementReviewBatches: batches };
 }
 
 export async function loadRetainedB1Review(root) {
