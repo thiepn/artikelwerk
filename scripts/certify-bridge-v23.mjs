@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
-import { loadEditorialReview } from './load-bridge-review-ledgers.mjs';
+import { loadEditorialReview, loadReplacementReview } from './load-bridge-review-ledgers.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const generated = join(root, '.generated-v23');
@@ -55,7 +55,7 @@ const effective = evalCorpus(await readGenerated('bridge-corpus.js'), '.generate
 const translation = evalTranslations(await readGenerated('bridge-translations.js'), '.generated-v23/bridge-translations.js');
 const provenance = JSON.parse(await readGenerated('content', 'bridge-provenance.json'));
 const manifest = JSON.parse(await readGenerated('content', 'bridge-v23-materialization.json'));
-const replacementLedger = JSON.parse(await readRoot('content', 'bridge-replacement-review.json'));
+const replacementLedger = await loadReplacementReview(root);
 const editorialLedger = await loadEditorialReview(root);
 
 const replacements = replacementLedger.entries || {};
@@ -63,6 +63,8 @@ const replacementIds = new Set(Object.keys(replacements));
 const retainedReviews = Object.fromEntries(Object.entries(editorialLedger.entries || {}).filter(([, review]) => review?.decision === 'retain'));
 const retainedReviewIds = new Set(Object.keys(retainedReviews));
 const replacementCount = replacementIds.size;
+const replacementDecisionBatchCount = editorialLedger.replacementDecisionBatches?.length || 0;
+const replacementReviewBatchCount = replacementLedger.replacementReviewBatches?.length || 0;
 const retainedReviewCount = retainedReviewIds.size;
 const retainedBatchCount = editorialLedger.retainedBatches?.length || 0;
 const releaseReviewedCount = Object.values(replacements).filter(replacementReleaseReviewed).length
@@ -74,6 +76,8 @@ if (
   || manifest.phase !== 'V2-3'
   || manifest.materializedFromPhase !== 'V2-2'
   || manifest.replacementCount !== replacementCount
+  || manifest.replacementDecisionBatchCount !== replacementDecisionBatchCount
+  || manifest.replacementReviewBatchCount !== replacementReviewBatchCount
   || manifest.retainedReviewCount !== retainedReviewCount
   || manifest.retainedBatchCount !== retainedBatchCount
   || manifest.releaseReviewedCount !== releaseReviewedCount
@@ -165,6 +169,8 @@ for (const sourceRow of source.rows) {
 if (
   effective.meta.editorialPhase !== 'V2-3'
   || effective.meta.replacementCount !== replacementCount
+  || effective.meta.replacementDecisionBatchCount !== replacementDecisionBatchCount
+  || effective.meta.replacementReviewBatchCount !== replacementReviewBatchCount
   || effective.meta.retainedReviewCount !== retainedReviewCount
   || effective.meta.retainedBatchCount !== retainedBatchCount
   || effective.meta.releaseReviewedCount !== releaseReviewedCount
@@ -175,6 +181,8 @@ if (
 if (
   translation.certification.editorialPhase !== 'V2-3'
   || translation.certification.replacementCount !== replacementCount
+  || translation.certification.replacementDecisionBatchCount !== replacementDecisionBatchCount
+  || translation.certification.replacementReviewBatchCount !== replacementReviewBatchCount
   || translation.certification.retainedReviewCount !== retainedReviewCount
   || translation.certification.retainedBatchCount !== retainedBatchCount
   || translation.certification.releaseReviewedCount !== releaseReviewedCount
@@ -185,6 +193,8 @@ if (
 if (
   provenance.phase !== 'V2-3'
   || provenance.replacementCount !== replacementCount
+  || provenance.replacementDecisionBatchCount !== replacementDecisionBatchCount
+  || provenance.replacementReviewBatchCount !== replacementReviewBatchCount
   || provenance.retainedReviewCount !== retainedReviewCount
   || provenance.retainedBatchCount !== retainedBatchCount
   || provenance.releaseReviewedCount !== releaseReviewedCount
@@ -198,6 +208,8 @@ console.log(JSON.stringify({
   phase: 'V2-3',
   effectiveRows: effective.rows.length,
   replacementsMaterialized: replacementCount,
+  replacementDecisionBatchCount,
+  replacementReviewBatchCount,
   retainedReviewsMaterialized: retainedReviewCount,
   retainedBatchCount,
   releaseReviewedCount,
