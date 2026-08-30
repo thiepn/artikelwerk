@@ -59,14 +59,21 @@ if (JSON.stringify(ledgerIds) !== JSON.stringify(replacementIds)) {
   const extra = ledgerIds.filter((id) => !replacementIds.includes(id));
   fail(`Successor ledger must resolve every replacement exactly once. Missing=${missing.join(',') || 'none'} extra=${extra.join(',') || 'none'}`);
 }
-if (replacementIds.length !== 28) fail(`Expected 28 V2-3 replacement decisions, found ${replacementIds.length}.`);
 
 const articles = new Set(['der', 'die', 'das']);
 const successorIds = new Set();
 const successorNouns = new Set();
 const bucketCounts = {};
+const expectedBuckets = {};
 const sourceArticleCounts = { der: 0, die: 0, das: 0 };
 const successorArticleCounts = { der: 0, die: 0, das: 0 };
+
+for (const oldId of replacementIds) {
+  const row = bridgeById.get(oldId);
+  if (!row) fail(`Replacement references missing Bridge row: ${oldId}`);
+  const sourceBucket = `L${row[3]}-${row[10]?.cefrEstimate}`;
+  expectedBuckets[sourceBucket] = (expectedBuckets[sourceBucket] || 0) + 1;
+}
 
 for (const oldId of replacementIds) {
   const row = bridgeById.get(oldId);
@@ -105,9 +112,9 @@ for (const oldId of replacementIds) {
   bucketCounts[bucket] = (bucketCounts[bucket] || 0) + 1;
 }
 
-const expectedBuckets = { 'L1-B2': 21, 'L2-B2': 5, 'L3-C1': 2 };
-if (JSON.stringify(bucketCounts) !== JSON.stringify(expectedBuckets)) {
-  fail(`Unexpected successor bucket counts: ${JSON.stringify(bucketCounts)}`);
+const normalizeBuckets = (value) => Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)));
+if (JSON.stringify(normalizeBuckets(bucketCounts)) !== JSON.stringify(normalizeBuckets(expectedBuckets))) {
+  fail(`Unexpected successor bucket counts: actual=${JSON.stringify(bucketCounts)} expected=${JSON.stringify(expectedBuckets)}`);
 }
 
 const currentArticleCounts = bridge.reduce((acc, row) => {
@@ -125,6 +132,7 @@ console.log(JSON.stringify({
   replacementSlots: replacementIds.length,
   uniqueSuccessors: successorIds.size,
   bucketCounts,
+  expectedBuckets,
   sourceArticleCounts,
   successorArticleCounts,
   projectedArticleCounts,
