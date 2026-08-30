@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { loadEditorialReview } from './load-bridge-review-ledgers.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (...parts) => readFile(join(root, ...parts), 'utf8');
@@ -10,7 +11,7 @@ const hasFlag = (flag) => process.argv.includes(flag);
 const corpusSource = await read('bridge-corpus.js');
 const translationSource = await read('bridge-translations.js');
 const formalProvenance = JSON.parse(await read('content', 'bridge-provenance.json'));
-const editorialReview = JSON.parse(await read('content', 'bridge-editorial-review.json'));
+const editorialReview = await loadEditorialReview(root);
 const lowerBoundReview = JSON.parse(await read('content', 'bridge-b1-lower-bound-review.json'));
 const successorReview = JSON.parse(await read('content', 'bridge-replacement-review.json'));
 const editorialEntries = editorialReview.entries || {};
@@ -217,6 +218,7 @@ const hardBlockerEntries = entries.filter((entry) => entry.flags.some((flag) => 
 const reviewDecisions = {
   reviewedLedgerEntries: reviewIds.size,
   editorialLedgerEntries: Object.keys(editorialEntries).length,
+  retainedBatchCount: editorialReview.retainedBatches?.length || 0,
   lowerBoundLedgerEntries: Object.keys(lowerBoundEntries).length,
   resolvedReplacements: entries.filter((entry) => entry.replacementResolved).length,
   retain: entries.filter((entry) => entry.decision === 'retain').length,
@@ -231,7 +233,7 @@ const componentProgress = {
   releaseReviewed: entries.filter((entry) => entry.reviewStatus === 'release-reviewed').length,
 };
 const summary = {
-  schema: 5,
+  schema: 6,
   phase: 'V2-3',
   total: entries.length,
   levelCounts,
