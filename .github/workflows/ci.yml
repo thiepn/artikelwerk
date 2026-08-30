@@ -38,7 +38,7 @@ jobs:
         run: npm install --no-package-lock --no-audit --no-fund
 
       - name: Verify content-generator syntax
-        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py scripts/propose_bridge_replacements.py scripts/propose_bridge_replacements_strict.py
+        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py scripts/propose_bridge_replacements.py scripts/propose_bridge_replacements_strict.py scripts/diagnose_bridge_replacement_pool.py
 
       - name: Export V2-3 Bridge editorial audit
         if: github.head_ref == 'v2-3-bridge-certification'
@@ -50,6 +50,19 @@ jobs:
         with:
           name: artikelwerk-bridge-editorial-audit
           path: content/bridge-editorial-audit.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Diagnose V2-3 Bridge replacement pool
+        if: github.head_ref == 'v2-3-bridge-certification'
+        run: python scripts/diagnose_bridge_replacement_pool.py
+
+      - name: Upload V2-3 Bridge replacement pool diagnostics
+        if: github.head_ref == 'v2-3-bridge-certification'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artikelwerk-bridge-replacement-pool-diagnostic
+          path: content/bridge-replacement-pool-diagnostic.json
           if-no-files-found: error
           retention-days: 14
 
