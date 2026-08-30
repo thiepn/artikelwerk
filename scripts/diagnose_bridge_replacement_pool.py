@@ -19,7 +19,10 @@ import propose_bridge_replacements_strict as strict
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "content" / "bridge-replacement-pool-diagnostic.json"
-TOP_NEAR_MISSES = 80
+# Keep the artifact exhaustive for the undersupplied B2 pool. Console output is
+# still capped below so CI logs remain readable.
+TOP_NEAR_MISSES = 500
+LOG_NEAR_MISSES = 80
 
 
 def compact(item: dict, reject_reason: str | None = None) -> dict:
@@ -136,7 +139,7 @@ def main() -> None:
     print(f"V2-3 strict reject counts: {dict(reject_counts)}")
     for item in b2_accepted:
         print("V23_B2_ACCEPT\t" + json.dumps(compact(item), ensure_ascii=False, sort_keys=True))
-    for item, reason in b2_rejected[:TOP_NEAR_MISSES]:
+    for item, reason in b2_rejected[:LOG_NEAR_MISSES]:
         print("V23_B2_NEAR_MISS\t" + json.dumps(compact(item, reason), ensure_ascii=False, sort_keys=True))
 
 
