@@ -51,9 +51,10 @@
       "reviewedSenseIds": ["v23:waisenhaus:orphanage"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The compound is neuter because its head noun is das Haus; therefore das Waisenhaus.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "begleiter": {
       "decision": "retain",
@@ -62,9 +63,10 @@
       "reviewedSenseIds": ["v23:begleiter:companion"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Masculine person nouns ending in -er are typically masculine; the corresponding feminine form is Begleiterin.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "hinterhalt": {
       "decision": "retain",
@@ -109,9 +111,10 @@
       "reviewedSenseIds": ["v23:herzschlag:heartbeat"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "The compound is masculine because its head noun is der Schlag; therefore der Herzschlag.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "police": {
       "decision": "retain",
@@ -180,9 +183,10 @@
       "reviewedSenseIds": ["v23:ambulanz:outpatient-clinic"],
       "glossReview": "editorial",
       "exampleReview": "editorial",
-      "ruleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "ruleReview": "editorial",
+      "rule": "Learned nouns ending in -anz are feminine; therefore die Ambulanz.",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "dichtung": {
       "decision": "retain",
@@ -217,26 +221,32 @@
       "exampleReview": "editorial",
       "ruleReview": "editorial",
       "rule": "The ending -keit reliably predicts feminine gender.",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "verbrechen": {
       "decision": "retain",
+      "gloss": "crime",
+      "example": "Das Verbrechen wurde nach monatelangen Ermittlungen aufgeklärt.",
+      "reviewedSenseIds": ["v23:verbrechen:crime"],
       "rule": "The final letters -chen are part of the lexical stem, not a diminutive suffix; learn the noun as das Verbrechen.",
       "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "lebenszeichen": {
       "decision": "retain",
+      "gloss": "sign of life",
+      "example": "Nach Tagen ohne Kontakt kam endlich ein Lebenszeichen von der vermissten Bergsteigerin.",
+      "reviewedSenseIds": ["v23:lebenszeichen:sign-of-life"],
       "rule": "The compound is neuter because its head noun is das Zeichen; the final -chen is not a diminutive suffix here.",
       "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "glossReview": "editorial",
+      "exampleReview": "editorial",
+      "levelReview": "editorial",
+      "reviewStatus": "release-reviewed"
     },
     "richtlinie": {
       "decision": "retain",
@@ -251,31 +261,16 @@
       "reviewStatus": "release-reviewed"
     },
     "schnur": {
-      "decision": "retain",
-      "rule": "This is a lexical feminine noun; the learned-word -ur pattern does not explain the gender of die Schnur.",
-      "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "decision": "replace",
+      "reason": "Basic concrete vocabulary is below the intended Level 2 Bridge floor; replace with a higher-utility B2-targeted noun."
     },
     "fussspur": {
-      "decision": "retain",
-      "rule": "The compound is feminine because its head noun is die Spur; the learned-word -ur pattern is not the relevant rule.",
-      "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "decision": "replace",
+      "reason": "A concrete forensic trace does not justify a scarce Advanced C1 slot; replace with more productive abstract or institutional vocabulary."
     },
     "nabelschnur": {
-      "decision": "retain",
-      "rule": "The compound is feminine because its head noun is die Schnur; the learned-word -ur pattern is not the relevant rule.",
-      "ruleReview": "editorial",
-      "glossReview": "pending",
-      "exampleReview": "pending",
-      "levelReview": "pending",
-      "reviewStatus": "partial-editorial"
+      "decision": "replace",
+      "reason": "A concrete anatomical noun is too specialized and insufficiently productive for a scarce Advanced C1 Bridge slot."
     },
     "pfadfinder": {
       "decision": "replace",
