@@ -2,6 +2,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { loadEditorialReview } from './load-bridge-review-ledgers.mjs';
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const rootDir = dirname(scriptsDir);
@@ -13,7 +14,7 @@ const corpusSource = await read('bridge-corpus.js');
 const translationSource = await read('bridge-translations.js');
 const sourceProvenance = JSON.parse(await read('content', 'bridge-provenance.json'));
 const replacementLedger = JSON.parse(await read('content', 'bridge-replacement-review.json'));
-const editorialLedger = JSON.parse(await read('content', 'bridge-editorial-review.json'));
+const editorialLedger = await loadEditorialReview(rootDir);
 
 const corpusContext = { window: {} };
 vm.runInNewContext(corpusSource, corpusContext, { filename: 'bridge-corpus.js' });
@@ -201,6 +202,7 @@ const corpusMeta = {
   materializedFromPhase: sourceMeta.phase || 'V2-2',
   replacementCount,
   retainedReviewCount,
+  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
   releaseReviewedCount,
   sourceAssetsImmutable: true,
 };
@@ -210,6 +212,7 @@ const contentCertification = {
   materializedFromPhase: sourceContentCertification.phase || 'V2-2',
   replacementCount,
   retainedReviewCount,
+  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
   releaseReviewedCount,
   sourceAssetsImmutable: true,
   releaseReviewed,
@@ -220,6 +223,7 @@ const effectiveProvenance = {
   materializedFromPhase: sourceProvenance.phase || 'V2-2',
   replacementCount,
   retainedReviewCount,
+  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
   releaseReviewedCount,
   releaseReviewed,
   sourceAssetsImmutable: true,
@@ -235,6 +239,7 @@ const materializationManifest = {
   materializedFromPhase: 'V2-2',
   replacementCount,
   retainedReviewCount,
+  retainedBatchCount: editorialLedger.retainedBatches?.length || 0,
   releaseReviewedCount,
   releaseReviewed,
   sourceAssetsImmutable: true,
@@ -249,4 +254,4 @@ await writeFile(join(generatedDir, 'bridge-translations.js'), generatedTranslati
 await writeFile(join(generatedDir, 'content', 'bridge-provenance.json'), `${JSON.stringify(effectiveProvenance, null, 2)}\n`, 'utf8');
 await writeFile(join(generatedDir, 'content', 'bridge-v23-materialization.json'), `${JSON.stringify(materializationManifest, null, 2)}\n`, 'utf8');
 
-console.log(`Materialized V2-3 Bridge runtime: ${effectiveRows.length} rows, ${replacementCount} replacements, ${retainedReviewCount} retained editorial reviews, ${releaseReviewedCount} release-reviewed slots.`);
+console.log(`Materialized V2-3 Bridge runtime: ${effectiveRows.length} rows, ${replacementCount} replacements, ${retainedReviewCount} retained editorial reviews across ${editorialLedger.retainedBatches?.length || 0} retained batches, ${releaseReviewedCount} release-reviewed slots.`);
