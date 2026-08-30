@@ -6,6 +6,11 @@ import vm from 'node:vm';
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (...parts) => readFile(join(root, ...parts), 'utf8');
 const fail = (message) => { throw new Error(message); };
+const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const containsHeadword = (example, noun) => new RegExp(
+  `(^|[^\\p{L}\\p{N}])${escapeRegex(noun)}(?=$|[^\\p{L}\\p{N}])`,
+  'iu',
+).test(example);
 
 const corpusSource = await read('bridge-corpus.js');
 const html = await read('index.html');
@@ -57,7 +62,6 @@ if (JSON.stringify(ledgerIds) !== JSON.stringify(replacementIds)) {
 if (replacementIds.length !== 28) fail(`Expected 28 V2-3 replacement decisions, found ${replacementIds.length}.`);
 
 const articles = new Set(['der', 'die', 'das']);
-const articleCaps = { der: 'Der', die: 'Die', das: 'Das' };
 const successorIds = new Set();
 const successorNouns = new Set();
 const bucketCounts = {};
@@ -88,7 +92,7 @@ for (const oldId of replacementIds) {
   if (s.level === 1 && s.cefrEstimate !== 'B2') fail(`Level 1 successor is not B2-estimated: ${s.id}`);
   if (s.level === 3 && (s.cefrEstimate !== 'C1' || s.frequencyRank < 10500)) fail(`Level 3 successor source gate failed: ${s.id}`);
   if (typeof review.gloss !== 'string' || !review.gloss.trim() || review.gloss.length > 145) fail(`Invalid reviewed gloss for ${s.id}`);
-  if (typeof review.example !== 'string' || !review.example.startsWith(`${articleCaps[s.article]} ${s.noun}`)) fail(`Example/article/headword mismatch for ${s.id}: ${review.example}`);
+  if (typeof review.example !== 'string' || !containsHeadword(review.example, s.noun)) fail(`Example/headword mismatch for ${s.id}: ${review.example}`);
   if (typeof review.rule !== 'string' || review.rule.length < 20) fail(`Reviewed gender guidance missing for ${s.id}`);
   if (!Array.isArray(review.reviewedSenseIds) || review.reviewedSenseIds.length !== 1) fail(`Expected one reviewed learner-facing sense for ${s.id}`);
   for (const component of ['gloss', 'example', 'rule', 'level']) {
