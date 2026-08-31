@@ -1624,6 +1624,8 @@
 </div>
 
 <script src="translations.js"></script>
+<script src="normal-translations.js"></script>
+<script src="normal-corpus.js"></script>
 <script>
 (() => {
   "use strict";
@@ -3632,7 +3634,7 @@
     ["analysemodell","Analysemodell","das",3,"No single productive gender rule is reliable enough here; learn the noun as das Analysemodell.","Das Analysemodell wurde in der abschließenden Analyse ausdrücklich berücksichtigt.","analysis","core-expanded","C14"],
     ["analyseziel","Analyseziel","das",3,"No single productive gender rule is reliable enough here; learn the noun as das Analyseziel.","Das Analyseziel wurde in der abschließenden Analyse ausdrücklich berücksichtigt.","analysis","core-expanded","C14"],
     ["handlungskonzept","Handlungskonzept","das",3,"This is best learned as the complete lexical unit das Handlungskonzept; no additional C4/C5 morphology is claimed in C14.","Das Handlungskonzept wurde in der politischen Debatte unterschiedlich bewertet.","politics","core-expanded","C14"],
-   ].map(createVocabularyEntry);
+   ].map(createVocabularyEntry).concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry));
 
   // V2-1: Challenge remains the default corpus. Normal is automatically enabled as soon as
   // V2-2 adds entries whose final tuple field is "bridge".

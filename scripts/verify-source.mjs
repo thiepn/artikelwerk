@@ -110,7 +110,10 @@ if (manifest?.name !== 'Artikelwerk' || manifest?.theme_color !== '#d45532') fai
 if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => icon.sizes === '192x192') || !manifest.icons.some(icon => icon.sizes === '512x512')) fail('Manifest must expose 192px and 512px icons.');
 const faviconSvg = await readFile(join(rootDir, 'favicon.svg'), 'utf8');
 if (faviconSvg.includes('gradient') || !faviconSvg.includes('#d45532') || !faviconSvg.includes('#f7f4ee') || !faviconSvg.includes('#191715')) fail('Favicon must use the flat UI5 editorial palette without gradients.');
-requireFragment(html, '<script src="translations.js"></script>', 'local translation asset');
+requireFragment(html, '<script src="translations.js"></script>', 'local Challenge translation asset');
+requireFragment(html, '<script src="normal-translations.js"></script>', 'certified Normal translation asset');
+requireFragment(html, '<script src="normal-corpus.js"></script>', 'certified Normal corpus asset');
+requireFragment(html, '.concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry))', 'Normal runtime corpus integration');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
 requireFragment(html, 'const APP_VERSION = "1.2.0";', 'application version 1.2.0');
@@ -174,7 +177,7 @@ const missingIds = requiredIds.filter((id) => !staticIdSet.has(id));
 if (missingIds.length) fail(`Missing native practice ids: ${missingIds.join(', ')}`);
 
 const externalScripts = [...html.matchAll(/<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/gi)].map((match) => match[1]);
-if (JSON.stringify(externalScripts) !== JSON.stringify(['translations.js'])) {
+if (JSON.stringify(externalScripts) !== JSON.stringify(['translations.js', 'normal-translations.js', 'normal-corpus.js'])) {
   fail(`Unexpected script dependencies: ${externalScripts.join(', ') || 'none'}`);
 }
 

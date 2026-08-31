@@ -44,9 +44,22 @@ for (const [relativePath, metadata] of Object.entries(manifest.files)) {
   if (!(await stat(outputPath)).isFile()) throw new Error(`dist/${relativePath} must be a regular file.`);
 }
 
-for (const runtimeAsset of ['bridge-corpus.js', 'bridge-translations.js', 'content/bridge-provenance.json']) {
+for (const runtimeAsset of ['normal-corpus.js', 'normal-translations.js', 'content/bridge-provenance.json']) {
   const declared = manifest.files?.[runtimeAsset]?.source;
   if (!declared?.startsWith('.generated-v23/')) throw new Error(`${runtimeAsset} must come from the V2-3 generated layer.`);
 }
 
-console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with V2-3 generated Normal sources.`);
+const runtimePairs = [
+  ['normal-corpus.js', '.generated-v23/bridge-corpus.js'],
+  ['normal-translations.js', '.generated-v23/bridge-translations.js'],
+];
+for (const [checkedInRelative, generatedRelative] of runtimePairs) {
+  const checkedIn = await readFile(join(rootDir, checkedInRelative));
+  const generated = await readFile(join(rootDir, generatedRelative));
+  if (!checkedIn.equals(generated)) throw new Error(`${checkedInRelative} is stale relative to the certified V2-3 materialization.`);
+}
+const runtimeHtml = await readFile(join(rootDir, 'index.html'), 'utf8');
+for (const fragment of ['<script src=\"normal-translations.js\"></script>', '<script src=\"normal-corpus.js\"></script>', '.concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry))']) {
+  if (!runtimeHtml.includes(fragment)) throw new Error(`Normal runtime integration missing from index.html: ${fragment}`);
+}
+console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with active V2-3 Normal runtime sources.`);
