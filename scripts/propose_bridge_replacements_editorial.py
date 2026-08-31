@@ -90,7 +90,6 @@ EDITORIALLY_SCREENED_B2_PROPOSALS = {
     "Triumph",
     "Umweg",
     "Unheil",
-    "Union",
     "Unruhe",
     "Unterbewusstsein",
     "Vorgänger",
@@ -98,6 +97,11 @@ EDITORIALLY_SCREENED_B2_PROPOSALS = {
     "Zitat",
     "Zielscheibe",
 }
+
+# Exact-text hits found during the final official B1 lower-bound screen. Keep
+# these out of proposal artifacts even when the generic selector would admit
+# them. They are not used by the approved final successor mapping.
+BLOCKED_EDITORIAL_PROPOSALS = {"Union", "Mitarbeit"}
 
 # These C1 candidates already pass the strict quality selector. Their frequency
 # rank sits just beyond the generic Level-2 cutoff, but editorial review judged
@@ -137,6 +141,8 @@ def editorial_formal_evidence(item) -> bool:
 
 
 def editorial_reject(item) -> str | None:
+    if item["noun"] in BLOCKED_EDITORIAL_PROPOSALS:
+        return "v23_explicit_lower_bound_or_noise"
     reason = _original_reject(item)
     if (
         reason == "v23_missing_bridge_signal"
