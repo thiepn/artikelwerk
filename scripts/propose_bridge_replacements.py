@@ -209,6 +209,24 @@ def merged_review_decisions() -> dict[str, dict]:
     merged = {key: dict(value) for key, value in editorial.get("entries", {}).items()}
     for key, value in lower.get("entries", {}).items():
         merged[key] = {**merged.get(key, {}), **value}
+
+    decision_dir = ROOT / "content" / "bridge-replacement-decision-batches"
+    if decision_dir.exists():
+        for path in sorted(decision_dir.glob("*.json"), key=lambda item: item.name):
+            batch = json.loads(path.read_text(encoding="utf-8"))
+            if (
+                batch.get("schema") != 1
+                or batch.get("phase") != "V2-3"
+                or batch.get("kind") != "replacement-decision-batch"
+                or batch.get("status") != "complete"
+            ):
+                base.die(f"Invalid V2-3 replacement decision batch metadata: {path.name}")
+            for key, value in batch.get("entries", {}).items():
+                if value.get("decision") != "replace":
+                    base.die(f"Replacement decision batch {path.name} contains non-replace decision for {key}")
+                if key in merged:
+                    base.die(f"Duplicate V2-3 replacement decision id {key} in {path.name}")
+                merged[key] = dict(value)
     return merged
 
 
