@@ -114,7 +114,7 @@ def strict_reject(item) -> str | None:
     low_gloss = item["gloss"].casefold()
     if any(term in low_gloss for term in STRICT_BLOCKED_GLOSS_TERMS):
         return "v23_blocked_gloss"
-    if ":" in item["gloss"]:
+    if ":" in item["gloss"] or "(" in item["gloss"] or ")" in item["gloss"]:
         return "v23_source_annotation_risk"
     s = strict_signals(item)
     if s["person"]:
