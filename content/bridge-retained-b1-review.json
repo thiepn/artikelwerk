@@ -7,7 +7,7 @@
     "publisher": "Goethe-Institut / ÖSD",
     "edition": "2016",
     "url": "https://www.goethe.de/pro/relaunch/prf/de/Goethe-Zertifikat_B1_Wortliste.pdf",
-    "use": "lower-bound exact-match screening for release-reviewed retained Bridge nouns",
+    "use": "lower-bound exact-match screening for release-reviewed retained Normal nouns",
     "checkedAt": "2026-08-30",
     "interpretation": "no-exact-match means the reviewed headword was not found as exact text in the official B1 reference list; absence is not itself proof of B2/C1 membership."
   },

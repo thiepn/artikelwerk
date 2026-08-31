@@ -33,22 +33,22 @@ vm.runInNewContext(translationSource, translationContext, { filename: 'bridge-tr
 const translations = translationContext.window.ARTIKELWERK_TRANSLATIONS || {};
 const runtimeProvenance = translationContext.window.ARTIKELWERK_TRANSLATION_PROVENANCE || {};
 
-if (rows.length !== 1000) throw new Error(`Expected 1000 Bridge rows, found ${rows.length}`);
+if (rows.length !== 1000) throw new Error(`Expected 1000 Normal rows, found ${rows.length}`);
 if (editorialReview.phase !== 'V2-3' || editorialReview.status !== 'in-progress') {
-  throw new Error('Bridge editorial review ledger metadata is invalid.');
+  throw new Error('Normal editorial review ledger metadata is invalid.');
 }
 if (lowerBoundReview.phase !== 'V2-3' || lowerBoundReview.status !== 'in-progress') {
-  throw new Error('Bridge B1 lower-bound review metadata is invalid.');
+  throw new Error('Normal B1 lower-bound review metadata is invalid.');
 }
 if (successorReview.phase !== 'V2-3' || successorReview.status !== 'in-progress') {
-  throw new Error('Bridge successor review ledger metadata is invalid.');
+  throw new Error('Normal successor review ledger metadata is invalid.');
 }
 const bridgeIds = new Set(rows.map((row) => row[0]));
 for (const id of reviewIds) {
-  if (!bridgeIds.has(id)) throw new Error(`Editorial review references unknown Bridge id: ${id}`);
+  if (!bridgeIds.has(id)) throw new Error(`Editorial review references unknown Normal id: ${id}`);
 }
 for (const id of Object.keys(successorEntries)) {
-  if (!bridgeIds.has(id)) throw new Error(`Successor review references unknown Bridge slot: ${id}`);
+  if (!bridgeIds.has(id)) throw new Error(`Successor review references unknown Normal slot: ${id}`);
 }
 
 const GENERIC_EXAMPLE_FRAGMENTS = [
@@ -264,7 +264,7 @@ const summary = {
   },
 };
 
-console.log(`V2-3 Bridge editorial audit: ${summary.total} effective entries`);
+console.log(`V2-3 Normal editorial audit: ${summary.total} effective entries`);
 console.log(JSON.stringify(summary, null, 2));
 
 if (hasFlag('--dump')) {
@@ -279,10 +279,10 @@ if (hasFlag('--write-report')) {
 
 if (hasFlag('--assert-release') && !summary.releaseReady) {
   const activeBlockers = Object.entries(hardBlockers).filter(([, count]) => count > 0);
-  console.error('Bridge release certification FAILED.');
+  console.error('Normal release certification FAILED.');
   for (const [flag, count] of activeBlockers) console.error(`  ${flag}: ${count}`);
   console.error(`  affected entries: ${summary.hardBlockerEntries}/${summary.total}`);
   process.exitCode = 1;
 } else if (hasFlag('--assert-release')) {
-  console.log('Bridge release certification PASSED.');
+  console.log('Normal release certification PASSED.');
 }

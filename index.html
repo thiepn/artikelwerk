@@ -1176,7 +1176,7 @@
             <button type="button" class="primary-btn practice-hero-btn" id="openPracticeBtn">Start practice</button>
             <button type="button" class="track-link-btn" id="bridgeTrackBtn" aria-describedby="bridgeTrackNote">Study B2–C1 vocabulary →</button>
             <span class="practice-hero-note" id="currentTrackNote">Challenge is selected.</span>
-            <span class="practice-hero-note" id="bridgeTrackNote">Bridge is wired into the app; its corpus is added in V2-2.</span>
+            <span class="practice-hero-note" id="bridgeTrackNote">Normal is wired into the app; its corpus is added in V2-2.</span>
           </div>
         </div>
         <div class="practice-hero-articles" aria-hidden="true">
@@ -1216,7 +1216,7 @@
               <label for="vocabularyTrackSelect">Vocabulary</label>
               <select id="vocabularyTrackSelect" aria-describedby="vocabularyTrackHelp">
                 <option value="challenge">Challenge · C1–C2</option>
-                <option value="bridge" disabled>Bridge · B2–C1</option>
+                <option value="bridge" disabled>Normal · B2–C1</option>
               </select>
               <small class="control-help" id="vocabularyTrackHelp">Default track · the original 1,000 difficult nouns.</small>
             </div>
@@ -1379,7 +1379,7 @@
           <select id="progressTrackSelect">
             <option value="current">Current track</option>
             <option value="challenge">Challenge · C1–C2</option>
-            <option value="bridge" disabled>Bridge · B2–C1</option>
+            <option value="bridge" disabled>Normal · B2–C1</option>
             <option value="all">All vocabulary</option>
           </select>
           <small id="progressTrackMeta">Challenge · C1–C2</small>
@@ -1512,7 +1512,7 @@
           <select id="libraryTrackSelect">
             <option value="current">Current track</option>
             <option value="challenge">Challenge · C1–C2</option>
-            <option value="bridge" disabled>Bridge · B2–C1</option>
+            <option value="bridge" disabled>Normal · B2–C1</option>
             <option value="all">All vocabulary</option>
           </select>
         </label>
@@ -3634,7 +3634,7 @@
     ["handlungskonzept","Handlungskonzept","das",3,"This is best learned as the complete lexical unit das Handlungskonzept; no additional C4/C5 morphology is claimed in C14.","Das Handlungskonzept wurde in der politischen Debatte unterschiedlich bewertet.","politics","core-expanded","C14"],
    ].map(createVocabularyEntry);
 
-  // V2-1: Challenge remains the default corpus. Bridge is automatically enabled as soon as
+  // V2-1: Challenge remains the default corpus. Normal is automatically enabled as soon as
   // V2-2 adds entries whose final tuple field is "bridge".
   const VOCABULARY_TRACKS = Object.freeze({
     challenge:Object.freeze({
@@ -3642,7 +3642,7 @@
       difficulty:Object.freeze({all:"All advanced levels",1:"Level 1 — Advanced",2:"Level 2 — Difficult",3:"Level 3 — Very Difficult"})
     }),
     bridge:Object.freeze({
-      id:"bridge",label:"Bridge",band:"B2–C1",description:"Intermediate to advanced-intermediate noun gender",availableLabel:"B2–C1 nouns",
+      id:"bridge",label:"Normal",band:"B2–C1",description:"Intermediate to advanced-intermediate noun gender",availableLabel:"B2–C1 nouns",
       difficulty:Object.freeze({all:"All B2–C1 levels",1:"Level 1 — Intermediate",2:"Level 2 — Upper Intermediate",3:"Level 3 — Advanced"})
     })
   });
@@ -3724,7 +3724,7 @@
         const option=select?.querySelector('option[value="bridge"]');
         if(option){
           option.disabled=bridgeCount===0;
-          option.textContent=bridgeCount?`Bridge · B2–C1 (${bridgeCount.toLocaleString()})`:`Bridge · B2–C1 (corpus not installed)`;
+          option.textContent=bridgeCount?`Normal · B2–C1 (${bridgeCount.toLocaleString()})`:`Normal · B2–C1 (corpus not installed)`;
         }
       }
       const bridgeButton=DOM.$("#bridgeTrackBtn");
@@ -3733,7 +3733,7 @@
         bridgeButton.setAttribute("aria-disabled",bridgeCount===0?"true":"false");
       }
       const note=DOM.$("#bridgeTrackNote");
-      if(note) note.textContent=bridgeCount ? `${bridgeCount.toLocaleString()} intermediate and upper-intermediate nouns are ready.` : "Bridge is wired into the app; its 1,000-word B2–C1 corpus is added in V2-2.";
+      if(note) note.textContent=bridgeCount ? `${bridgeCount.toLocaleString()} intermediate and upper-intermediate nouns are ready.` : "Normal is wired into the app; its 1,000-word B2–C1 corpus is added in V2-2.";
     },
     syncSurfaceCopy(){
       const track=this.selected();
@@ -6192,7 +6192,7 @@
   };
 
   // Track availability is derived from installed vocabulary, not from initial markup.
-  // Re-assert it after Progress renders so V2-2 can enable Bridge automatically.
+  // Re-assert it after Progress renders so V2-2 can enable Normal automatically.
   const V21StatisticsRender = StatisticsView.render.bind(StatisticsView);
   StatisticsView.render = function(...args){
     const result=V21StatisticsRender(...args);

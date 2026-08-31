@@ -20,7 +20,7 @@ const corpusContext = { window: {} };
 vm.runInNewContext(corpusSource, corpusContext, { filename: 'bridge-corpus.js' });
 const sourceRows = corpusContext.window.ARTIKELWERK_BRIDGE_CORPUS;
 const sourceMeta = corpusContext.window.ARTIKELWERK_BRIDGE_CORPUS_META || {};
-if (!Array.isArray(sourceRows) || sourceRows.length !== 1000) fail('Expected the immutable V2-2 Bridge corpus to contain 1,000 rows.');
+if (!Array.isArray(sourceRows) || sourceRows.length !== 1000) fail('Expected the immutable V2-2 Normal corpus to contain 1,000 rows.');
 
 const translationContext = {
   window: {
@@ -144,7 +144,7 @@ const effectiveProvenanceEntries = { ...(sourceProvenance.entries || {}) };
 for (const [oldId, review] of Object.entries(replacements)) {
   const s = review.successor;
   const oldProvenance = effectiveProvenanceEntries[oldId];
-  if (!oldProvenance) fail(`Missing source provenance for replaced Bridge entry ${oldId}.`);
+  if (!oldProvenance) fail(`Missing source provenance for replaced Normal entry ${oldId}.`);
   delete effectiveTranslations[oldId];
   delete effectiveTranslationProvenance[oldId];
   delete effectiveProvenanceEntries[oldId];
@@ -179,7 +179,7 @@ for (const [oldId, review] of Object.entries(replacements)) {
 
 for (const [id, review] of Object.entries(retainedReviews)) {
   const oldProvenance = effectiveProvenanceEntries[id];
-  if (!oldProvenance) fail(`Missing source provenance for retained Bridge entry ${id}.`);
+  if (!oldProvenance) fail(`Missing source provenance for retained Normal entry ${id}.`);
   effectiveTranslations[id] = review.gloss ?? sourceTranslations[id];
   effectiveTranslationProvenance[id] = Object.freeze({
     ...(sourceTranslationProvenance[id] || {}),
@@ -240,8 +240,8 @@ const effectiveProvenance = {
 };
 
 const js = (value) => JSON.stringify(value, null, 0);
-const generatedCorpusSource = `/* Generated V2-3 editorial materialization. Do not edit; source Bridge assets remain V2-2. */\nwindow.ARTIKELWERK_BRIDGE_CORPUS=Object.freeze(${js(effectiveRows)});\nwindow.ARTIKELWERK_BRIDGE_CORPUS_META=Object.freeze(${js(corpusMeta)});\n`;
-const generatedTranslationSource = `/* Generated V2-3 editorial Bridge gloss materialization. Do not edit. */\n(() => {\n  const bridgeTranslations=Object.freeze(${js(effectiveTranslations)});\n  const bridgeProvenance=Object.freeze(${js(effectiveTranslationProvenance)});\n  window.ARTIKELWERK_TRANSLATIONS=Object.freeze({...window.ARTIKELWERK_TRANSLATIONS,...bridgeTranslations});\n  window.ARTIKELWERK_TRANSLATION_PROVENANCE=Object.freeze({...window.ARTIKELWERK_TRANSLATION_PROVENANCE,...bridgeProvenance});\n  window.ARTIKELWERK_BRIDGE_CONTENT_CERTIFICATION=Object.freeze(${js(contentCertification)});\n})();\n`;
+const generatedCorpusSource = `/* Generated V2-3 editorial materialization. Do not edit; source Normal assets remain V2-2. */\nwindow.ARTIKELWERK_BRIDGE_CORPUS=Object.freeze(${js(effectiveRows)});\nwindow.ARTIKELWERK_BRIDGE_CORPUS_META=Object.freeze(${js(corpusMeta)});\n`;
+const generatedTranslationSource = `/* Generated V2-3 editorial Normal gloss materialization. Do not edit. */\n(() => {\n  const bridgeTranslations=Object.freeze(${js(effectiveTranslations)});\n  const bridgeProvenance=Object.freeze(${js(effectiveTranslationProvenance)});\n  window.ARTIKELWERK_TRANSLATIONS=Object.freeze({...window.ARTIKELWERK_TRANSLATIONS,...bridgeTranslations});\n  window.ARTIKELWERK_TRANSLATION_PROVENANCE=Object.freeze({...window.ARTIKELWERK_TRANSLATION_PROVENANCE,...bridgeProvenance});\n  window.ARTIKELWERK_BRIDGE_CONTENT_CERTIFICATION=Object.freeze(${js(contentCertification)});\n})();\n`;
 const materializationManifest = {
   schema: 2,
   phase: 'V2-3',
@@ -265,4 +265,4 @@ await writeFile(join(generatedDir, 'bridge-translations.js'), generatedTranslati
 await writeFile(join(generatedDir, 'content', 'bridge-provenance.json'), `${JSON.stringify(effectiveProvenance, null, 2)}\n`, 'utf8');
 await writeFile(join(generatedDir, 'content', 'bridge-v23-materialization.json'), `${JSON.stringify(materializationManifest, null, 2)}\n`, 'utf8');
 
-console.log(`Materialized V2-3 Bridge runtime: ${effectiveRows.length} rows, ${replacementCount} replacements across ${replacementReviewBatchCount} replacement batches, ${retainedReviewCount} retained editorial reviews across ${retainedBatchCount} retained batches, ${releaseReviewedCount} release-reviewed slots.`);
+console.log(`Materialized V2-3 Normal runtime: ${effectiveRows.length} rows, ${replacementCount} replacements across ${replacementReviewBatchCount} replacement batches, ${retainedReviewCount} retained editorial reviews across ${retainedBatchCount} retained batches, ${releaseReviewedCount} release-reviewed slots.`);

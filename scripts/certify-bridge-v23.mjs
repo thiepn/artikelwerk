@@ -85,8 +85,8 @@ if (
 ) {
   fail('Invalid V2-3 materialization manifest.');
 }
-if (effective.rows.length !== 1000) fail(`Effective Bridge must contain 1,000 rows; found ${effective.rows.length}.`);
-if (source.rows.length !== 1000) fail(`Immutable source Bridge must remain 1,000 rows; found ${source.rows.length}.`);
+if (effective.rows.length !== 1000) fail(`Effective Normal must contain 1,000 rows; found ${effective.rows.length}.`);
+if (source.rows.length !== 1000) fail(`Immutable source Normal must remain 1,000 rows; found ${source.rows.length}.`);
 
 const sourceById = new Map(source.rows.map((row) => [row[0], row]));
 const effectiveById = new Map(effective.rows.map((row) => [row[0], row]));
@@ -97,15 +97,15 @@ const cefrCounts = { B2: 0, C1: 0 };
 
 for (const row of effective.rows) {
   const [id, noun, article, level,,,,,,, evidence] = row;
-  if (effectiveIds.has(id)) fail(`Duplicate effective Bridge id: ${id}`);
+  if (effectiveIds.has(id)) fail(`Duplicate effective Normal id: ${id}`);
   effectiveIds.add(id);
   const nounKey = String(noun).toLocaleLowerCase('de-DE');
-  if (effectiveNouns.has(nounKey)) fail(`Duplicate effective Bridge noun: ${noun}`);
+  if (effectiveNouns.has(nounKey)) fail(`Duplicate effective Normal noun: ${noun}`);
   effectiveNouns.add(nounKey);
-  if (!['der', 'die', 'das'].includes(article)) fail(`Invalid article in effective Bridge: ${id}`);
-  if (!(level in levelCounts)) fail(`Invalid level in effective Bridge: ${id}`);
+  if (!['der', 'die', 'das'].includes(article)) fail(`Invalid article in effective Normal: ${id}`);
+  if (!(level in levelCounts)) fail(`Invalid level in effective Normal: ${id}`);
   levelCounts[level]++;
-  if (!(evidence?.cefrEstimate in cefrCounts)) fail(`Invalid CEFR estimate in effective Bridge: ${id}`);
+  if (!(evidence?.cefrEstimate in cefrCounts)) fail(`Invalid CEFR estimate in effective Normal: ${id}`);
   cefrCounts[evidence.cefrEstimate]++;
   if (!translation.translations[id]) fail(`Missing materialized translation for ${id}`);
   if (!translation.provenance[id]) fail(`Missing materialized translation provenance for ${id}`);
@@ -114,7 +114,7 @@ for (const row of effective.rows) {
 
 if (JSON.stringify(levelCounts) !== JSON.stringify({ 1: 400, 2: 350, 3: 250 })) fail(`Level counts changed: ${JSON.stringify(levelCounts)}`);
 if (JSON.stringify(cefrCounts) !== JSON.stringify({ B2: 600, C1: 400 })) fail(`CEFR counts changed: ${JSON.stringify(cefrCounts)}`);
-if (Object.keys(translation.translations).length !== 1000) fail(`Expected 1,000 effective Bridge translations, found ${Object.keys(translation.translations).length}.`);
+if (Object.keys(translation.translations).length !== 1000) fail(`Expected 1,000 effective Normal translations, found ${Object.keys(translation.translations).length}.`);
 if (Object.keys(provenance.entries || {}).length !== 1000) fail(`Expected 1,000 effective provenance entries, found ${Object.keys(provenance.entries || {}).length}.`);
 
 for (const [oldId, review] of Object.entries(replacements)) {
@@ -141,7 +141,7 @@ for (const [oldId, review] of Object.entries(replacements)) {
 }
 
 for (const [id, review] of Object.entries(retainedReviews)) {
-  if (replacementIds.has(id)) fail(`Bridge slot cannot be both retained and replaced: ${id}.`);
+  if (replacementIds.has(id)) fail(`Normal slot cannot be both retained and replaced: ${id}.`);
   const sourceRow = sourceById.get(id);
   const row = effectiveById.get(id);
   if (!sourceRow || !row) fail(`Retained editorial row missing for ${id}.`);
@@ -176,7 +176,7 @@ if (
   || effective.meta.releaseReviewedCount !== releaseReviewedCount
   || effective.meta.sourceAssetsImmutable !== true
 ) {
-  fail('Effective Bridge corpus metadata does not identify V2-3 materialization.');
+  fail('Effective Normal corpus metadata does not identify V2-3 materialization.');
 }
 if (
   translation.certification.editorialPhase !== 'V2-3'
@@ -188,7 +188,7 @@ if (
   || translation.certification.releaseReviewedCount !== releaseReviewedCount
   || translation.certification.releaseReviewed !== releaseReviewed
 ) {
-  fail('Effective Bridge translation certification metadata is invalid.');
+  fail('Effective Normal translation certification metadata is invalid.');
 }
 if (
   provenance.phase !== 'V2-3'
@@ -201,7 +201,7 @@ if (
   || provenance.releaseReviewed !== releaseReviewed
   || provenance.sourceAssetsImmutable !== true
 ) {
-  fail('Effective Bridge provenance metadata is invalid.');
+  fail('Effective Normal provenance metadata is invalid.');
 }
 
 console.log(JSON.stringify({
@@ -220,4 +220,4 @@ console.log(JSON.stringify({
   sourceRowsPreserved: source.rows.length,
   releaseReviewed,
 }, null, 2));
-console.log('V2-3 materialized Bridge runtime certification passed.');
+console.log('V2-3 materialized Normal runtime certification passed.');

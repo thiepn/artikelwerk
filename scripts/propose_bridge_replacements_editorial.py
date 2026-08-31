@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Editorial successor for the V2-3 strict Bridge replacement proposer.
+"""Editorial successor for the V2-3 strict Normal replacement proposer.
 
 The strict selector correctly blocks noisy/basic/concrete source material, but
 its generic semantic recognizer rejects many legitimate B2 nouns simply because
@@ -17,7 +17,7 @@ from __future__ import annotations
 import propose_bridge_replacements_strict as strict
 
 # Every B2 noun below came from the pinned Wordhoard + Wiktionary candidate pool,
-# was unused by Challenge and the source Bridge corpus, and was rejected by the
+# was unused by Challenge and the source Normal corpus, and was rejected by the
 # strict selector only for v23_missing_bridge_signal. The cohort intentionally
 # favors institutional, legal, economic, technical, formal, and otherwise useful
 # upper-intermediate vocabulary. It does not override inherited hard rejects,

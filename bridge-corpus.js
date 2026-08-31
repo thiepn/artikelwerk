@@ -1,5 +1,5 @@
 /*
- * Artikelwerk V2-2 Bridge corpus — CC-BY-SA-4.0.
+ * Artikelwerk V2-2 Normal corpus — CC-BY-SA-4.0.
  * Selection/gender/frequency/CEFR-estimate evidence derived from wordhoard v0.1.0.
  * Gender cross-check and English-translation availability use German Wiktionary-derived data.
  * See THIRD_PARTY_NOTICES.md and docs/v2-2-bridge-corpus.md.

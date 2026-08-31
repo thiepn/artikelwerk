@@ -12,7 +12,7 @@ assert.match(source,/const VOCABULARY_TRACKS = Object\.freeze/,'track registry m
 assert.match(source,/track:track==="bridge"\?"bridge":"challenge"/,'vocabulary rows are not track-aware');
 assert.match(source,/const SCHEMA_VERSION = 10;/,'progress schema was not upgraded for track aggregates');
 assert.match(source,/aggregatesByTrack/,'per-track aggregate storage missing');
-assert.match(source,/Bridge · B2–C1/,'Bridge UX contract missing');
+assert.match(source,/Normal · B2–C1/,'Normal UX contract missing');
 
 const browser=await chromium.launch({headless:true});
 try{
@@ -28,10 +28,10 @@ try{
     await page.goto(BASE_URL,{waitUntil:'networkidle'});
 
     assert.equal(await page.locator('#vocabularyTrackSelect').inputValue(),'challenge',`${profile.name}: Challenge is not the default track`);
-    assert.equal(await optionDisabled(page,'#vocabularyTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge option should be disabled`);
-    assert.equal(await page.locator('#bridgeTrackBtn').isDisabled(),true,`${profile.name}: empty Bridge CTA should be disabled`);
+    assert.equal(await optionDisabled(page,'#vocabularyTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Normal option should be disabled`);
+    assert.equal(await page.locator('#bridgeTrackBtn').isDisabled(),true,`${profile.name}: empty Normal CTA should be disabled`);
     assert.match((await page.locator('#practiceTrackKicker').textContent())||'',/Challenge.*C1.*C2/i,`${profile.name}: Challenge identity missing from Practice`);
-    assert.match((await page.locator('#bridgeTrackNote').textContent())||'',/V2-2|corpus/i,`${profile.name}: Bridge readiness note missing`);
+    assert.match((await page.locator('#bridgeTrackNote').textContent())||'',/V2-2|corpus/i,`${profile.name}: Normal readiness note missing`);
 
     const difficulty=await page.locator('#difficultySelect option').allTextContents();
     assert.deepEqual(difficulty,['All advanced levels','Level 1 — Advanced','Level 2 — Difficult','Level 3 — Very Difficult'],`${profile.name}: Challenge difficulty labels changed`);
@@ -47,13 +47,13 @@ try{
     assert.equal(state.schemaVersion,10,`${profile.name}: persisted schema is not v10`);
     assert.equal(state.settings.vocabularyTrack,'challenge',`${profile.name}: selected track was not persisted`);
     assert.equal(state.aggregatesByTrack.challenge.answers,1,`${profile.name}: Challenge aggregate did not receive the answer`);
-    assert.equal(state.aggregatesByTrack.bridge.answers,0,`${profile.name}: Bridge aggregate was contaminated by Challenge practice`);
+    assert.equal(state.aggregatesByTrack.bridge.answers,0,`${profile.name}: Normal aggregate was contaminated by Challenge practice`);
     assert.equal(state.aggregates.answers,1,`${profile.name}: global aggregate changed semantics`);
     await page.keyboard.press('Escape');
 
     await page.locator('#tabStats').click();
     assert.equal(await page.locator('#progressTrackSelect').inputValue(),'current',`${profile.name}: Progress should follow current track by default`);
-    assert.equal(await optionDisabled(page,'#progressTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge Progress scope should be disabled`);
+    assert.equal(await optionDisabled(page,'#progressTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Normal Progress scope should be disabled`);
     assert.match((await page.locator('#progressTrackMeta').textContent())||'',/Challenge.*1,000/i,`${profile.name}: Progress scope metadata is wrong`);
     assert.equal(((await page.locator('#statTotal').textContent())||'').trim(),'1',`${profile.name}: Challenge total answers did not remain isolated`);
     await page.locator('#progressTrackSelect').selectOption('all');
@@ -61,7 +61,7 @@ try{
 
     await page.locator('#tabLibrary').click();
     assert.equal(await page.locator('#libraryTrackSelect').inputValue(),'current',`${profile.name}: Vocabulary should follow current track by default`);
-    assert.equal(await optionDisabled(page,'#libraryTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Bridge library scope should be disabled`);
+    assert.equal(await optionDisabled(page,'#libraryTrackSelect option[value="bridge"]'),true,`${profile.name}: empty Normal library scope should be disabled`);
     assert.match((await page.locator('#libraryMeta').textContent())||'',/1000 of 1000 nouns.*Challenge/i,`${profile.name}: Challenge library count changed`);
     await page.locator('.word-open-btn').first().click();
     await page.locator('#wordDetailModal.show').waitFor({state:'visible'});
@@ -89,7 +89,7 @@ try{
       assert.equal(migrated.settings.vocabularyTrack,'challenge','desktop: migration did not default to Challenge');
       assert.equal(migrated.aggregatesByTrack.challenge.answers,7,'desktop: historical answers were not assigned to Challenge');
       assert.equal(migrated.aggregatesByTrack.challenge.bestStreak,4,'desktop: historical best streak was not preserved');
-      assert.equal(migrated.aggregatesByTrack.bridge.answers,0,'desktop: migration invented Bridge progress');
+      assert.equal(migrated.aggregatesByTrack.bridge.answers,0,'desktop: migration invented Normal progress');
     }
 
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);

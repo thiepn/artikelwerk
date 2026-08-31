@@ -1,5 +1,5 @@
 /*
- * Artikelwerk V2-2 Bridge English gloss asset — CC-BY-SA-4.0.
+ * Artikelwerk V2-2 Normal English gloss asset — CC-BY-SA-4.0.
  * English translations derive from German Wiktionary via the pinned de-wiktionary-parser extraction.
  * See THIRD_PARTY_NOTICES.md and LICENSES/CC-BY-SA-4.0.txt.
  */

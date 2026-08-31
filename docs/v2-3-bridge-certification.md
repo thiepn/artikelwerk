@@ -1,18 +1,18 @@
-# V2-3 — Bridge Content Certification & Editorial Review
+# V2-3 — Normal Content Certification & Editorial Review
 
 ## Certification decision
 
 **Status: RELEASE-CERTIFIED.**
 
-V2-3 has completed the hard editorial pass for the 1,000-word Bridge corpus. The checked-in V2-2 source extraction remains separately traceable as `source-certified`; learner-facing Bridge release data is materialized from the V2-3 review ledgers and must pass the release gate before a build is accepted.
+V2-3 has completed the hard editorial pass for the 1,000-word Normal corpus. The checked-in V2-2 source extraction remains separately traceable as `source-certified`; learner-facing Normal release data is materialized from the V2-3 review ledgers and must pass the release gate before a build is accepted.
 
-This phase certifies **content**. It does not by itself activate Bridge in the learner UI; runtime activation remains a separate integration step.
+This phase certifies **content**. It does not by itself activate Normal in the learner UI; runtime activation remains a separate integration step.
 
 ## Certified result
 
 The release gate now requires all of the following and passes on the certified branch:
 
-- exactly **1,000 / 1,000** effective Bridge entries;
+- exactly **1,000 / 1,000** effective Normal entries;
 - exactly **400 Intermediate / 350 Upper Intermediate / 250 Advanced** entries;
 - the source-targeting contract remains **600 B2-estimated / 400 C1-estimated**;
 - **0** Challenge noun/ID overlaps;
@@ -27,7 +27,7 @@ The release gate now requires all of the following and passes on the certified b
 
 ## Editorial standard
 
-V2-3 keeps the product label **B2→C1-targeted**. It does not claim that Artikelwerk Bridge is an official CEFR or Goethe B2/C1 vocabulary list.
+V2-3 keeps the product label **B2→C1-targeted**. It does not claim that Artikelwerk Normal is an official CEFR or Goethe B2/C1 vocabulary list.
 
 The final review contract prioritizes:
 
@@ -54,7 +54,7 @@ The source assets remain reproducible and traceable. Editorial decisions are sto
 
 ## Hard release gate
 
-`npm run ci:static` is the canonical static release gate. It executes source/content certification, Bridge source certification, successor-ledger auditing, retained-entry B1 auditing, the editorial release assertion, deterministic V2-3 materialization, V2-3 certification, and packaged-output verification.
+`npm run ci:static` is the canonical static release gate. It executes source/content certification, Normal source certification, successor-ledger auditing, retained-entry B1 auditing, the editorial release assertion, deterministic V2-3 materialization, V2-3 certification, and packaged-output verification.
 
 The release assertion fails if any effective entry has a hard blocker, including:
 
@@ -82,11 +82,11 @@ CI additionally runs the full browser certification suite against the built `dis
 
 V2-3 is complete when both of these conditions hold:
 
-1. `npm run ci:static` passes with **0 hard editorial blockers** across all 1,000 effective Bridge entries.
+1. `npm run ci:static` passes with **0 hard editorial blockers** across all 1,000 effective Normal entries.
 2. The full CI browser/visual/session suite passes on the same commit.
 
 Those are the authoritative release criteria. Historical proposal artifacts and review-time diagnostics are not release blockers after the reviewed successor ledger has been certified.
 
 ## Handoff
 
-V2-3 is a **content-certification completion**, not a runtime-activation phase. Bridge should remain disabled in the learner-facing UI until the separate runtime integration is implemented and certified without regressing Challenge data, persistence isolation, practice flow, accessibility, or session completion.
+V2-3 is a **content-certification completion**, not a runtime-activation phase. Normal should remain disabled in the learner-facing UI until the separate runtime integration is implemented and certified without regressing Challenge data, persistence isolation, practice flow, accessibility, or session completion.

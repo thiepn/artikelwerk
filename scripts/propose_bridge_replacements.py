@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Generate reproducible, proposal-only successors for V2-3 Bridge removals.
+"""Generate reproducible, proposal-only successors for V2-3 Normal removals.
 
-This script does not mutate the checked-in Bridge corpus. It rebuilds the eligible
+This script does not mutate the checked-in Normal corpus. It rebuilds the eligible
 source pool from the same pinned Wordhoard and German-Wiktionary inputs used by
-V2-2, removes every currently installed Bridge noun, preserves each rejected
+V2-2, removes every currently installed Normal noun, preserves each rejected
 slot's Level/CEFR contract, and emits unique recommended successors plus
 alternatives for editorial review.
 """
@@ -192,14 +192,14 @@ def parse_bridge_rows() -> list[list]:
     marker = "window.ARTIKELWERK_BRIDGE_CORPUS=Object.freeze("
     start = text.find(marker)
     if start < 0:
-        base.die("Could not locate Bridge corpus payload")
+        base.die("Could not locate Normal corpus payload")
     start += len(marker)
     end = text.find(");\nwindow.ARTIKELWERK_BRIDGE_CORPUS_META", start)
     if end < 0:
-        base.die("Could not locate Bridge corpus payload terminator")
+        base.die("Could not locate Normal corpus payload terminator")
     rows = json.loads(text[start:end])
     if not isinstance(rows, list) or len(rows) != 1000:
-        base.die(f"Expected 1000 Bridge rows, found {len(rows) if isinstance(rows, list) else 'invalid'}")
+        base.die(f"Expected 1000 Normal rows, found {len(rows) if isinstance(rows, list) else 'invalid'}")
     return rows
 
 
@@ -312,7 +312,7 @@ def main() -> None:
     for rejected_id in replacement_ids:
         row = row_by_id.get(rejected_id)
         if row is None:
-            base.die(f"Replacement decision references missing Bridge id: {rejected_id}")
+            base.die(f"Replacement decision references missing Normal id: {rejected_id}")
         level = int(row[3])
         cefr = row[10]["cefrEstimate"]
         source_item = all_by_id.get(rejected_id)
@@ -381,7 +381,7 @@ def main() -> None:
             "advancedMinFrequencyRank": ADVANCED_MIN_FREQUENCY_RANK,
             "transitionMaxFrequencyRank": TRANSITION_MAX_FREQUENCY_RANK,
             "transitionMinLearnerValue": TRANSITION_MIN_LEARNER_VALUE,
-            "currentBridgeAndChallengeExcluded": True,
+            "currentNormalAndChallengeExcluded": True,
             "automaticAcceptance": False,
         },
         "summary": {

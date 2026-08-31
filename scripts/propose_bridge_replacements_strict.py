@@ -221,7 +221,7 @@ def main() -> None:
     for rejected_id in replacement_ids:
         row = row_by_id.get(rejected_id)
         if row is None:
-            base.die(f"Replacement decision references missing Bridge id: {rejected_id}")
+            base.die(f"Replacement decision references missing Normal id: {rejected_id}")
         level = int(row[3])
         cefr = row[10]["cefrEstimate"]
         source_raw = all_by_id.get(rejected_id)
@@ -297,9 +297,9 @@ def main() -> None:
             "preserveCefrCounts": {"B2": 600, "C1": 400},
             "preserveLevel2CefrMix": {"B2": 200, "C1": 150},
             "minimumLearnerValue": MIN_LEARNER_VALUE,
-            "requireBridgeSignal": True,
+            "requireNormalSignal": True,
             "rejectConcretePersonEntertainment": True,
-            "currentBridgeAndChallengeExcluded": True,
+            "currentNormalAndChallengeExcluded": True,
             "automaticAcceptance": False,
         },
         "summary": {

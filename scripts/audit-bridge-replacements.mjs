@@ -71,14 +71,14 @@ const successorArticleCounts = { der: 0, die: 0, das: 0 };
 
 for (const oldId of replacementIds) {
   const row = bridgeById.get(oldId);
-  if (!row) fail(`Replacement references missing Bridge row: ${oldId}`);
+  if (!row) fail(`Replacement references missing Normal row: ${oldId}`);
   const sourceBucket = `L${row[3]}-${row[10]?.cefrEstimate}`;
   expectedBuckets[sourceBucket] = (expectedBuckets[sourceBucket] || 0) + 1;
 }
 
 for (const oldId of replacementIds) {
   const row = bridgeById.get(oldId);
-  if (!row) fail(`Replacement references missing Bridge row: ${oldId}`);
+  if (!row) fail(`Replacement references missing Normal row: ${oldId}`);
   const [,, oldArticle, oldLevel,,,,,,, oldEvidence] = row;
   const review = ledgerEntries[oldId];
   const s = review?.successor;
@@ -89,7 +89,7 @@ for (const oldId of replacementIds) {
   const nounKey = String(s.noun).toLocaleLowerCase('de-DE');
   if (!s.noun || successorNouns.has(nounKey)) fail(`Duplicate/missing successor noun: ${String(s.noun)}`);
   successorNouns.add(nounKey);
-  if (bridgeIds.has(s.id) || bridgeNouns.has(nounKey)) fail(`Successor already exists in current Bridge: ${s.id} / ${s.noun}`);
+  if (bridgeIds.has(s.id) || bridgeNouns.has(nounKey)) fail(`Successor already exists in current Normal: ${s.id} / ${s.noun}`);
   if (challengeIds.has(s.id) || challengeNouns.has(nounKey)) fail(`Successor overlaps Challenge: ${s.id} / ${s.noun}`);
   if (!articles.has(s.article)) fail(`Invalid successor article for ${s.id}: ${s.article}`);
   if (s.level !== oldLevel) fail(`Successor level changed slot ${oldId}: ${oldLevel} -> ${s.level}`);
@@ -140,8 +140,8 @@ console.log(JSON.stringify({
   successorArticleCounts,
   projectedArticleCounts,
   challengeOverlap: 0,
-  currentBridgeOverlap: 0,
+  currentNormalOverlap: 0,
   reviewedComponentsPerSuccessor: 4,
   b1LowerBoundScreened: replacementIds.length,
 }, null, 2));
-console.log('V2-3 Bridge successor ledger certification passed.');
+console.log('V2-3 Normal successor ledger certification passed.');

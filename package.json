@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "German noun-gender trainer with Challenge C1/C2 architecture and a staged B2/C1 Bridge corpus",
+  "description": "German noun-gender trainer with Challenge C1/C2 architecture and a staged B2/C1 Normal corpus",
   "engines": {
     "node": ">=20"
   },

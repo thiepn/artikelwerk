@@ -6,7 +6,7 @@
   "entries": {
     "steuererklaerung": {
       "decision": "replace",
-      "reason": "Steuererklärung is explicitly present in the official Goethe-Zertifikat B1 vocabulary material, so it is below the intended Advanced C1 Bridge floor."
+      "reason": "Steuererklärung is explicitly present in the official Goethe-Zertifikat B1 vocabulary material, so it is below the intended Advanced C1 Normal floor."
     }
   }
 }

@@ -92,7 +92,7 @@ async function mergeRetainedBatches(root, entries) {
 export async function loadEditorialReview(root) {
   const base = await readJson(join(root, 'content', 'bridge-editorial-review.json'));
   if (base.schema !== 1 || base.phase !== 'V2-3' || base.status !== 'in-progress') {
-    throw new Error('Bridge editorial review ledger metadata is invalid.');
+    throw new Error('Normal editorial review ledger metadata is invalid.');
   }
 
   const entries = { ...(base.entries || {}) };
@@ -111,7 +111,7 @@ export async function loadEditorialReview(root) {
 export async function loadReplacementReview(root) {
   const base = await readJson(join(root, 'content', 'bridge-replacement-review.json'));
   if (base.schema !== 1 || base.phase !== 'V2-3' || base.status !== 'in-progress') {
-    throw new Error('Bridge replacement review ledger metadata is invalid.');
+    throw new Error('Normal replacement review ledger metadata is invalid.');
   }
 
   const entries = { ...(base.entries || {}) };
@@ -132,7 +132,7 @@ export async function loadReplacementReview(root) {
 export async function loadRetainedB1Review(root) {
   const base = await readJson(join(root, 'content', 'bridge-retained-b1-review.json'));
   if (base.schema !== 1 || base.phase !== 'V2-3' || base.status !== 'in-progress') {
-    throw new Error('Bridge retained B1 review ledger metadata is invalid.');
+    throw new Error('Normal retained B1 review ledger metadata is invalid.');
   }
 
   const entries = { ...(base.entries || {}) };

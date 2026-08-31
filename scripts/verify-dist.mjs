@@ -49,4 +49,4 @@ for (const runtimeAsset of ['bridge-corpus.js', 'bridge-translations.js', 'conte
   if (!declared?.startsWith('.generated-v23/')) throw new Error(`${runtimeAsset} must come from the V2-3 generated layer.`);
 }
 
-console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with V2-3 generated Bridge sources.`);
+console.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with V2-3 generated Normal sources.`);

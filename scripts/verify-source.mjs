@@ -51,7 +51,7 @@ requireFragment(html, 'const VOCABULARY_TRACKS = Object.freeze', 'V2-1 vocabular
 requireFragment(html, 'track:track==="bridge"?"bridge":"challenge"', 'V2-1 vocabulary row track');
 requireFragment(html, 'aggregatesByTrack', 'V2-1 per-track aggregate storage');
 requireFragment(html, 'id="vocabularyTrackSelect"', 'V2-1 Practice vocabulary selector');
-requireFragment(html, 'id="bridgeTrackBtn"', 'V2-1 Bridge home action');
+requireFragment(html, 'id="bridgeTrackBtn"', 'V2-1 Normal home action');
 requireFragment(html, 'id="progressTrackSelect"', 'V2-1 Progress vocabulary scope');
 requireFragment(html, 'id="libraryTrackSelect"', 'V2-1 Vocabulary scope');
 requireFragment(html, 'target?.focus?.({preventScroll:true});', 'synchronous Practice focus restoration');

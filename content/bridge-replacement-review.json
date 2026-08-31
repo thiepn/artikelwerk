@@ -3,7 +3,7 @@
   "phase": "V2-3",
   "status": "in-progress",
   "policy": {
-    "purpose": "Resolve explicit Bridge replacement decisions with pinned-source successor candidates before corpus materialization.",
+    "purpose": "Resolve explicit Normal replacement decisions with pinned-source successor candidates before corpus materialization.",
     "sourceCandidateStatus": "pinned-source-validated",
     "sourcePins": {
       "wordhoardRelease": "v0.1.0 (2026-07-16)",
