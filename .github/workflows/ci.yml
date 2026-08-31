@@ -44,7 +44,7 @@ jobs:
       # out of release CI. They download pinned external lexical sources and are
       # review-time tools, not release invariants. The deterministic release gate
       # below validates the reviewed successor ledger and materialized V2-3 corpus.
-      - name: Verify source, Challenge, V2-3 Bridge release certification, and deterministic artifact
+      - name: Verify source, Challenge, V2-3 Normal release certification, and deterministic artifact
         run: npm run ci:static
 
       - name: Install Playwright Chromium
