@@ -109,6 +109,11 @@ for (const row of effective.rows) {
   cefrCounts[evidence.cefrEstimate]++;
   if (!translation.translations[id]) fail(`Missing materialized translation for ${id}`);
   if (!translation.provenance[id]) fail(`Missing materialized translation provenance for ${id}`);
+  const runtimeTranslationReview = translation.provenance[id];
+  if (runtimeTranslationReview.sourceStatus !== 'source-certified') fail(`Runtime translation source status is not source-certified for ${id}`);
+  if (runtimeTranslationReview.reviewStatus !== 'release-reviewed') fail(`Runtime translation review status is not release-reviewed for ${id}`);
+  if (!Array.isArray(runtimeTranslationReview.reviewedSenseIds) || runtimeTranslationReview.reviewedSenseIds.length < 1) fail(`Runtime translation lacks reviewed sense metadata for ${id}`);
+  if (!['gloss', 'example', 'rule', 'level'].every((component) => runtimeTranslationReview.componentReview?.[component] === 'editorial')) fail(`Runtime translation component review is incomplete for ${id}`);
   if (!provenance.entries?.[id]) fail(`Missing materialized content provenance for ${id}`);
 }
 

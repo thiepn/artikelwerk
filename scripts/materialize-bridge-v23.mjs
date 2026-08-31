@@ -144,6 +144,7 @@ const effectiveProvenanceEntries = { ...(sourceProvenance.entries || {}) };
 for (const [oldId, review] of Object.entries(replacements)) {
   const s = review.successor;
   const oldProvenance = effectiveProvenanceEntries[oldId];
+  const oldTranslationProvenance = effectiveTranslationProvenance[oldId] || {};
   if (!oldProvenance) fail(`Missing source provenance for replaced Normal entry ${oldId}.`);
   delete effectiveTranslations[oldId];
   delete effectiveTranslationProvenance[oldId];
@@ -153,6 +154,8 @@ for (const [oldId, review] of Object.entries(replacements)) {
   effectiveTranslationProvenance[s.id] = Object.freeze({
     source: 'v23-editorial-review',
     sourceKind: 'wiktionary-bridge-editorial',
+    sourceStatus: oldTranslationProvenance.reviewStatus || 'source-certified',
+    reviewStatus: replacementReleaseReviewed(review) ? 'release-reviewed' : 'partial-editorial',
     materializedFrom: oldId,
     editorialDecision: 'replace',
     reviewedSenseIds: review.reviewedSenseIds,
@@ -183,6 +186,8 @@ for (const [id, review] of Object.entries(retainedReviews)) {
   effectiveTranslations[id] = review.gloss ?? sourceTranslations[id];
   effectiveTranslationProvenance[id] = Object.freeze({
     ...(sourceTranslationProvenance[id] || {}),
+    sourceStatus: sourceTranslationProvenance[id]?.reviewStatus || 'source-certified',
+    reviewStatus: retainedReleaseReviewed(review) ? 'release-reviewed' : 'partial-editorial',
     editorialSource: 'v23-editorial-review',
     editorialDecision: 'retain',
     reviewedSenseIds: review.reviewedSenseIds || [],
