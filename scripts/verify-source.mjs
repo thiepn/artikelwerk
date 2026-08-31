@@ -119,7 +119,14 @@ requireFragment(html, '<script src="normal-corpus.js"></script>', 'certified Nor
 requireFragment(html, '.concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry))', 'Normal runtime corpus integration');
 requireFragment(html, 'provenance:Object.freeze(window.ARTIKELWERK_TRANSLATION_PROVENANCE||{})', 'runtime translation certification gate');
 requireFragment(html, 'contentCertification:window.ARTIKELWERK_TRANSLATION_PROVENANCE?.[id]||null', 'per-word content certification metadata');
-requireFragment(html, 'const APP_VERSION = "1.2.0";', 'application version 1.2.0');
+requireFragment(html, 'const APP_VERSION = "1.3.0";', 'application version 1.3.0');
+requireFragment(html, 'id="settingsBtn"', 'Settings entrypoint');
+requireFragment(html, 'id="settingsModal"', 'Settings dialog');
+requireFragment(html, 'const ARTICLE_CONTROLS_KEY = "artikelwerk_article_controls";', 'article-control preference storage');
+requireFragment(html, 'const SettingsManager = {', 'article-control preference manager');
+requireFragment(html, 'data-article-controls', 'article-control layout styling contract');
+requireFragment(html, 'value="bottom-bar"', 'Bottom Bar article controls option');
+requireFragment(html, 'value="stacked"', 'Stacked article controls option');
 requireFragment(html, 'const VOCAB_SCHEMA_VERSION = 15;', 'vocabulary schema version 15');
 requireFragment(html, 'const SCHEMA_VERSION = 10;', 'persistence schema version 10');
 requireFragment(html, 'const VOCAB = [', 'vocabulary bank');
