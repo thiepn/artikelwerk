@@ -376,19 +376,19 @@ def assign_levels(candidates):
 
 def validate_selected(selected, challenge_nouns, challenge_ids):
     if len(selected) != 1000:
-        die(f"Expected exactly 1000 selected Bridge nouns, found {len(selected)}")
+        die(f"Expected exactly 1000 selected Normal nouns, found {len(selected)}")
     ids = [x["id"] for x in selected]
     nouns = [x["noun"].casefold() for x in selected]
     if len(set(ids)) != 1000 or len(set(nouns)) != 1000:
-        die("Bridge IDs/nouns are not unique")
+        die("Normal IDs/nouns are not unique")
     if set(ids) & challenge_ids or set(nouns) & challenge_nouns:
-        die("Bridge overlaps Challenge")
+        die("Normal overlaps Challenge")
     levels = Counter(x["level"] for x in selected)
     if levels != Counter({1: 400, 2: 350, 3: 250}):
-        die(f"Unexpected Bridge level distribution: {dict(levels)}")
+        die(f"Unexpected Normal level distribution: {dict(levels)}")
     cefr = Counter(x["cefrEstimate"] for x in selected)
     if cefr != Counter({"B2": 750, "C1": 250}):
-        die(f"Unexpected Bridge CEFR-estimate distribution: {dict(cefr)}")
+        die(f"Unexpected Normal CEFR-estimate distribution: {dict(cefr)}")
     articles = Counter(x["article"] for x in selected)
     if set(articles) != VALID_ARTICLES or min(articles.values()) < 120:
         die(f"Article coverage is too skewed for an article trainer: {dict(articles)}")
@@ -417,7 +417,7 @@ def write_corpus(selected):
         "wordhoardSha256": WORDHOARD_SHA256, "translationSourceCommit": WIKT_PARSER_COMMIT,
     }
     content = (
-        "/*\n * Artikelwerk V2-2 Bridge corpus — CC-BY-SA-4.0.\n"
+        "/*\n * Artikelwerk V2-2 Normal corpus — CC-BY-SA-4.0.\n"
         " * Selection/gender/frequency/CEFR-estimate evidence derived from wordhoard v0.1.0.\n"
         " * Gender cross-check and English-translation availability use German Wiktionary-derived data.\n"
         " * See THIRD_PARTY_NOTICES.md and docs/v2-2-bridge-corpus.md.\n */\n"
@@ -447,7 +447,7 @@ def write_translations(selected):
         "translationSourceCommit": WIKT_PARSER_COMMIT,
     }
     content = (
-        "/*\n * Artikelwerk V2-2 Bridge English gloss asset — CC-BY-SA-4.0.\n"
+        "/*\n * Artikelwerk V2-2 Normal English gloss asset — CC-BY-SA-4.0.\n"
         " * English translations derive from German Wiktionary via the pinned de-wiktionary-parser extraction.\n"
         " * See THIRD_PARTY_NOTICES.md and LICENSES/CC-BY-SA-4.0.txt.\n */\n"
         "(() => {\n"
@@ -484,11 +484,11 @@ def write_report(selected, reject, pool_stats, candidate_count):
                 f"(source estimate {item['cefrEstimate']}, frequency rank {item['frequencyRank']:,})"
             )
         sample_lines.append("")
-    report = f"""# V2-2 — 1,000-Word B2→C1 Bridge Corpus
+    report = f"""# V2-2 — 1,000-Word B2→C1 Normal Corpus
 
 ## Result
 
-- Bridge rows: **1,000**
+- Normal rows: **1,000**
 - Level 1 — Intermediate: **400**
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
@@ -499,7 +499,7 @@ def write_report(selected, reject, pool_stats, candidate_count):
 
 ## CEFR interpretation
 
-`B2` and `C1` here are **targeting estimates, not official Goethe B2/C1 list membership**. wordhoard calibrates German frequency ranks against Goethe A1–B1 anchors and extrapolates B2/C1 thresholds from the fitted B1 boundary. Artikelwerk therefore describes this as a B2→C1-targeted Bridge corpus rather than an official CEFR word list.
+`B2` and `C1` here are **targeting estimates, not official Goethe B2/C1 list membership**. wordhoard calibrates German frequency ranks against Goethe A1–B1 anchors and extrapolates B2/C1 thresholds from the fitted B1 boundary. Artikelwerk therefore describes this as a B2→C1-targeted Normal corpus rather than an official CEFR word list.
 
 ## Selection method
 
@@ -507,7 +507,7 @@ def write_report(selected, reject, pool_stats, candidate_count):
 2. Keep common nouns (`NOUN`) whose wordhoard CEFR estimate is B2 or C1 and whose grammatical gender is `der`, `die`, or `das`.
 3. Require a matching common-noun entry in the pinned German Wiktionary extraction and require the old Wiktionary grammar data to corroborate **one single gender**. Ambiguous/multi-gender candidates are excluded from this phase rather than silently reduced to one quiz answer.
 4. Require at least one clean English Wiktionary translation.
-5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
+5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Normal nouns/IDs.
 6. Sort by wordhoard frequency rank. Select the first 750 eligible B2 nouns and first 250 eligible C1 nouns.
 7. Assign the first 400 B2 nouns to Intermediate, the next 350 B2 nouns to Upper Intermediate, and the 250 C1 nouns to Advanced.
 
@@ -515,7 +515,7 @@ def write_report(selected, reject, pool_stats, candidate_count):
 
 - **wordhoard**: {WORDHOARD_REPO}, release {WORDHOARD_RELEASE}; downloaded archive SHA-256 `{WORDHOARD_SHA256}`. The built dataset is CC-BY-SA-4.0 and combines OpenSubtitles-derived frequency evidence with openly licensed lexical sources. Goethe material is calibration-only and is not redistributed.
 - **German Wiktionary extraction**: {WIKT_REPO}, pinned commit `{WIKT_PARSER_COMMIT}`; `de_noun_entries_with_translations.zip` Git blob `{WIKT_TRANSLATIONS_BLOB_SHA}`. English translations and the second-source grammar check derive from German Wiktionary data.
-- The checked-in Bridge corpus, Bridge gloss asset, and Bridge provenance are distributed under **CC-BY-SA-4.0**. The existing Challenge translation asset remains separately licensed as documented in `THIRD_PARTY_NOTICES.md`.
+- The checked-in Normal corpus, Normal gloss asset, and Normal provenance are distributed under **CC-BY-SA-4.0**. The existing Challenge translation asset remains separately licensed as documented in `THIRD_PARTY_NOTICES.md`.
 
 ## Frequency-rank ranges
 
@@ -578,7 +578,7 @@ def main():
 
     articles = Counter(x["article"] for x in selected)
     print(
-        "Bridge generation passed: 1000 nouns "
+        "Normal generation passed: 1000 nouns "
         f"(L1=400, L2=350, L3=250; B2=750, C1=250; "
         f"der={articles['der']}, die={articles['die']}, das={articles['das']})."
     )

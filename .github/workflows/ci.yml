@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   certify:
-    name: Source, Challenge, staged Bridge corpus, build, session completion, and visual acceptance
+    name: Source, certified content, build, browser flow, and visual acceptance
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
@@ -38,9 +38,13 @@ jobs:
         run: npm install --no-package-lock --no-audit --no-fund
 
       - name: Verify content-generator syntax
-        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py
+        run: python -m py_compile scripts/generate_translations.py scripts/generate_translations_v2.py scripts/generate_bridge_corpus.py scripts/refine_bridge_corpus.py scripts/propose_bridge_replacements.py scripts/propose_bridge_replacements_strict.py scripts/propose_bridge_replacements_editorial.py scripts/diagnose_bridge_replacement_pool.py
 
-      - name: Verify source, Challenge, staged Bridge corpus, accessibility, and deterministic artifact
+      # Replacement-pool diagnostics and proposal generation intentionally stay
+      # out of release CI. They download pinned external lexical sources and are
+      # review-time tools, not release invariants. The deterministic release gate
+      # below validates the reviewed successor ledger and materialized V2-3 corpus.
+      - name: Verify source, Challenge, V2-3 Normal release certification, and deterministic artifact
         run: npm run ci:static
 
       - name: Install Playwright Chromium

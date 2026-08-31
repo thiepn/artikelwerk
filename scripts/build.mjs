@@ -20,8 +20,8 @@ const releaseFiles = [
   ['icon-512.png', 'icon-512.png'],
   ['index.html', 'index.html'],
   ['translations.js', 'translations.js'],
-  ['bridge-translations.js', 'bridge-translations.js'],
-  ['bridge-corpus.js', 'bridge-corpus.js'],
+  ['.generated-v23/bridge-translations.js', 'normal-translations.js'],
+  ['.generated-v23/bridge-corpus.js', 'normal-corpus.js'],
   ['THIRD_PARTY_NOTICES.md', 'THIRD_PARTY_NOTICES.md'],
   ['LICENSES/GPL-3.0.txt', 'LICENSES/GPL-3.0.txt'],
   ['LICENSES/CC-BY-SA-4.0.txt', 'LICENSES/CC-BY-SA-4.0.txt'],
@@ -32,9 +32,14 @@ const releaseFiles = [
   ['content/ambiguous-gender-review.json', 'content/ambiguous-gender-review.json'],
   ['content/example-review.json', 'content/example-review.json'],
   ['content/inflection-review.json', 'content/inflection-review.json'],
-  ['content/bridge-provenance.json', 'content/bridge-provenance.json'],
+  ['.generated-v23/content/bridge-provenance.json', 'content/bridge-provenance.json'],
+  ['.generated-v23/content/bridge-v23-materialization.json', 'content/bridge-v23-materialization.json'],
   ['content/bridge-corpus-report.json', 'content/bridge-corpus-report.json'],
+  ['content/bridge-editorial-review.json', 'content/bridge-editorial-review.json'],
+  ['content/bridge-b1-lower-bound-review.json', 'content/bridge-b1-lower-bound-review.json'],
+  ['content/bridge-replacement-review.json', 'content/bridge-replacement-review.json'],
   ['docs/v2-2-bridge-corpus.md', 'docs/v2-2-bridge-corpus.md'],
+  ['docs/v2-3-bridge-certification.md', 'docs/v2-3-bridge-certification.md'],
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
@@ -49,6 +54,7 @@ for (const [sourceRelative, outputRelative] of releaseFiles) {
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, content);
   manifestFiles[outputRelative] = {
+    source: sourceRelative,
     bytes: content.byteLength,
     sha256: sha256(content),
   };
@@ -57,6 +63,7 @@ for (const [sourceRelative, outputRelative] of releaseFiles) {
 const manifest = {
   schema: 1,
   source: 'index.html',
+  bridgeMaterialization: 'V2-3',
   files: Object.fromEntries(Object.entries(manifestFiles).sort(([a], [b]) => a.localeCompare(b))),
 };
 

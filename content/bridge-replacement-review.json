@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "phase": "V2-3",
+  "status": "in-progress",
+  "policy": {
+    "purpose": "Resolve explicit Normal replacement decisions with pinned-source successor candidates before corpus materialization.",
+    "sourceCandidateStatus": "pinned-source-validated",
+    "sourcePins": {
+      "wordhoardRelease": "v0.1.0 (2026-07-16)",
+      "wordhoardSha256": "83837efd46241e7226fc6daaa9d0cc81b57bf746434b8c539049c660d98ba761",
+      "wiktionaryParserCommit": "73075bb76c9261c44923f4909858586b261bfd83",
+      "wiktionaryBlobSha": "a56efcb80b64433107ec1f376b933c572f2427c9"
+    },
+    "b1LowerBoundReference": "Goethe-Zertifikat B1 Wortliste (Goethe-Institut/ÖSD, official reference list currently published by Goethe-Institut)",
+    "b1CheckDate": "2026-08-30",
+    "b1CheckMeaning": "no-exact-match is a lower-bound screening result only; absence from the B1 reference list does not itself certify B2 or C1 membership.",
+    "releaseRule": "A successor is not release-reviewed merely by appearing here. Materialization, duplicate/contract checks, learner-facing sense/example/rule review, level review, and final release review remain required."
+  },
+  "entries": {
+    "akademie": {
+      "successor": {"id":"ansprache","noun":"Ansprache","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":9239,"frequencyCount":577,"group":"communication"},
+      "sourceGloss": "address; allocution",
+      "gloss": "formal address; speech",
+      "example": "Die Ansprache des Direktors dauerte nur wenige Minuten.",
+      "rule": "Ansprache is a lexical feminine noun; learn it with die.",
+      "reviewedSenseIds": ["v23:ansprache:formal-address"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "borg": {
+      "successor": {"id":"arrest","noun":"Arrest","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":9123,"frequencyCount":587,"group":"bridge-general"},
+      "sourceGloss": "detention; confinement",
+      "gloss": "detention; confinement",
+      "example": "Der Arrest wurde nach wenigen Tagen aufgehoben.",
+      "rule": "Arrest is a lexical masculine noun in Standard German; learn it with der.",
+      "reviewedSenseIds": ["v23:arrest:detention"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "chemie": {
+      "successor": {"id":"impfstoff","noun":"Impfstoff","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":8189,"frequencyCount":693,"group":"bridge-general"},
+      "sourceGloss": "vaccine; vaccine matter",
+      "gloss": "vaccine",
+      "example": "Der Impfstoff wurde nach mehreren Studien zugelassen.",
+      "rule": "The compound is masculine because its head noun is der Stoff.",
+      "reviewedSenseIds": ["v23:impfstoff:vaccine"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "demokratie": {
+      "successor": {"id":"rebellion","noun":"Rebellion","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":8008,"frequencyCount":717,"group":"bridge-general"},
+      "sourceGloss": "rebellion",
+      "gloss": "rebellion; uprising",
+      "example": "Die Rebellion wurde von der Regierung gewaltsam niedergeschlagen.",
+      "rule": "Nouns ending in -ion are overwhelmingly feminine in Standard German.",
+      "reviewedSenseIds": ["v23:rebellion:uprising"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "department": {
+      "successor": {"id":"kodex","noun":"Kodex","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":7920,"frequencyCount":729,"group":"bridge-general"},
+      "sourceGloss": "code; codex",
+      "gloss": "code; code of conduct",
+      "example": "Der Kodex verpflichtet alle Mitglieder zu transparentem Verhalten.",
+      "rule": "Kodex is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:kodex:code"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "dritter": {
+      "successor": {"id":"jahrgang","noun":"Jahrgang","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":9166,"frequencyCount":584,"group":"bridge-general"},
+      "sourceGloss": "vintage; volume",
+      "gloss": "cohort; year group",
+      "example": "Der Jahrgang 2026 umfasst deutlich mehr Studierende als der vorige.",
+      "rule": "The compound is masculine because its head noun is der Gang.",
+      "reviewedSenseIds": ["v23:jahrgang:cohort"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "finanz": {
+      "successor": {"id":"darlehen","noun":"Darlehen","article":"das","level":2,"cefrEstimate":"B2","frequencyRank":8499,"frequencyCount":653,"group":"bridge-general"},
+      "sourceGloss": "advance; credit",
+      "gloss": "loan",
+      "example": "Das Darlehen wird über zehn Jahre zurückgezahlt.",
+      "rule": "Darlehen is a lexical neuter noun; learn it with das.",
+      "reviewedSenseIds": ["v23:darlehen:loan"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "fussspur": {
+      "successor": {"id":"uebernahme","noun":"Übernahme","article":"die","level":3,"cefrEstimate":"C1","frequencyRank":10590,"frequencyCount":467,"group":"bridge-general"},
+      "sourceGloss": "takeover; appropriation",
+      "gloss": "takeover; acquisition",
+      "example": "Die Übernahme des Unternehmens muss noch von den Behörden genehmigt werden.",
+      "rule": "Prefixed nouns ending in -nahme, such as Aufnahme, Einnahme, and Übernahme, are feminine.",
+      "reviewedSenseIds": ["v23:uebernahme:takeover"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "gramm": {
+      "successor": {"id":"klischee","noun":"Klischee","article":"das","level":1,"cefrEstimate":"B2","frequencyRank":8509,"frequencyCount":652,"group":"bridge-general"},
+      "sourceGloss": "block; imitation",
+      "gloss": "cliché; stereotype",
+      "example": "Das Klischee hält sich trotz gegenteiliger Erfahrungen hartnäckig.",
+      "rule": "Klischee is a lexical neuter loanword; learn it with das.",
+      "reviewedSenseIds": ["v23:klischee:stereotype"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "grieche": {
+      "successor": {"id":"konsul","noun":"Konsul","article":"der","level":2,"cefrEstimate":"B2","frequencyRank":8965,"frequencyCount":600,"group":"bridge-general"},
+      "sourceGloss": "consul",
+      "gloss": "consul",
+      "example": "Der Konsul vertrat die Interessen seines Landes vor Ort.",
+      "rule": "Konsul is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:konsul:consul"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "jahreszeit": {
+      "successor": {"id":"gunst","noun":"Gunst","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":9159,"frequencyCount":584,"group":"bridge-general"},
+      "sourceGloss": "favour; favourableness",
+      "gloss": "favor; goodwill",
+      "example": "Die Ministerin verlor nach dem Skandal die Gunst vieler Wähler.",
+      "rule": "Gunst is a lexical feminine noun; learn it with die.",
+      "reviewedSenseIds": ["v23:gunst:favor"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "killer": {
+      "successor": {"id":"justizminister","noun":"Justizminister","article":"der","level":3,"cefrEstimate":"C1","frequencyRank":15549,"frequencyCount":253,"group":"politics"},
+      "sourceGloss": "Minister of Justice; Attorney General",
+      "gloss": "minister of justice",
+      "example": "Der Justizminister stellte die geplante Reform im Parlament vor.",
+      "rule": "The compound is masculine because its head noun is der Minister.",
+      "reviewedSenseIds": ["v23:justizminister:minister-of-justice"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "kontinent": {
+      "successor": {"id":"pakt","noun":"Pakt","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":7605,"frequencyCount":771,"group":"bridge-general"},
+      "sourceGloss": "pact",
+      "gloss": "pact; agreement",
+      "example": "Der Pakt verpflichtet beide Staaten zu gegenseitiger Unterstützung.",
+      "rule": "Pakt is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:pakt:agreement"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "krokodil": {
+      "successor": {"id":"unheil","noun":"Unheil","article":"das","level":1,"cefrEstimate":"B2","frequencyRank":8095,"frequencyCount":705,"group":"bridge-general"},
+      "sourceGloss": "calamity; disaster",
+      "gloss": "calamity; disaster",
+      "example": "Das Unheil hätte durch frühere Warnungen verhindert werden können.",
+      "rule": "Unheil is a lexical neuter noun; learn it with das.",
+      "reviewedSenseIds": ["v23:unheil:calamity"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "mathe": {
+      "successor": {"id":"obhut","noun":"Obhut","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":8060,"frequencyCount":709,"group":"bridge-general"},
+      "sourceGloss": "care",
+      "gloss": "care; custody",
+      "example": "Die Obhut der Großeltern gab dem Kind während der Reise Sicherheit.",
+      "rule": "Obhut is a lexical feminine noun; learn it with die.",
+      "reviewedSenseIds": ["v23:obhut:care"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "mathematik": {
+      "successor": {"id":"unterbewusstsein","noun":"Unterbewusstsein","article":"das","level":2,"cefrEstimate":"B2","frequencyRank":9063,"frequencyCount":592,"group":"bridge-general"},
+      "sourceGloss": "subconscious mind; subconsciousness",
+      "gloss": "subconscious mind; subconscious",
+      "example": "Das Unterbewusstsein beeinflusst viele Entscheidungen, ohne dass wir es bemerken.",
+      "rule": "The compound is neuter because its head noun is das Bewusstsein.",
+      "reviewedSenseIds": ["v23:unterbewusstsein:subconscious"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "nabelschnur": {
+      "successor": {"id":"selbstbewusstsein","noun":"Selbstbewusstsein","article":"das","level":3,"cefrEstimate":"C1","frequencyRank":13235,"frequencyCount":329,"group":"bridge-general"},
+      "sourceGloss": "self-confidence; self-consciousness",
+      "gloss": "self-confidence; self-awareness",
+      "example": "Ein gesundes Selbstbewusstsein hilft ihr, Kritik anzunehmen, ohne sich sofort verunsichern zu lassen.",
+      "rule": "The compound is neuter because its head noun is das Bewusstsein; therefore das Selbstbewusstsein.",
+      "reviewedSenseIds": ["v23:selbstbewusstsein:self-confidence"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "parlament": {
+      "successor": {"id":"justiz","noun":"Justiz","article":"die","level":2,"cefrEstimate":"B2","frequencyRank":7381,"frequencyCount":804,"group":"bridge-general"},
+      "sourceGloss": "justice; judiciary",
+      "gloss": "judiciary; justice system",
+      "example": "Die Justiz leitete nach den neuen Vorwürfen ein Ermittlungsverfahren ein.",
+      "rule": "Justiz is a lexical feminine noun; learn it with die.",
+      "reviewedSenseIds": ["v23:justiz:judiciary"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "pfadfinder": {
+      "successor": {"id":"stellvertreter","noun":"Stellvertreter","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":8679,"frequencyCount":632,"group":"bridge-general"},
+      "sourceGloss": "deputy",
+      "gloss": "deputy; substitute",
+      "example": "Der Stellvertreter übernahm während der Abwesenheit des Leiters die Verantwortung.",
+      "rule": "Stellvertreter is masculine here as the male person noun; learn the form with der.",
+      "reviewedSenseIds": ["v23:stellvertreter:deputy"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "philosophie": {
+      "successor": {"id":"mythos","noun":"Mythos","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":7923,"frequencyCount":728,"group":"bridge-general"},
+      "sourceGloss": "myth",
+      "gloss": "myth",
+      "example": "Der Mythos vom mühelosen Erfolg hält sich bis heute.",
+      "rule": "Mythos is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:mythos:myth"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "physik": {
+      "successor": {"id":"reaktor","noun":"Reaktor","article":"der","level":2,"cefrEstimate":"B2","frequencyRank":8196,"frequencyCount":692,"group":"bridge-general"},
+      "sourceGloss": "reactor",
+      "gloss": "reactor",
+      "example": "Der Reaktor wurde für Wartungsarbeiten kontrolliert abgeschaltet.",
+      "rule": "Reaktor is a masculine technical loanword; learn it with der.",
+      "reviewedSenseIds": ["v23:reaktor:reactor"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "republik": {
+      "successor": {"id":"streitkraft","noun":"Streitkraft","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":8811,"frequencyCount":617,"group":"bridge-general"},
+      "sourceGloss": "armed forces",
+      "gloss": "armed force; military force",
+      "example": "Die Streitkraft wurde nach dem Abkommen schrittweise verkleinert.",
+      "rule": "The compound is feminine because its head noun is die Kraft.",
+      "reviewedSenseIds": ["v23:streitkraft:armed-force"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "rueckseite": {
+      "successor": {"id":"deckname","noun":"Deckname","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":9221,"frequencyCount":579,"group":"bridge-general"},
+      "sourceGloss": "code name; handle",
+      "gloss": "code name; alias",
+      "example": "Der Deckname sollte die Identität des Informanten schützen.",
+      "rule": "The compound is masculine because its head noun is der Name.",
+      "reviewedSenseIds": ["v23:deckname:code-name"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "schmetterling": {
+      "successor": {"id":"vorgaenger","noun":"Vorgänger","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":8903,"frequencyCount":608,"group":"bridge-general"},
+      "sourceGloss": "predecessor",
+      "gloss": "predecessor",
+      "example": "Der Vorgänger hatte das Amt fast zehn Jahre lang ausgeübt.",
+      "rule": "Vorgänger is masculine here as the male person noun; learn the form with der.",
+      "reviewedSenseIds": ["v23:vorgaenger:predecessor"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "schnur": {
+      "successor": {"id":"defekt","noun":"Defekt","article":"der","level":2,"cefrEstimate":"B2","frequencyRank":7768,"frequencyCount":747,"group":"bridge-general"},
+      "sourceGloss": "defect; fault",
+      "gloss": "defect; fault",
+      "example": "Der Defekt an der Heizungsanlage führte zu einem mehrstündigen Ausfall.",
+      "rule": "Defekt is a lexical masculine noun; -ekt is not a fully reliable productive gender rule, so learn der Defekt.",
+      "reviewedSenseIds": ["v23:defekt:defect"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "software": {
+      "successor": {"id":"lebensunterhalt","noun":"Lebensunterhalt","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":8560,"frequencyCount":646,"group":"bridge-general"},
+      "sourceGloss": "livelihood; living",
+      "gloss": "livelihood; living expenses",
+      "example": "Der Lebensunterhalt lässt sich mit dem geringen Einkommen kaum bestreiten.",
+      "rule": "The compound is masculine because its head noun is der Unterhalt.",
+      "reviewedSenseIds": ["v23:lebensunterhalt:livelihood"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "sosse": {
+      "successor": {"id":"seuche","noun":"Seuche","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":7612,"frequencyCount":770,"group":"bridge-general"},
+      "sourceGloss": "epidemic; pestilence",
+      "gloss": "epidemic; plague",
+      "example": "Die Seuche breitete sich innerhalb weniger Wochen über die Region aus.",
+      "rule": "Seuche is a lexical feminine noun; learn it with die.",
+      "reviewedSenseIds": ["v23:seuche:epidemic"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "trophaee": {
+      "successor": {"id":"bankrott","noun":"Bankrott","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":8585,"frequencyCount":643,"group":"bridge-general"},
+      "sourceGloss": "bankruptcy",
+      "gloss": "bankruptcy; insolvency",
+      "example": "Der Bankrott des Unternehmens gefährdete Hunderte Arbeitsplätze.",
+      "rule": "Bankrott is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:bankrott:bankruptcy"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "uhrzeit": {
+      "successor": {"id":"entzug","noun":"Entzug","article":"der","level":1,"cefrEstimate":"B2","frequencyRank":7842,"frequencyCount":739,"group":"bridge-general"},
+      "sourceGloss": "revoking; withdrawal",
+      "gloss": "revocation; withdrawal",
+      "example": "Der Entzug der Fahrerlaubnis wurde für sechs Monate angeordnet.",
+      "rule": "Entzug is a lexical masculine noun; learn it with der.",
+      "reviewedSenseIds": ["v23:entzug:revocation"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "vollmond": {
+      "successor": {"id":"einzelhaft","noun":"Einzelhaft","article":"die","level":1,"cefrEstimate":"B2","frequencyRank":8915,"frequencyCount":606,"group":"bridge-general"},
+      "sourceGloss": "solitary confinement",
+      "gloss": "solitary confinement",
+      "example": "Die Einzelhaft wurde nach einer gerichtlichen Prüfung beendet.",
+      "rule": "The compound is feminine because its head noun is die Haft.",
+      "reviewedSenseIds": ["v23:einzelhaft:solitary-confinement"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    },
+    "wertsache": {
+      "successor": {"id":"gefolge","noun":"Gefolge","article":"das","level":3,"cefrEstimate":"C1","frequencyRank":14608,"frequencyCount":280,"group":"bridge-general"},
+      "sourceGloss": "retinue; entourage",
+      "gloss": "entourage; retinue",
+      "example": "Das Gefolge des Präsidenten traf kurz vor Beginn der Zeremonie ein.",
+      "rule": "Gefolge is a lexical neuter collective noun; learn it with das.",
+      "reviewedSenseIds": ["v23:gefolge:entourage"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    }
+  }
+}

@@ -268,29 +268,29 @@ def curated_assign_levels(candidates):
 
 def curated_validate(selected, challenge_nouns, challenge_ids):
     if len(selected) != 1000:
-        base.die(f"Expected exactly 1000 selected Bridge nouns, found {len(selected)}")
+        base.die(f"Expected exactly 1000 selected Normal nouns, found {len(selected)}")
     ids = [x["id"] for x in selected]
     nouns = [x["noun"].casefold() for x in selected]
     if len(set(ids)) != 1000 or len(set(nouns)) != 1000:
-        base.die("Bridge IDs/nouns are not unique")
+        base.die("Normal IDs/nouns are not unique")
     if set(ids) & challenge_ids or set(nouns) & challenge_nouns:
-        base.die("Bridge overlaps Challenge")
+        base.die("Normal overlaps Challenge")
     levels = Counter(x["level"] for x in selected)
     cefr = Counter(x["cefrEstimate"] for x in selected)
     if levels != Counter({1: 400, 2: 350, 3: 250}):
-        base.die(f"Unexpected Bridge level distribution: {dict(levels)}")
+        base.die(f"Unexpected Normal level distribution: {dict(levels)}")
     if cefr != Counter({"B2": 600, "C1": 400}):
-        base.die(f"Unexpected Bridge CEFR-estimate distribution: {dict(cefr)}")
+        base.die(f"Unexpected Normal CEFR-estimate distribution: {dict(cefr)}")
     if any(x["cefrEstimate"] != "B2" for x in selected if x["level"] == 1):
-        base.die("Bridge Level 1 must remain B2-estimated")
+        base.die("Normal Level 1 must remain B2-estimated")
     level2 = [x for x in selected if x["level"] == 2]
     level2_cefr = Counter(x["cefrEstimate"] for x in level2)
     if level2_cefr != Counter({"B2": 200, "C1": 150}):
         base.die(f"Unexpected Level 2 B2/C1 composition: {dict(level2_cefr)}")
     if any(x["learnerValue"] < TRANSITION_MIN_LEARNER_VALUE for x in level2 if x["cefrEstimate"] == "C1"):
-        base.die("Bridge C1 transition contains a low learner-value noun")
+        base.die("Normal C1 transition contains a low learner-value noun")
     if any(x["cefrEstimate"] != "C1" or x["frequencyRank"] < ADVANCED_MIN_FREQUENCY_RANK for x in selected if x["level"] == 3):
-        base.die("Bridge Level 3 Advanced source gate failed")
+        base.die("Normal Level 3 Advanced source gate failed")
     articles = Counter(x["article"] for x in selected)
     if set(articles) != base.VALID_ARTICLES or min(articles.values()) < 100:
         base.die(f"Article coverage is too narrow after quality selection: {dict(articles)}")

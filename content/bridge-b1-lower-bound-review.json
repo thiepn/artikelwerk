@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "phase": "V2-3",
+  "status": "in-progress",
+  "source": {
+    "title": "Goethe-Zertifikat B1 Wortliste",
+    "publisher": "Goethe-Institut / ÖSD",
+    "edition": "2016",
+    "url": "https://www.goethe.de/pro/relaunch/prf/id/Goethe-Zertifikat_B1_Wortliste.pdf",
+    "use": "lower-bound reference only",
+    "note": "A B1-list collision is a strong replacement signal for Artikelwerk Normal. Example or category attestation is recorded separately from an explicit lexical entry and is not misrepresented as exact list membership."
+  },
+  "entries": {
+    "chemie": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 lists Chemie among school subjects; it is below the intended Normal floor."
+    },
+    "mathe": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists Mathe(matik) among school subjects."
+    },
+    "mathematik": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly covers Mathe(matik); a Level 2 Normal slot is not justified."
+    },
+    "philosophie": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 lists Philosophie among school subjects."
+    },
+    "physik": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 lists Physik among school subjects."
+    },
+    "software": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists Software in its Anglicismen group."
+    },
+    "gramm": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly teaches Gramm in its measures and weights group."
+    },
+    "killer": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists Killer/Killerin among Anglicisms; Advanced C1 placement is indefensible."
+    },
+    "demokratie": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists Demokratie under political concepts."
+    },
+    "parlament": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists Parlament under political concepts."
+    },
+    "akademie": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 includes Akademie among Austrian education institutions."
+    },
+    "grieche": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists der Grieche in the nationality group."
+    },
+    "krokodil": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-group-entry",
+      "reason": "Goethe B1 explicitly lists das Krokodil in its animal vocabulary."
+    },
+    "sosse": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-alphabetical-entry",
+      "reason": "Goethe B1 explicitly lists die Soße/Sauce; it is far below the Normal floor."
+    },
+    "dritter": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "explicit-ordinal-group",
+      "reason": "Goethe B1 covers ordinal forms including dritte; the stored Dritter entry is also morphologically unsuitable for this quiz."
+    },
+    "vollmond": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-example-attestation",
+      "reason": "Vollmond appears naturally in Goethe B1 example material and offers insufficient Normal value."
+    },
+    "jahreszeit": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-example-attestation",
+      "reason": "Jahreszeit is used repeatedly in Goethe B1 example material and belongs below the Normal floor."
+    },
+    "rueckseite": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-example-attestation",
+      "reason": "Rückseite appears in ordinary Goethe B1 usage material and is too basic for the Normal allocation."
+    },
+    "uhrzeit": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-topic-domain",
+      "reason": "Uhrzeit is an explicit Goethe B1 time-vocabulary domain and does not merit a Normal slot."
+    },
+    "republik": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-political-group-attestation",
+      "reason": "Republik appears directly in Goethe B1 political/country vocabulary; keep harder institutional vocabulary instead."
+    },
+    "kontinent": {
+      "decision": "replace",
+      "lowerBound": "B1",
+      "evidenceType": "B1-category-attestation",
+      "reason": "Kontinent is part of the Goethe B1 countries/continents domain and is too basic for this Normal slot."
+    }
+  }
+}

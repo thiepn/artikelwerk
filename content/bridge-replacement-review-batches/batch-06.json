@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "phase": "V2-3",
+  "kind": "replacement-review-batch",
+  "status": "complete",
+  "entries": {
+    "steuererklaerung": {
+      "successor": {
+        "id": "ausbeutung",
+        "noun": "Ausbeutung",
+        "article": "die",
+        "level": 3,
+        "cefrEstimate": "C1",
+        "frequencyRank": 18380,
+        "frequencyCount": 191,
+        "group": "bridge-general"
+      },
+      "sourceGloss": "exploitation",
+      "gloss": "exploitation",
+      "example": "Die Ausbeutung abhängiger Beschäftigter wurde durch strengere Kontrollen erschwert.",
+      "rule": "The ending -ung reliably predicts feminine gender.",
+      "reviewedSenseIds": ["v23:ausbeutung:exploitation"],
+      "componentReview": {"gloss":"editorial","example":"editorial","rule":"editorial","level":"editorial"},
+      "b1LowerBoundCheck": "no-exact-match"
+    }
+  }
+}

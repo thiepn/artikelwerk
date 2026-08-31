@@ -1,7 +1,7 @@
 {
   "name": "Artikelwerk",
   "short_name": "Artikelwerk",
-  "description": "C1/C2 German noun-gender trainer",
+  "description": "B2–C2 German noun-gender trainer",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

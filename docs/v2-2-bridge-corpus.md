@@ -1,8 +1,8 @@
-# V2-2 — 1,000-Word B2→C1 Bridge Corpus
+# V2-2 — 1,000-Word B2→C1 Normal Corpus
 
 ## Result
 
-- Bridge rows: **1,000**
+- Normal rows: **1,000**
 - Level 1 — Intermediate: **400**
 - Level 2 — Upper Intermediate: **350**
 - Level 3 — Advanced: **250**
@@ -13,7 +13,7 @@
 
 ## CEFR interpretation
 
-`B2` and `C1` here are **targeting estimates, not official Goethe B2/C1 list membership**. wordhoard calibrates German frequency ranks against Goethe A1–B1 anchors and extrapolates B2/C1 thresholds from the fitted B1 boundary. Artikelwerk therefore describes this as a B2→C1-targeted Bridge corpus rather than an official CEFR word list.
+`B2` and `C1` here are **targeting estimates, not official Goethe B2/C1 list membership**. wordhoard calibrates German frequency ranks against Goethe A1–B1 anchors and extrapolates B2/C1 thresholds from the fitted B1 boundary. Artikelwerk therefore describes this as a B2→C1-targeted Normal corpus rather than an official CEFR word list.
 
 ## Selection method
 
@@ -21,7 +21,7 @@
 2. Keep common nouns (`NOUN`) whose wordhoard CEFR estimate is B2 or C1 and whose grammatical gender is `der`, `die`, or `das`.
 3. Require a matching common-noun entry in the pinned German Wiktionary extraction and require the old Wiktionary grammar data to corroborate **one single gender**. Ambiguous/multi-gender candidates are excluded from this phase rather than silently reduced to one quiz answer.
 4. Require at least one clean English Wiktionary translation.
-5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Bridge nouns/IDs.
+5. Exclude names/special-name-only usages, malformed orthography, selected subtitle-noise categories, exact Challenge noun/ID overlaps, and duplicate Normal nouns/IDs.
 6. Rank eligible nouns by learner value: general-use frequency plus abstract/institutional semantics and productive morphology, with penalties for concrete props, person labels, entertainment/slang vocabulary, and transparent loanwords. Article balance is measured after selection and never overrides lexical quality.
 7. Select 600 high-value B2 nouns: the easier 400 become Intermediate and the stronger 200 enter Upper Intermediate. Add 150 accessible C1 nouns to Upper Intermediate only if learner value is at least 5 and source frequency rank is below 14,000. Advanced contains 250 distinct C1 nouns with frequency rank at least 10,500 plus formal/abstract lexical evidence.
 
@@ -29,7 +29,7 @@
 
 - **wordhoard**: https://github.com/natema/wordhoard, release v0.1.0 (2026-07-16); downloaded archive SHA-256 `83837efd46241e7226fc6daaa9d0cc81b57bf746434b8c539049c660d98ba761`. The built dataset is CC-BY-SA-4.0 and combines OpenSubtitles-derived frequency evidence with openly licensed lexical sources. Goethe material is calibration-only and is not redistributed.
 - **German Wiktionary extraction**: https://github.com/karoly-varasdi/de-wiktionary-parser, pinned commit `73075bb76c9261c44923f4909858586b261bfd83`; `de_noun_entries_with_translations.zip` Git blob `a56efcb80b64433107ec1f376b933c572f2427c9`. English translations and the second-source grammar check derive from German Wiktionary data.
-- The checked-in Bridge corpus, Bridge gloss asset, and Bridge provenance are distributed under **CC-BY-SA-4.0**. The existing Challenge translation asset remains separately licensed as documented in `THIRD_PARTY_NOTICES.md`.
+- The checked-in Normal corpus, Normal gloss asset, and Normal provenance are distributed under **CC-BY-SA-4.0**. The existing Challenge translation asset remains separately licensed as documented in `THIRD_PARTY_NOTICES.md`.
 
 ## Frequency-rank ranges
 
