@@ -25,7 +25,10 @@ if (!/^<!doctype html>/i.test(html.trimStart())) fail('index.html must begin wit
 if (Buffer.byteLength(html, 'utf8') < 580_000) fail('index.html is unexpectedly small; the complete readable application source is required.');
 
 requireFragment(html, '<meta name="viewport"', 'viewport metadata');
-requireFragment(html, '<title>Artikelwerk', 'application title');
+requireFragment(html, '<title>Artikelwerk — B2–C2 German Article Trainer</title>', 'B2–C2 application title');
+requireFragment(html, 'German noun gender · B2–C2', 'B2–C2 header coverage');
+requireFragment(html, 'Normal · B2–C1', 'Normal product label');
+if (/\bBridge\b/.test(html)) fail('Legacy Bridge product name remains in learner-facing index.html.');
 requireFragment(html, 'class="app-header"', 'UI2 integrated application header');
 requireFragment(html, 'class="tabs app-nav"', 'UI2 primary navigation');
 requireFragment(html, '<span class="nav-label">Progress</span>', 'learner-facing Progress navigation label');
