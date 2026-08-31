@@ -72,8 +72,11 @@ try{
     assert.ok(((await page.locator('#nounPrompt').textContent())||'').trim().length>2,`${profile.name}: Normal session has no noun`);
     await page.locator('.answer-btn').first().click();
     await page.locator('#feedback.show').waitFor({state:'visible'});
+    await page.locator('#showTranslationBtn').click();
+    await page.locator('#translationHint.show').waitFor({state:'visible'});
     const normalTranslation=((await page.locator('#translationText').textContent())||'').trim();
     assert.ok(normalTranslation&&normalTranslation!=='English gloss unavailable',`${profile.name}: Normal translation unavailable`);
+    assert.equal((await page.locator('#translationLabel').textContent())?.trim(),'English',`${profile.name}: Normal translation is marked as fallback`);
 
     const normalState=await page.evaluate(()=>JSON.parse(localStorage.getItem('artikelwerk_data')));
     assert.equal(normalState.settings.vocabularyTrack,'bridge',`${profile.name}: Normal selection was not persisted`);
