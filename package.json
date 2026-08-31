@@ -1,9 +1,9 @@
 {
   "name": "artikelwerk",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "type": "module",
-  "description": "German noun-gender trainer with Challenge C1/C2 architecture and a staged B2/C1 Normal corpus",
+  "description": "B2–C2 German noun-gender trainer with Normal B2/C1 and Challenge C1/C2 vocabulary tracks",
   "engines": {
     "node": ">=20"
   },
@@ -29,6 +29,7 @@
     "test:editorial-browser": "node tests/editorial-ui.mjs",
     "test:visual-acceptance-browser": "node tests/visual-acceptance.mjs",
     "test:tracks-browser": "node tests/vocabulary-tracks.mjs",
+    "test:article-controls-browser": "node tests/article-controls.mjs",
     "test:session-browser": "node tests/session-completion.mjs"
   },
   "devDependencies": {
