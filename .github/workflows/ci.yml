@@ -72,6 +72,7 @@ jobs:
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:editorial-browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:visual-acceptance-browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:tracks-browser
+          ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:article-controls-browser
           ARTIKELWERK_URL=http://127.0.0.1:4173 npm run test:session-browser
 
       - name: Upload certified static artifact
