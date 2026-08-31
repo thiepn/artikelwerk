@@ -2,141 +2,91 @@
 
 ## Certification decision
 
-**Status: RELEASE CERTIFICATION WITHHELD.**
+**Status: RELEASE-CERTIFIED.**
 
-The V2-2 Bridge corpus is reproducible and source-traceable, but the current `source-certified` marker is not an editorial release certification. V2-3 deliberately separates those concepts.
+V2-3 has completed the hard editorial pass for the 1,000-word Bridge corpus. The checked-in V2-2 source extraction remains separately traceable as `source-certified`; learner-facing Bridge release data is materialized from the V2-3 review ledgers and must pass the release gate before a build is accepted.
 
-### What already passes
+This phase certifies **content**. It does not by itself activate Bridge in the learner UI; runtime activation remains a separate integration step.
 
-- Exactly 1,000 Bridge nouns.
-- Level distribution remains 400 Intermediate / 350 Upper Intermediate / 250 Advanced.
-- Source targeting remains 600 B2-estimated / 400 C1-estimated.
-- Challenge overlap is zero.
-- Every retained noun has one quiz article and source-corroborated gender evidence.
-- Source archives, commits, checksums, licensing, frequency evidence, and selection methodology remain pinned and reproducible.
+## Certified result
 
-### Why release certification is withheld
+The release gate now requires all of the following and passes on the certified branch:
 
-1. **All 1,000 Bridge provenance entries are only `source-certified`.** None currently carries the Challenge-style `release-reviewed` editorial state or an explicit reviewed sense identifier.
-2. **All 1,000 learner examples are selected from eight generic templates.** They prove article insertion but do not reliably teach a noun's meaning, collocations, register, or normal context.
-3. **The raw Wiktionary translation flattening is not sense-safe.** It can retain irrelevant, archaic, domain-labelled, or simply misleading secondary translations. Confirmed examples in the checked-in asset include `Flüchtling → refugee; flibbertigibbet`, `Herzschlag → heart attack; beating of the heart`, `Vollmond → full moon; baldie`, and `Chemie → chemistry; Psychologie: attunement`.
-4. **Taxonomy is too weak to be an editorial signal.** V2-2 currently places 923 / 1,000 nouns in `bridge-general`.
-5. **Learner-value heuristics are useful for selection but cannot substitute for editorial sense review.** They consume the same source gloss text whose secondary senses can be noisy.
-6. **The existing certification script checks shape and provenance, not meaning.** A non-empty gloss under 145 characters and a grammatically article-matching generic example can pass even when the learner-facing sense is poor.
+- exactly **1,000 / 1,000** effective Bridge entries;
+- exactly **400 Intermediate / 350 Upper Intermediate / 250 Advanced** entries;
+- the source-targeting contract remains **600 B2-estimated / 400 C1-estimated**;
+- **0** Challenge noun/ID overlaps;
+- **1,000 / 1,000** effective entries are editorially `release-reviewed`;
+- **1,000 / 1,000** effective entries have reviewed-sense metadata;
+- learner-facing gloss, example, rule, and level review are complete;
+- every replacement decision has a fully reviewed successor before materialization;
+- the official B1 lower-bound review is incorporated into retain/replace decisions;
+- generic V2-2 example templates and blocked/noisy glossary artifacts are hard failures;
+- unresolved gender/sense ambiguity, malformed tuple data, duplicate IDs/nouns, and invalid article evidence are hard failures;
+- deterministic V2-3 materialization and packaged-output verification pass.
 
-## Standards used for V2-3
+## Editorial standard
 
-V2-3 keeps the existing label **B2→C1-targeted**. It does not claim that the 1,000 nouns constitute an official CEFR or Goethe B2/C1 vocabulary list.
+V2-3 keeps the product label **B2→C1-targeted**. It does not claim that Artikelwerk Bridge is an official CEFR or Goethe B2/C1 vocabulary list.
 
-The editorial standard is aligned to three external principles:
+The final review contract prioritizes:
 
-- **CEFR Companion Volume:** B2 vocabulary control should already be generally accurate; at C1, less-common vocabulary should be used idiomatically and appropriately. Vocabulary competence increasingly depends on collocations and lexical chunks, not isolated word rarity.
-- **Goethe-Zertifikat B1 word list:** use the official B1 list as a lower-bound exclusion/reference signal, not as proof that every noun absent from the list is B2+. Its own selection criterion is relevance in contemporary everyday German across private/public life and also work, school, and training.
-- **Goethe-Zertifikat C1:** the target user should be able to use German effectively and flexibly in public, academic, and professional life. Advanced Bridge content should therefore prioritize precise, current, useful abstract/institutional/process vocabulary over subtitle rarity or novelty.
+1. **Headword and gender** — canonical contemporary spelling and one defensible article for the reviewed sense.
+2. **Learner gloss** — one primary modern meaning, with at most one useful secondary meaning and no extraction noise or source annotations.
+3. **Example sentence** — natural contemporary German that demonstrates the reviewed meaning and a realistic context or collocation.
+4. **Gender rule** — a useful productive pattern where one exists, otherwise an explicit lexical/compound explanation rather than a fabricated rule.
+5. **Learner value** — useful B2→C1 vocabulary over subtitle rarity, low-value props, transparent filler, or narrow person labels.
+6. **Level calibration** — preserve the 400/350/250 product contract and the 600/400 B2/C1 source-targeting mix.
+7. **Lower-bound screening** — Goethe B1 evidence is a strong replacement/review signal, not proof that every absent word is B2+.
 
-## V2-3 editorial contract
+## Review architecture
 
-A Bridge noun may be marked `release-reviewed` only when all applicable checks below pass.
+V2-3 deliberately separates source provenance from editorial release review.
 
-### 1. Headword and gender
+The source assets remain reproducible and traceable. Editorial decisions are stored in review ledgers and batches, including:
 
-- Canonical contemporary spelling.
-- One unambiguous article for the reviewed target sense.
-- Multi-gender or sense-dependent nouns require an explicit sense decision; otherwise replace the noun.
-- No person/name-only interpretation silently reduced to one quiz answer.
+- retained-entry editorial reviews;
+- B1 lower-bound decisions;
+- replacement decisions;
+- successor reviews with explicit sense, gloss, example, rule, level, and B1-screen status.
 
-### 2. English learner gloss
+`materialize-bridge-v23.mjs` applies those reviewed decisions deterministically when building the release artifact. This avoids mutating the pinned V2-2 source extraction merely to represent a later editorial decision.
 
-- One primary modern learner meaning; a second meaning is allowed only when common and genuinely useful.
-- The gloss must describe the reviewed German sense, not merely reproduce the first extraction string.
-- Remove source annotations, labels, obsolete meanings, jokes, rare dictionary curiosities, and domain fragments that do not belong in the learner surface.
-- Avoid needlessly obscure English words when a normal English equivalent exists.
-- Explicit reviewed-sense metadata is required.
+## Hard release gate
 
-### 3. Example sentence
+`npm run ci:static` is the canonical static release gate. It executes source/content certification, Bridge source certification, successor-ledger auditing, retained-entry B1 auditing, the editorial release assertion, deterministic V2-3 materialization, V2-3 certification, and packaged-output verification.
 
-- Natural contemporary German.
-- Semantically demonstrates the reviewed noun meaning.
-- Uses a normal collocation or realistic context where possible.
-- Article/case agreement must be correct.
-- No generic `X wurde ... erwähnt/geprüft/betrachtet` filler may count as the release example.
-- Examples should be independently understandable without the English gloss.
+The release assertion fails if any effective entry has a hard blocker, including:
 
-### 4. Learner value
+- `not-release-reviewed`;
+- `missing-reviewed-sense`;
+- missing gloss/example/rule/level editorial review;
+- `replacement-pending`;
+- generic examples;
+- garbage or source-annotated glosses;
+- excessive gloss senses;
+- examples that do not contain the reviewed headword;
+- tuple-contract violations.
 
-- Appropriate for a learner intentionally bridging B2 toward C1.
-- High utility outweighs rarity.
-- Transparent internationalisms may stay only when gender learning or functional usefulness justifies the slot.
-- Low-value props, entertainment vocabulary, highly specific person labels, and subtitle artifacts should be replaced when a stronger eligible candidate exists.
-- Official Goethe B1 vocabulary is treated as a strong lower-bound review signal. A B1-list collision requires explicit justification or replacement.
+Softer signals such as transparent cognates or generic taxonomy remain auditable without automatically invalidating otherwise reviewed content.
 
-### 5. Level calibration
+## CI policy
 
-- **Level 1 — Intermediate:** high-utility B2-targeted nouns; not basic everyday vocabulary merely made difficult by article uncertainty.
-- **Level 2 — Upper Intermediate:** stronger B2 plus accessible C1 transition vocabulary.
-- **Level 3 — Advanced:** useful current C1-targeted vocabulary with precision, abstraction, institutional/professional relevance, or productive formal morphology.
-- Preserve 400 / 350 / 250 and 600 B2 / 400 C1 unless a later version explicitly changes the product contract.
+Release CI is deterministic and read-only.
 
-## Required release metadata
+Review-time candidate-pool diagnostics and replacement proposal generators remain available in the repository, but they are intentionally **not** required release-CI steps because they retrieve pinned external lexical sources. Once successor decisions are reviewed and committed, release correctness is determined by the checked-in ledgers and deterministic materializer—not by re-running a network-dependent discovery process.
 
-V2-3 must stop overloading `reviewStatus` with source traceability.
+CI additionally runs the full browser certification suite against the built `dist/` artifact, including practice flow, content runtime, app shell, surface polish, accessibility, editorial UI, visual acceptance, vocabulary-track architecture, and session completion.
 
-Each release-reviewed entry should expose separate fields equivalent to:
+## Exit criteria
 
-```json
-{
-  "sourceStatus": "source-certified",
-  "reviewStatus": "release-reviewed",
-  "reviewedSenseIds": ["..."],
-  "glossReview": "editorial",
-  "exampleReview": "editorial",
-  "levelReview": "editorial"
-}
-```
+V2-3 is complete when both of these conditions hold:
 
-The exact source sense identifier may be a stable local ID derived from the pinned source extraction; it must not depend on a live network lookup at runtime.
+1. `npm run ci:static` passes with **0 hard editorial blockers** across all 1,000 effective Bridge entries.
+2. The full CI browser/visual/session suite passes on the same commit.
 
-## CI release gate
+Those are the authoritative release criteria. Historical proposal artifacts and review-time diagnostics are not release blockers after the reviewed successor ledger has been certified.
 
-`certify:bridge` must eventually reject the release when any of the following remain:
+## Handoff
 
-- a Bridge entry without `release-reviewed` status;
-- missing reviewed-sense metadata;
-- a generic V2-2 example template;
-- a known source annotation or blocked glossary artifact in the learner gloss;
-- duplicate IDs/nouns or Challenge overlap;
-- invalid article/gender evidence;
-- level-count or B2/C1-contract drift;
-- a release override that is absent from formal provenance;
-- unresolved editorial exceptions.
-
-V2-3 may keep a separate audit command that reports softer risks (transparent cognates, generic taxonomy, low learner-value nouns) without automatically treating every flagged item as a defect.
-
-## Review order
-
-1. **Sense/gloss triage:** remove clearly wrong and noisy translations first because learner-value scoring and example writing depend on the intended sense.
-2. **Low-value/replacement pass:** review the weakest Level 1/2 candidates and transparent borrowings against the remaining eligible source pool.
-3. **Level 3 precision pass:** verify that Advanced entries are useful current C1-oriented vocabulary rather than rare subtitle vocabulary.
-4. **Example rewrite:** write one meaning-bearing example for every retained noun after the headword set is stable.
-5. **Final provenance + CI:** promote only the fully reviewed final set to `release-reviewed`, then enforce the hard gate in `certify:bridge`.
-
-## Non-goals
-
-- Do not rewrite the original Challenge corpus as part of V2-3.
-- Do not claim official Goethe B2/C1 list membership.
-- Do not change SRS, scoring, track architecture, progress migration, or visual design.
-- Do not sacrifice lexical quality merely to force article balance; the current article distribution is descriptive, not a target quota.
-
-## V2-3 exit criteria
-
-V2-3 is complete only when:
-
-- **1,000 / 1,000** Bridge entries are editorially `release-reviewed`;
-- **1,000 / 1,000** have explicit reviewed sense metadata;
-- **1,000 / 1,000** have meaning-bearing reviewed German examples;
-- **0** blocked/noisy learner glosses remain;
-- **0** unresolved gender/sense ambiguities remain;
-- **0** Challenge overlaps remain;
-- level counts remain **400 / 350 / 250**;
-- source targeting remains **600 B2 / 400 C1** unless deliberately versioned otherwise;
-- the stricter `certify:bridge` gate and full browser suite pass on the certified commit.
+V2-3 is a **content-certification completion**, not a runtime-activation phase. Bridge should remain disabled in the learner-facing UI until the separate runtime integration is implemented and certified without regressing Challenge data, persistence isolation, practice flow, accessibility, or session completion.
