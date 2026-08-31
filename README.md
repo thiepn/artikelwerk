@@ -4,24 +4,29 @@ Artikelwerk is a German noun-gender trainer with adaptive review, contextual and
 
 ## Release status
 
-The current release candidate has two independently managed vocabulary tracks:
+Artikelwerk now ships two independently managed vocabulary tracks:
 
-- **Challenge · C1–C2** — the original 1,000 difficult nouns and the active/default learner corpus.
-- **Normal · B2–C1** — a 1,000-noun transition corpus with **400 Intermediate / 350 Upper Intermediate / 250 Advanced** entries and a **600 B2-estimated / 400 C1-estimated** source-targeting mix.
+- **Challenge · C1–C2** — the original 1,000 difficult nouns and the default learner corpus.
+- **Normal · B2–C1** — 1,000 editorially reviewed transition nouns: **400 Intermediate / 350 Upper Intermediate / 250 Advanced**, with a **600 B2-estimated / 400 C1-estimated** source-targeting mix.
 
-**V2-3 Normal content is editorially release-certified.** The release build materializes learner-facing Normal data from the reviewed V2-3 ledgers and rejects unresolved editorial blockers.
-
-Normal is still staged rather than learner-facing. Runtime activation is intentionally separate from content certification so the existing Challenge experience and persistence contract are not changed implicitly.
+Both tracks are learner-facing and usable in Practice, Progress, and Vocabulary. Challenge remains the default so existing users keep their current workflow; Normal is opt-in and maintains independent progress aggregates.
 
 Challenge and Normal have zero noun/ID overlap. CEFR labels are targeting estimates, not claims of official Goethe B2/C1 list membership.
 
-See `docs/v2-1-vocabulary-tracks.md`, `docs/v2-2-bridge-corpus.md`, and `docs/v2-3-bridge-certification.md` for the track architecture, corpus construction, and final editorial certification contract.
+See `docs/v2-1-vocabulary-tracks.md`, `docs/v2-2-bridge-corpus.md`, `docs/v2-3-bridge-certification.md`, and `docs/v2-4-normal-runtime.md` for the architecture, corpus construction, editorial certification, and runtime activation contracts.
 
-## Canonical source and build
+## Canonical source and runtime data
 
 `index.html` is the single human-readable application source. Challenge glosses remain in `translations.js`.
 
-The checked-in `bridge-corpus.js` and `bridge-translations.js` preserve the reproducible V2-2 source-certified staging assets. During the build, `scripts/materialize-bridge-v23.mjs` applies the reviewed V2-3 retain/replacement decisions deterministically to produce the certified release artifact without rewriting the pinned source extraction.
+The historical/internal `bridge` identifier is intentionally retained for persistence compatibility, generator paths, and V2-2/V2-3 provenance. The learner-facing product name is **Normal**.
+
+Two layers are kept separate:
+
+- `bridge-corpus.js` / `bridge-translations.js` — pinned V2-2 source-certified inputs used by the editorial/materialization toolchain.
+- `normal-corpus.js` / `normal-translations.js` — checked-in, learner-facing runtime assets that must byte-match the deterministic V2-3 materialization.
+
+`scripts/materialize-bridge-v23.mjs` applies the reviewed retain/replacement ledgers to the pinned V2-2 source inputs. CI rebuilds that materialization and fails if the checked-in Normal runtime assets have drifted. This matters for branch-based GitHub Pages because the files served directly from the repository are therefore the same certified data used in `dist/`.
 
 Generated `dist/` output is never the editable source of truth.
 
@@ -74,18 +79,24 @@ The GitHub Actions workflow performs the same static and rendered acceptance gat
 - retained-entry B1 lower-bound review;
 - **0 hard editorial blockers across all 1,000 effective Normal entries**;
 - deterministic V2-3 materialization;
+- checked-in `normal-corpus.js` / `normal-translations.js` parity with that materialization;
 - level/count/CEFR-targeting and Challenge-overlap invariants;
+- runtime loading of the certified Normal assets;
 - deterministic static packaging and packaged-output integrity.
 
-Release CI deliberately does **not** make network-dependent proposal discovery a shipping requirement. The replacement-pool diagnostics and proposal generators remain available as review-time tools, but the release invariant is the committed reviewed ledger plus deterministic materialization.
+Browser certification additionally verifies Normal selection, Normal practice, local English glosses, separate Challenge/Normal progress aggregates, 1,000-word per-track views, the 2,000-word combined views, persistence migration, accessibility, responsive behavior, visual acceptance, and session completion.
+
+Release CI deliberately does **not** make network-dependent proposal discovery a shipping requirement. Replacement-pool diagnostics and proposal generators remain review-time tools; the shipping invariant is the committed reviewed ledger plus deterministic materialization.
 
 ## Repository layout
 
 ```text
 index.html                              canonical active application source
 translations.js                         release-reviewed Challenge English glosses
-bridge-corpus.js                         pinned V2-2 Normal source corpus
-bridge-translations.js                   pinned V2-2 Normal source translations
+normal-corpus.js                        certified learner-facing Normal runtime corpus
+normal-translations.js                  certified learner-facing Normal translations
+bridge-corpus.js                         pinned V2-2 source corpus / internal build input
+bridge-translations.js                   pinned V2-2 source translations / internal build input
 content/bridge-provenance.json           per-entry Normal source evidence
 content/bridge-editorial-review.json     V2-3 editorial retain/review ledger
 content/bridge-b1-lower-bound-review.json
@@ -94,7 +105,8 @@ scripts/materialize-bridge-v23.mjs       deterministic V2-3 materializer
 scripts/audit-bridge-editorial.mjs       hard editorial release assertion
 scripts/certify-bridge-v23.mjs           materialized V2-3 certification
 scripts/build.mjs                        deterministic static build
-tests/                                   browser, accessibility, visual, track, and session gates
+tests/vocabulary-tracks.mjs             Challenge + active Normal runtime certification
+tests/                                   browser, accessibility, visual, and session gates
 .github/workflows/ci.yml                 read-only release certification workflow
 dist/                                    generated artifact; never committed
 ```
@@ -103,11 +115,12 @@ dist/                                    generated artifact; never committed
 
 - Edit `index.html`; do not restore a second editable HTML copy.
 - Keep active Challenge IDs synchronized with `translations.js`.
-- Keep the pinned V2-2 Normal source assets synchronized with formal Normal provenance.
+- Keep the pinned V2-2 Normal source assets synchronized with formal provenance.
 - Represent V2-3 editorial changes in the review ledgers; do not silently rewrite source provenance.
+- Regenerate/check the learner-facing Normal runtime after editorial data changes; `npm run ci:static` rejects stale runtime assets.
+- Preserve the internal `bridge` persistence key unless a deliberate schema migration is introduced.
 - Run `npm run ci:static` before merge/release.
 - CI remains read-only and uploads evidence/artifacts instead of committing generated output.
-- Do not activate Normal in the learner UI until its separate runtime-integration phase is implemented and certified.
 - Physical-device acceptance remains a manual final-release gate; see `docs/real-device-verification.md`.
 
 ## Interaction and visual system
@@ -132,7 +145,9 @@ V2-1 introduced one learning engine with isolated Challenge and Normal scopes. P
 
 V2-2 constructed the reproducible 1,000-row Normal source corpus from pinned open lexical sources, with gender corroboration, Challenge-overlap exclusion, ambiguity filtering, lower-value/noise filtering, and source-informed difficulty assignment.
 
-V2-3 completed editorial content certification: reviewed senses, learner glosses, meaning-bearing examples, article rules, level decisions, B1 lower-bound screening, and reviewed successors are now enforced as release invariants.
+V2-3 completed editorial content certification: reviewed senses, learner glosses, meaning-bearing examples, article rules, level decisions, B1 lower-bound screening, and reviewed successors are enforced as release invariants.
+
+V2-4 activates that certified corpus in the shared learning engine without renaming the internal `bridge` key. Normal is now selectable in Practice, Progress, and Vocabulary; combined scopes contain 2,000 nouns while Challenge remains the default and historical progress stays isolated.
 
 ## Licensing
 
