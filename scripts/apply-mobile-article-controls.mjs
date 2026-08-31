@@ -113,7 +113,7 @@ const settingsManager=String.raw`
       const value=this.normalize(layout);
       DOM.$$("input[name=\"articleControlsLayout\"]").forEach(input=>{ input.checked=input.value===value; });
       const status=DOM.$("#articleControlsStatus");
-      if(status) status.textContent=`${this.labels[value]} controls selected. Changes apply immediately and stay on this device.`;
+      if(status) status.textContent=this.labels[value]+" controls selected. Changes apply immediately and stay on this device.";
       return value;
     },
     apply(layout,{persist=true,announce=true}={}){
@@ -132,7 +132,7 @@ const settingsManager=String.raw`
           QuizView.fitNounPrompt();
         });
       }
-      if(announce) AccessibilityManager.announce(`${this.labels[value]} article controls enabled.`);
+      if(announce) AccessibilityManager.announce(this.labels[value]+" article controls enabled.");
       return value;
     },
     init(){ this.apply(this.current(),{persist:false,announce:false}); },
