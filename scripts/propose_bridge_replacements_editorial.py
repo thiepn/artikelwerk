@@ -143,6 +143,13 @@ def editorial_formal_evidence(item) -> bool:
 def editorial_reject(item) -> str | None:
     if item["noun"] in BLOCKED_EDITORIAL_PROPOSALS:
         return "v23_explicit_lower_bound_or_noise"
+    # The pinned Wiktionary extraction can expose sense/source annotations such
+    # as "royal court (of a ruler)". Those are useful extraction metadata but
+    # are not clean learner-facing glosses, so exclude the candidate from this
+    # proposal-only pool before later proposal validation sees it.
+    gloss = item["gloss"]
+    if "(" in gloss or ")" in gloss:
+        return "v23_source_annotation_risk"
     reason = _original_reject(item)
     if (
         reason == "v23_missing_bridge_signal"
