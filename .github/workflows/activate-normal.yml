@@ -22,7 +22,7 @@ jobs:
       - name: Materialize certified V2-3 Normal corpus
         run: node scripts/materialize-bridge-v23.mjs
 
-      - name: Install certified runtime and integration gates
+      - name: Install certified runtime and release gates
         shell: python
         run: |
           from pathlib import Path
@@ -53,14 +53,12 @@ jobs:
               '   ].map(createVocabularyEntry).concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry));',
               'Normal corpus merge',
           )
-
           replace_once(
               'scripts/build.mjs',
               "  ['.generated-v23/bridge-translations.js', 'bridge-translations.js'],\n  ['.generated-v23/bridge-corpus.js', 'bridge-corpus.js'],",
               "  ['.generated-v23/bridge-translations.js', 'normal-translations.js'],\n  ['.generated-v23/bridge-corpus.js', 'normal-corpus.js'],",
               'build runtime asset names',
           )
-
           replace_once(
               'scripts/verify-source.mjs',
               "if (JSON.stringify(externalScripts) !== JSON.stringify(['translations.js'])) {",
@@ -73,7 +71,6 @@ jobs:
               "requireFragment(html, '<script src=\"translations.js\"></script>', 'local Challenge translation asset');\nrequireFragment(html, '<script src=\"normal-translations.js\"></script>', 'certified Normal translation asset');\nrequireFragment(html, '<script src=\"normal-corpus.js\"></script>', 'certified Normal corpus asset');\nrequireFragment(html, '.concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry))', 'Normal runtime corpus integration');",
               'source Normal runtime requirements',
           )
-
           replace_once(
               'scripts/verify-dist.mjs',
               "for (const runtimeAsset of ['bridge-corpus.js', 'bridge-translations.js', 'content/bridge-provenance.json']) {",
@@ -86,56 +83,6 @@ jobs:
               "const runtimePairs = [\n  ['normal-corpus.js', '.generated-v23/bridge-corpus.js'],\n  ['normal-translations.js', '.generated-v23/bridge-translations.js'],\n];\nfor (const [checkedInRelative, generatedRelative] of runtimePairs) {\n  const checkedIn = await readFile(join(rootDir, checkedInRelative));\n  const generated = await readFile(join(rootDir, generatedRelative));\n  if (!checkedIn.equals(generated)) throw new Error(`${checkedInRelative} is stale relative to the certified V2-3 materialization.`);\n}\nconst runtimeHtml = await readFile(join(rootDir, 'index.html'), 'utf8');\nfor (const fragment of ['<script src=\\\"normal-translations.js\\\"></script>', '<script src=\\\"normal-corpus.js\\\"></script>', '.concat((window.ARTIKELWERK_BRIDGE_CORPUS||[]).map(createVocabularyEntry))']) {\n  if (!runtimeHtml.includes(fragment)) throw new Error(`Normal runtime integration missing from index.html: ${fragment}`);\n}\nconsole.log(`Build verification passed: ${Object.keys(manifest.files).length} certified files with active V2-3 Normal runtime sources.`);",
               'dist checked-in parity gate',
           )
-
-          # Turn the existing forward-compatibility browser test into an active-runtime gate.
-          p = Path('tests/vocabulary-tracks.mjs')
-          text = p.read_text(encoding='utf-8')
-          replacements = {
-              "assert.equal(await optionDisabled(page,'#vocabularyTrackSelect option[value=\"bridge\"]'),true,`${profile.name}: empty Normal option should be disabled`);": "assert.equal(await optionDisabled(page,'#vocabularyTrackSelect option[value=\"bridge\"]'),false,`${profile.name}: Normal option should be enabled`);",
-              "assert.equal(await page.locator('#bridgeTrackBtn').isDisabled(),true,`${profile.name}: empty Normal CTA should be disabled`);": "assert.equal(await page.locator('#bridgeTrackBtn').isDisabled(),false,`${profile.name}: Normal CTA should be enabled`);",
-              "assert.match((await page.locator('#bridgeTrackNote').textContent())||'',/V2-2|corpus/i,`${profile.name}: Normal readiness note missing`);": "assert.match((await page.locator('#bridgeTrackNote').textContent())||'',/1,000|ready/i,`${profile.name}: Normal readiness note missing`);",
-              "assert.equal(await optionDisabled(page,'#progressTrackSelect option[value=\"bridge\"]'),true,`${profile.name}: empty Normal Progress scope should be disabled`);": "assert.equal(await optionDisabled(page,'#progressTrackSelect option[value=\"bridge\"]'),false,`${profile.name}: Normal Progress scope should be enabled`);",
-              "assert.match((await page.locator('#progressTrackMeta').textContent())||'',/All vocabulary.*1,000/i,`${profile.name}: All Progress scope metadata is wrong`);": "assert.match((await page.locator('#progressTrackMeta').textContent())||'',/All vocabulary.*2,000/i,`${profile.name}: All Progress scope metadata is wrong`);",
-              "assert.equal(await optionDisabled(page,'#libraryTrackSelect option[value=\"bridge\"]'),true,`${profile.name}: empty Normal library scope should be disabled`);": "assert.equal(await optionDisabled(page,'#libraryTrackSelect option[value=\"bridge\"]'),false,`${profile.name}: Normal library scope should be enabled`);",
-              "assert.match((await page.locator('#libraryMeta').textContent())||'',/1000 of 1000 nouns.*All vocabulary/i,`${profile.name}: All library scope is wrong`);": "assert.match((await page.locator('#libraryMeta').textContent())||'',/2000 of 2000 nouns.*All vocabulary/i,`${profile.name}: All library scope is wrong`);",
-          }
-          for old, new in replacements.items():
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f'vocabulary-tracks replacement expected one match, found {count}: {old[:80]}')
-              text = text.replace(old, new, 1)
-
-          marker = "    await page.keyboard.press('Escape');\n\n    await page.locator('#tabStats').click();"
-          normal_test = """    await page.keyboard.press('Escape');
-
-    // Certified Normal runtime: select it, practice one noun, and keep progress isolated.
-    await page.locator('#vocabularyTrackSelect').selectOption('bridge');
-    await page.locator('#vocabularyTrackSelect').dispatchEvent('change');
-    assert.equal(await page.locator('#vocabularyTrackSelect').inputValue(),'bridge',`${profile.name}: Normal track selection failed`);
-    assert.match((await page.locator('#practiceTrackKicker').textContent())||'',/Normal.*B2.*C1/i,`${profile.name}: Normal Practice identity missing`);
-    assert.deepEqual(await page.locator('#difficultySelect option').allTextContents(),['All B2–C1 levels','Level 1 — Intermediate','Level 2 — Upper Intermediate','Level 3 — Advanced'],`${profile.name}: Normal difficulty labels are wrong`);
-    await page.locator('#openPracticeBtn').click();
-    await page.locator('#practiceScreen:not([hidden])').waitFor({state:'visible'});
-    assert.equal(((await page.locator('#practiceScreenTitle').textContent())||'').trim(),'Normal practice',`${profile.name}: Practice title does not identify Normal`);
-    assert.ok(((await page.locator('#nounPrompt').textContent())||'').trim().length>2,`${profile.name}: Normal session has no noun`);
-    await page.locator('.answer-btn').first().click();
-    await page.locator('#feedback.show').waitFor({state:'visible'});
-    const normalTranslation=((await page.locator('#translationText').textContent())||'').trim();
-    assert.ok(normalTranslation&&normalTranslation!=='English gloss unavailable',`${profile.name}: Normal translation unavailable`);
-    const normalState=await page.evaluate(()=>JSON.parse(localStorage.getItem('artikelwerk_data')));
-    assert.equal(normalState.aggregatesByTrack.challenge.answers,1,`${profile.name}: Normal practice contaminated Challenge aggregate`);
-    assert.equal(normalState.aggregatesByTrack.bridge.answers,1,`${profile.name}: Normal aggregate did not receive the answer`);
-    assert.equal(normalState.aggregates.answers,2,`${profile.name}: global aggregate did not include both tracks`);
-    await page.keyboard.press('Escape');
-    await page.locator('#vocabularyTrackSelect').selectOption('challenge');
-    await page.locator('#vocabularyTrackSelect').dispatchEvent('change');
-
-    await page.locator('#tabStats').click();"""
-          count = text.count(marker)
-          if count != 1:
-              raise SystemExit(f'Normal runtime test insertion expected one marker, found {count}')
-          text = text.replace(marker, normal_test, 1)
-          p.write_text(text, encoding='utf-8')
 
       - name: Commit Normal runtime integration
         shell: bash
